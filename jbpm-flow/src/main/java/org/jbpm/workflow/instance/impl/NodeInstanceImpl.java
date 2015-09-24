@@ -362,6 +362,17 @@ public abstract class NodeInstanceImpl implements org.jbpm.workflow.instance.Nod
     		((InternalProcessRuntime) kruntime.getProcessRuntime())
     			.getProcessEventSupport().fireBeforeNodeLeft(this, kruntime);
     	}
+    	
+    	
+    	
+    	VariableScopeInstance variableScopeInstance = (VariableScopeInstance) getProcessInstance().getContextInstance(VariableScope.VARIABLE_SCOPE);
+    	if (variableScopeInstance != null){
+    		Map<String, Object> vars = variableScopeInstance.getVariables();
+    		Object employee = vars.get("employee");
+    	}
+    	
+    			
+    	
     	// trigger next node
         nodeInstance.trigger(this, type);
         Collection<Connection> outgoing = getNode().getOutgoingConnections(type);

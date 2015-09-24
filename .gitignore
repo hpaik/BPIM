@@ -31,3 +31,7 @@ bitronix-default-config.properties
 # files used for external db testing
 jdbc_driver.jar
 db-settings.xml
+*/target/
+.settings/
+*.classpath
+*.project
