@@ -15,5 +15,10 @@
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-flow</artifactId>
     </dependency>
+  	 <dependency>
+  	 	<groupId>org.bpim</groupId>
+  	 	<artifactId>bpim-bpmn2-transformer</artifactId>
+  	 	<version>1.0.0-SNAPSHOT</version>
+  	 </dependency>
   </dependencies>
 </project>

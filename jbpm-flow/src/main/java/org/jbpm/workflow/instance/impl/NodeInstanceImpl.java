@@ -352,6 +352,17 @@ public abstract class NodeInstanceImpl implements org.jbpm.workflow.instance.Nod
             	.getNodeInstance(connection.getTo());
     }
     
+    private static java.lang.reflect.Method bpimProcessMethod = null;
+    
+    protected java.lang.reflect.Method getBPIMProcessMethod() throws NoSuchMethodException, SecurityException, ClassNotFoundException{
+    	if (bpimProcessMethod == null){
+    		bpimProcessMethod = Class.forName("org.bpim.engine.BPIMExecutionEngine").getMethod("process", org.jbpm.workflow.instance.NodeInstance.class);
+    		return bpimProcessMethod;
+    	}else{
+    		return bpimProcessMethod;
+    	}
+    }
+    
     protected void triggerNodeInstance(org.jbpm.workflow.instance.NodeInstance nodeInstance, String type) {
     	boolean hidden = false;
     	if (getNode().getMetaData().get("hidden") != null) {
@@ -364,14 +375,12 @@ public abstract class NodeInstanceImpl implements org.jbpm.workflow.instance.Nod
     	}
     	
     	
-    	
-    	VariableScopeInstance variableScopeInstance = (VariableScopeInstance) getProcessInstance().getContextInstance(VariableScope.VARIABLE_SCOPE);
-    	if (variableScopeInstance != null){
-    		Map<String, Object> vars = variableScopeInstance.getVariables();
-    		Object employee = vars.get("employee");
-    	}
-    	
-    			
+    	try {    		
+    		getBPIMProcessMethod().invoke(null, this);
+		} catch (Exception e) {
+			logger.error("Can not transform to BPIM", e);
+		}     	
+    	    			
     	
     	// trigger next node
         nodeInstance.trigger(this, type);

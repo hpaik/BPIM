@@ -6,4 +6,16 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>bpim-bpmn2-transformer</artifactId>
+  
+  <dependencies>
+  	<dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+  	 <dependency>
+      <groupId>org.jbpm</groupId>
+      <artifactId>jbpm-flow</artifactId>
+    </dependency>
+  </dependencies>
+  
 </project>
