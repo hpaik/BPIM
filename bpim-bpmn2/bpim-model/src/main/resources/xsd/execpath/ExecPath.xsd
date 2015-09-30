@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://www.bpim.org/model/execpath/v1" 
+		xmlns:tns="http://www.bpim.org/model/execpath/v1"
+		xmlns:bpimbase="http://www.bpim.org/model/base/v1"
+		elementFormDefault="qualified">
+	
+	<xs:import namespace="http://www.bpim.org/model/base/v1" schemaLocation="../bpim/BaseElements.xsd" />
+	
+	<xs:element name="MessageTransition" type="tns:MessageTransition" />
+	<xs:complexType name="MessageTransition">
+		<xs:complexContent>
+			<xs:extension base="tns:TransitionBase">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="EventTransition" type="tns:EventTransition" />
+	<xs:complexType name="EventTransition">
+		<xs:complexContent>
+			<xs:extension base="tns:TransitionBase">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	
+	<xs:element name="GatewayTransition" type="tns:GatewayTransition" />
+	<xs:complexType name="GatewayTransition">
+		<xs:complexContent>
+			<xs:extension base="tns:TransitionBase">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="NormalTransition" type="tns:NormalTransition" />
+	<xs:complexType name="NormalTransition">
+		<xs:complexContent>
+			<xs:extension base="tns:TransitionBase">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	
+	<xs:complexType name="TransitionBase" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="tns:FlowNode">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="Server" type="tns:Server" />
+	<xs:complexType name="Server">
+		<xs:complexContent>
+			<xs:extension base="bpimbase:ElementBase">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="ApplicationPerformer" type="tns:ApplicationPerformer" />
+	<xs:complexType name="ApplicationPerformer">
+		<xs:complexContent>
+			<xs:extension base="tns:Performer">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="HumanPerformer" type="tns:HumanPerformer" />
+	<xs:complexType name="HumanPerformer">
+		<xs:complexContent>
+			<xs:extension base="tns:Performer">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:complexType name="Performer" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="bpimbase:ElementBase">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="Wait" type="tns:Wait" />
+	<xs:complexType name="Wait">
+		<xs:complexContent>
+			<xs:extension base="tns:Activity">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="AutomatedTask" type="tns:AutomatedTask" />
+	<xs:complexType name="AutomatedTask">
+		<xs:complexContent>
+			<xs:extension base="tns:Activity">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="ManualTask" type="tns:ManualTask" />
+	<xs:complexType name="ManualTask">
+		<xs:complexContent>
+			<xs:extension base="tns:Activity">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="CallProcessInstance" type="tns:CallProcessInstance" />
+	<xs:complexType name="CallProcessInstance">
+		<xs:complexContent>
+			<xs:extension base="tns:Activity">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="ReferenceProcessInstance" type="tns:ReferenceProcessInstance" />
+	<xs:complexType name="ReferenceProcessInstance">
+		<xs:complexContent>
+			<xs:extension base="tns:Activity">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="Start" type="tns:Start" />
+	<xs:complexType name="Start">
+		<xs:complexContent>
+			<xs:extension base="tns:Activity">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:element name="End" type="tns:End" />
+	<xs:complexType name="End">
+		<xs:complexContent>
+			<xs:extension base="tns:Activity">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:complexType name="Activity" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="tns:FlowNode">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	<xs:complexType name="FlowNode" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="bpimbase:ElementBase">
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>	
+	
+	
+				
+</xs:schema>

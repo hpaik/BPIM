@@ -4,7 +4,6 @@ package org.bpim.engine;
 
 import org.bpim.transformer.base.Transformer;
 import org.bpim.transformer.factory.TranformerFactory;
-import org.jbpm.workflow.core.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +15,10 @@ public class BPIMExecutionEngine {
 		
 //		org.jbpm.workflow.instance.WorkflowProcessInstance processInstance = 
 //				(org.jbpm.workflow.instance.WorkflowProcessInstance) nodeInstance.getProcessInstance();
-		Node node = (org.jbpm.workflow.core.Node)nodeInstance.getNode();
-		Transformer transformer = TranformerFactory.createTransformer(nodeInstance);
 		
-		transformer.transform();
+		Transformer transformer = TranformerFactory.createTransformer(nodeInstance.getClass().getSimpleName());
+		
+		transformer.transform(nodeInstance);
 		
 //		VariableScopeInstance variableScopeInstance = (VariableScopeInstance) processInstance.getContextInstance(VariableScope.VARIABLE_SCOPE);
 //    	if (variableScopeInstance != null){

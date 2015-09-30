@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://www.bpim.org/model/data/v1" 
+		xmlns:tns="http://www.bpim.org/model/data/v1" 
+		xmlns:bpimbase="http://www.bpim.org/model/base/v1"
+		elementFormDefault="qualified">
+		
+		<xs:import namespace="http://www.bpim.org/model/base/v1" schemaLocation="../bpim/BaseElements.xsd" />
+		
+		
+		<xs:complexType name="DataSnapshotGraphs">
+			<xs:sequence>
+				<xs:element name="dataElements"  type="tns:DataSnapshotElement" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		
+		<xs:complexType name="DataSnapshotPool">
+			<xs:sequence>
+				<xs:element name="dataElements"  type="tns:DataPoolElement" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+		
+		<xs:element name="DataTransition" type="tns:DataTransition" />
+		<xs:complexType name="DataTransition">
+			<xs:complexContent>
+				<xs:extension base="bpimbase:ElementBase">
+				</xs:extension>			
+			</xs:complexContent>
+		</xs:complexType>
+		
+		<xs:element name="DataInput" type="tns:DataInput" />
+		<xs:complexType name="DataInput">
+			<xs:complexContent>
+				<xs:extension base="bpimbase:ElementBase">
+				</xs:extension>			
+			</xs:complexContent>
+		</xs:complexType>
+		
+		<xs:element name="DataOutput" type="tns:DataOutput" />
+		<xs:complexType name="DataOutput">
+			<xs:complexContent>
+				<xs:extension base="bpimbase:ElementBase">
+				</xs:extension>			
+			</xs:complexContent>
+		</xs:complexType>
+		
+		<xs:element name="DataItem" type="tns:DataItem" />
+		<xs:complexType name="DataItem">
+			<xs:complexContent>
+				<xs:extension base="tns:DataPoolElement">
+				</xs:extension>			
+			</xs:complexContent>
+		</xs:complexType>		
+		
+		<xs:element name="DataItemArray" type="tns:DataItemArray" />
+		<xs:complexType name="DataItemArray">
+			<xs:complexContent>
+				<xs:extension base="tns:DataPoolElement">
+				</xs:extension>			
+			</xs:complexContent>
+		</xs:complexType>
+		
+		<xs:complexType name="DataPoolElement" abstract="true">
+			<xs:complexContent>
+				<xs:extension base="bpimbase:ElementBase">
+				</xs:extension>			
+			</xs:complexContent>
+		</xs:complexType>
+		
+		<xs:complexType name="DataSnapshotElement" abstract="true">
+			<xs:complexContent>
+				<xs:extension base="bpimbase:ElementBase">
+				</xs:extension>			
+			</xs:complexContent>
+		</xs:complexType>
+		
+</xs:schema>

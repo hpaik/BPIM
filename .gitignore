@@ -35,3 +35,4 @@ db-settings.xml
 .settings/
 *.classpath
 *.project
+bpim-bpmn2/bpim-model/src/main/java/

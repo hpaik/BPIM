@@ -16,11 +16,10 @@ public class TranformerFactory {
 	
 	private static Map<String, Transformer> transformersCache = null;
 	
-	public static Transformer createTransformer(NodeInstance nodeInstance){		
-		return getTransformer(nodeInstance.getClass().getSimpleName());
+	public static Transformer createTransformer(String transformerUnitType){		
+		return getTransformer(transformerUnitType);
 	}
-	
-	
+		
 	private static Transformer getTransformer(String transformerUnitType){		
 		if (transformersCache == null){
 			transformersCache = new HashMap<String, Transformer>(); 
@@ -28,14 +27,13 @@ public class TranformerFactory {
 		if (transformersCache.containsKey(transformerUnitType)){
 			return transformersCache.get(transformerUnitType);
 		}else{
-			Transformer transformer = createTransformer(transformerUnitType);
+			Transformer transformer = createTransformerInternal(transformerUnitType);
 			transformersCache.put(transformerUnitType, transformer);
 			return transformer;
 		}
 	}
-	
-	
-	private static Transformer createTransformer(String transformerUnitType) {
+		
+	private static Transformer createTransformerInternal(String transformerUnitType) {
 		CompositTransformer compositTransformer = new CompositTransformer();
 		try {
 			compositTransformer.registerTransformerUnit((TransformerUnit) 
@@ -44,10 +42,8 @@ public class TranformerFactory {
 					Class.forName("org.bpim.transformer.executionpath." + transformerUnitType + "TransformerUnit").newInstance());
 			
 		} catch (Exception e) {
-			logger.error("Can not create TransformerUnit", e);
+			logger.error("Can not create TransformerUnit. TransformerUnitType: " + transformerUnitType, e);
 		}
 		return compositTransformer;
-	}
-	
-	
+	}		
 }

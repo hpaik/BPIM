@@ -1,7 +1,9 @@
 package org.bpim.transformer.base;
 
+import org.jbpm.workflow.instance.NodeInstance;
+
 public abstract class Transformer {
 	
-	public abstract Object transform();
+	public abstract Object transform(NodeInstance nodeInstance);
 
 }

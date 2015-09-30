@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        targetNamespace="http://www.bpim.org/model/v1" 
+        xmlns:tns="http://www.bpim.org/model/v1"
+        xmlns:bpimbase="http://www.bpim.org/model/base/v1"
+        xmlns:execpath="http://www.bpim.org/model/execpath/v1"
+        xmlns:data="http://www.bpim.org/model/data/v1"  
+        elementFormDefault="qualified">
+        
+        
+    <xs:import namespace="http://www.bpim.org/model/base/v1" schemaLocation="BaseElements.xsd" />
+    <xs:import namespace="http://www.bpim.org/model/execpath/v1" schemaLocation="../execpath/ExecPath.xsd" />
+    <xs:import namespace="http://www.bpim.org/model/data/v1" schemaLocation="../data/Data.xsd" />
+        
+    <xs:element name="ProcessInstance" type="tns:ProcessInstance" />
+	<xs:complexType name="ProcessInstance">
+		<xs:complexContent>
+			<xs:extension base="bpimbase:ElementBase">
+				<xs:sequence>
+					<xs:element name="executionPath" type="tns:ExecutionPath" />
+					<xs:element name="data" type="tns:Data" />
+				</xs:sequence>
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
+	
+	
+	<xs:complexType name="ExecutionPath">
+		<xs:sequence>
+			<xs:element name="start" type="execpath:Start" />
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="Data">
+		<xs:sequence>
+			<xs:element name="dataSnapshotGraphs" type="data:DataSnapshotGraphs" />
+			<xs:element name="dataSnapshotPool" type="data:DataSnapshotPool" />
+		</xs:sequence>
+	</xs:complexType>
+	
+</xs:schema>

@@ -3,6 +3,8 @@ package org.bpim.transformer.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jbpm.workflow.instance.NodeInstance;
+
 public class CompositTransformer extends Transformer {
 
 	private List<TransformerUnit> transformerUnits = null;
@@ -19,10 +21,10 @@ public class CompositTransformer extends Transformer {
 	}
 	
 	@Override
-	public Object transform() {
+	public Object transform(NodeInstance nodeInstance) {
 		
 		for (TransformerUnit transformerUnit : transformerUnits){
-			transformerUnit.transform();
+			transformerUnit.transform(nodeInstance);
 		}
 		return null;
 	}

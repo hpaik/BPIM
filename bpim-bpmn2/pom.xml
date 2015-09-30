@@ -15,5 +15,6 @@
   	<module>bpim-bpmn2-engine</module>
   	<module>bpim-bpmn2-transformer</module>
   	<module>bpim-bpmn2-test</module>
+  	<module>bpim-model</module>
   </modules>
 </project>
