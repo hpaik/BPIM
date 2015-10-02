@@ -21,11 +21,11 @@ public class CompositTransformer extends Transformer {
 	}
 	
 	@Override
-	public Object transform(NodeInstance nodeInstance) {
-		
+	public TransformationResult transform(NodeInstance nodeInstance) {
+		TransformationResult transformationResult = new TransformationResult();
 		for (TransformerUnit transformerUnit : transformerUnits){
-			transformerUnit.transform(nodeInstance);
+			transformerUnit.transform(nodeInstance, transformationResult);
 		}
-		return null;
+		return transformationResult;
 	}
 }

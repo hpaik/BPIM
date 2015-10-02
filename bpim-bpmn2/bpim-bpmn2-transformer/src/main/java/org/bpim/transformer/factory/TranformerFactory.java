@@ -37,9 +37,9 @@ public class TranformerFactory {
 		CompositTransformer compositTransformer = new CompositTransformer();
 		try {
 			compositTransformer.registerTransformerUnit((TransformerUnit) 
-					Class.forName("org.bpim.transformer.data." + transformerUnitType + "TransformerUnit").newInstance());
-			compositTransformer.registerTransformerUnit((TransformerUnit) 
 					Class.forName("org.bpim.transformer.executionpath." + transformerUnitType + "TransformerUnit").newInstance());
+			compositTransformer.registerTransformerUnit((TransformerUnit) 
+					Class.forName("org.bpim.transformer.data." + transformerUnitType + "TransformerUnit").newInstance());			
 			
 		} catch (Exception e) {
 			logger.error("Can not create TransformerUnit. TransformerUnitType: " + transformerUnitType, e);

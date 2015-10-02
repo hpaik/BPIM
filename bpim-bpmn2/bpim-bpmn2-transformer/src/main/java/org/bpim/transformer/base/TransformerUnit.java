@@ -14,5 +14,5 @@ public abstract class TransformerUnit {
 		dataObjectFactory = new org.bpim.model.data.v1.ObjectFactory(); 
 	}
 
-	public abstract ElementBase transform(NodeInstance nodeInstance);
+	public abstract void transform(NodeInstance nodeInstance, TransformationResult transformationResult);
 }

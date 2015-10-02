@@ -4,6 +4,6 @@ import org.jbpm.workflow.instance.NodeInstance;
 
 public abstract class Transformer {
 	
-	public abstract Object transform(NodeInstance nodeInstance);
+	public abstract TransformationResult transform(NodeInstance nodeInstance);
 
 }

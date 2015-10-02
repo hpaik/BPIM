@@ -25,6 +25,10 @@
 		<xs:complexType name="DataTransition">
 			<xs:complexContent>
 				<xs:extension base="bpimbase:ElementBase">
+					<xs:sequence>
+						<xs:element name="dataInput" type="tns:DataInput" />
+						<xs:element name="dataOutput" type="tns:DataOutput" />
+					</xs:sequence>
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>
@@ -33,6 +37,9 @@
 		<xs:complexType name="DataInput">
 			<xs:complexContent>
 				<xs:extension base="bpimbase:ElementBase">
+					<xs:sequence>
+						<xs:element name="dataElementIs" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+					</xs:sequence>
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>
@@ -41,6 +48,9 @@
 		<xs:complexType name="DataOutput">
 			<xs:complexContent>
 				<xs:extension base="bpimbase:ElementBase">
+					<xs:sequence>
+						<xs:element name="dataElementIs" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+					</xs:sequence>
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>
@@ -57,6 +67,9 @@
 		<xs:complexType name="DataItemArray">
 			<xs:complexContent>
 				<xs:extension base="tns:DataPoolElement">
+					<xs:sequence>
+						<xs:element name="size" type="xs:int" />
+					</xs:sequence>
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>
@@ -64,6 +77,9 @@
 		<xs:complexType name="DataPoolElement" abstract="true">
 			<xs:complexContent>
 				<xs:extension base="bpimbase:ElementBase">
+					<xs:sequence>
+						<xs:element name="dataObject" type="xs:anyType"/>
+					</xs:sequence>
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>
