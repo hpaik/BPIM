@@ -44,6 +44,9 @@
 	<xs:complexType name="TransitionBase" abstract="true">
 		<xs:complexContent>
 			<xs:extension base="tns:FlowNode">
+				<xs:sequence>
+					<xs:element name="to" type="tns:Activity" />
+				</xs:sequence>
 			</xs:extension>			
 		</xs:complexContent>		
 	</xs:complexType>
@@ -138,6 +141,9 @@
 	<xs:complexType name="Activity" abstract="true">
 		<xs:complexContent>
 			<xs:extension base="tns:FlowNode">
+				<xs:sequence>
+					<xs:element name="outputTransitions" type="tns:TransitionBase" minOccurs="0" maxOccurs="unbounded" />					
+				</xs:sequence>
 			</xs:extension>			
 		</xs:complexContent>		
 	</xs:complexType>

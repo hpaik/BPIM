@@ -14,7 +14,7 @@ public class StartNodeInstanceTransformerUnit extends TransformerUnit {
 		Start  start = executionPathObjectFactory.createStart();
 		start.setId(UniqueIdGenerator.nextId());
 		start.setName(nodeInstance.getNodeName());
-		transformationResult.setExecPathElement(start);
+		transformationResult.setExecPathActivity(start);
 	}
 
 }

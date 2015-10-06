@@ -74,6 +74,16 @@
     
     <!-- test persistence -->  
     <dependency>
+  	 	<groupId>com.sun.xml.bind</groupId>
+  	 	<artifactId>jaxb-impl</artifactId>
+  	 	<scope>test</scope>  	 	
+  	 </dependency>
+  	 <dependency>
+  	 	<groupId>com.sun.xml.bind</groupId>
+  	 	<artifactId>jaxb-core</artifactId>
+  	 	<scope>test</scope>  	 	
+  	 </dependency>  	 
+    <dependency>
       <groupId>org.jbpm</groupId>
       <artifactId>jbpm-persistence-jpa</artifactId>
       <scope>test</scope>

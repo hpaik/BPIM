@@ -4,24 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bpim.model.data.v1.DataPoolElement;
+import org.bpim.model.data.v1.DataSnapshotElement;
 import org.bpim.model.data.v1.DataTransition;
 import org.bpim.model.execpath.v1.FlowNode;
 
 public class TransformationResult {
 	
-	private FlowNode execPathElement;
-	private DataTransition dataTransition = null;
+	private FlowNode execPathActivity;
+	private FlowNode execPathTransition;	
 	private List<DataPoolElement> dataPoolElements = null;
+	private DataSnapshotElement inputData;
 	
 	public TransformationResult(){		
 		dataPoolElements = new ArrayList<DataPoolElement>();
 	}
 	
-	public FlowNode getExecPathElement() {
-		return execPathElement;
+	public FlowNode getExecPathActivity() {
+		return execPathActivity;
 	}
-	public void setExecPathElement(FlowNode execPathElement) {
-		this.execPathElement = execPathElement;
+	public void setExecPathActivity(FlowNode execPathElement) {
+		this.execPathActivity = execPathElement;
 	}
 
 	public List<DataPoolElement> getDataPoolElements() {
@@ -30,14 +32,22 @@ public class TransformationResult {
 
 	public void setDataPoolElements(List<DataPoolElement> dataPoolElements) {
 		this.dataPoolElements = dataPoolElements;
+	}	
+
+	public FlowNode getExecPathTransition() {
+		return execPathTransition;
 	}
 
-	public DataTransition getDataTransition() {
-		return dataTransition;
+	public void setExecPathTransition(FlowNode execPathTransition) {
+		this.execPathTransition = execPathTransition;
 	}
 
-	public void setDataTransition(DataTransition dataTransition) {
-		this.dataTransition = dataTransition;
+	public DataSnapshotElement getInputData() {
+		return inputData;
+	}
+
+	public void setInputData(DataSnapshotElement inputData) {
+		this.inputData = inputData;
 	}
 
 }

@@ -17,8 +17,19 @@
     </dependency>
   	 <dependency>
   	 	<groupId>org.bpim</groupId>
-  	 	<artifactId>bpim-bpmn2-transformer</artifactId>
-  	 	<version>1.0.0-SNAPSHOT</version>
+  	 	<artifactId>bpim-bpmn2-transformer</artifactId>  	 	
+  	 </dependency>
+  	 <dependency>
+  	 	<groupId>com.sun.xml.bind</groupId>
+  	 	<artifactId>jaxb-impl</artifactId>  	 	
+  	 </dependency>
+  	  <dependency>
+  	 	<groupId>org.bpim</groupId>
+  	 	<artifactId>bpim-model</artifactId>  	 	
+  	 </dependency>
+  	 <dependency>
+  	 	<groupId>org.kie</groupId>
+  	 	<artifactId>kie-api</artifactId>  	 	
   	 </dependency>
   </dependencies>
 </project>

@@ -17,4 +17,19 @@
   	<module>bpim-bpmn2-test</module>
   	<module>bpim-model</module>
   </modules>
+ 
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>org.bpim</groupId>
+  			<artifactId>bpim-model</artifactId>
+  			<version>${project.version}</version>
+  		</dependency>
+  		<dependency>
+	  	    <groupId>org.bpim</groupId>
+	  	 	<artifactId>bpim-bpmn2-transformer</artifactId>
+	  	 	<version>${project.version}</version>  	 	
+	  	</dependency>
+  	</dependencies>
+  </dependencyManagement>
 </project>

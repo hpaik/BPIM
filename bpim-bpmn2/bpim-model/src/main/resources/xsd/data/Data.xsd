@@ -5,20 +5,25 @@
 		xmlns:bpimbase="http://www.bpim.org/model/base/v1"
 		elementFormDefault="qualified">
 		
-		<xs:import namespace="http://www.bpim.org/model/base/v1" schemaLocation="../bpim/BaseElements.xsd" />
-		
+		<xs:import namespace="http://www.bpim.org/model/base/v1" schemaLocation="../bpim/BaseElements.xsd" />		
 		
 		<xs:complexType name="DataSnapshotGraphs">
 			<xs:sequence>
-				<xs:element name="dataElements"  type="tns:DataSnapshotElement" minOccurs="1" maxOccurs="unbounded" />
+				<xs:element name="dataElement"  type="tns:DataSnapshotElement" minOccurs="1" maxOccurs="1" />
 			</xs:sequence>
 		</xs:complexType>
 		
-		
-		<xs:complexType name="DataSnapshotPool">
-			<xs:sequence>
-				<xs:element name="dataElements"  type="tns:DataPoolElement" minOccurs="1" maxOccurs="unbounded" />
-			</xs:sequence>
+		<xs:complexType name="DataSnapshotElement" >
+			<xs:complexContent>
+				<xs:extension base="bpimbase:ElementBase">
+					<xs:sequence>
+						
+						<xs:element name="dataTransition" type="tns:DataTransition" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="dataPoolElementId" type="xs:string"/>
+					<xs:attribute name="empty" type="xs:boolean" default="true"/>
+				</xs:extension>			
+			</xs:complexContent>
 		</xs:complexType>
 		
 		<xs:element name="DataTransition" type="tns:DataTransition" />
@@ -26,34 +31,17 @@
 			<xs:complexContent>
 				<xs:extension base="bpimbase:ElementBase">
 					<xs:sequence>
-						<xs:element name="dataInput" type="tns:DataInput" />
-						<xs:element name="dataOutput" type="tns:DataOutput" />
+						<xs:element name="dataSnapshotElement" type="tns:DataSnapshotElement" />
 					</xs:sequence>
 				</xs:extension>			
 			</xs:complexContent>
-		</xs:complexType>
+		</xs:complexType>		
 		
-		<xs:element name="DataInput" type="tns:DataInput" />
-		<xs:complexType name="DataInput">
-			<xs:complexContent>
-				<xs:extension base="bpimbase:ElementBase">
-					<xs:sequence>
-						<xs:element name="dataElementIs" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:extension>			
-			</xs:complexContent>
-		</xs:complexType>
-		
-		<xs:element name="DataOutput" type="tns:DataOutput" />
-		<xs:complexType name="DataOutput">
-			<xs:complexContent>
-				<xs:extension base="bpimbase:ElementBase">
-					<xs:sequence>
-						<xs:element name="dataElementIs" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
-					</xs:sequence>
-				</xs:extension>			
-			</xs:complexContent>
-		</xs:complexType>
+		<xs:complexType name="DataSnapshotPool">
+			<xs:sequence>
+				<xs:element name="dataElement"  type="tns:DataPoolElement" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>								
 		
 		<xs:element name="DataItem" type="tns:DataItem" />
 		<xs:complexType name="DataItem">
@@ -66,10 +54,8 @@
 		<xs:element name="DataItemArray" type="tns:DataItemArray" />
 		<xs:complexType name="DataItemArray">
 			<xs:complexContent>
-				<xs:extension base="tns:DataPoolElement">
-					<xs:sequence>
-						<xs:element name="size" type="xs:int" />
-					</xs:sequence>
+				<xs:extension base="tns:DataPoolElement">						
+					<xs:attribute name="size" type="xs:int" />
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>
@@ -84,11 +70,6 @@
 			</xs:complexContent>
 		</xs:complexType>
 		
-		<xs:complexType name="DataSnapshotElement" abstract="true">
-			<xs:complexContent>
-				<xs:extension base="bpimbase:ElementBase">
-				</xs:extension>			
-			</xs:complexContent>
-		</xs:complexType>
+		
 		
 </xs:schema>
