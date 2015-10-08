@@ -42,7 +42,7 @@ public class TranformerFactory {
 					Class.forName("org.bpim.transformer.data." + transformerUnitType + "TransformerUnit").newInstance());			
 			
 		} catch (Exception e) {
-			logger.error("Can not create TransformerUnit. TransformerUnitType: " + transformerUnitType, e);
+			//logger.error("Can not create TransformerUnit. TransformerUnitType: " + transformerUnitType);
 		}
 		return compositTransformer;
 	}		

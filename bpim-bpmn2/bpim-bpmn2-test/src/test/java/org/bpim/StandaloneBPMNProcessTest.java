@@ -26,12 +26,17 @@ import javax.persistence.Persistence;
 
 
 
+
+
+
+import org.bpim.objects.CustomerAccount;
 import org.drools.compiler.builder.impl.KnowledgeBuilderConfigurationImpl;
 import org.drools.core.SessionConfiguration;
 import org.drools.core.audit.WorkingMemoryInMemoryLogger;
 import org.drools.core.impl.EnvironmentFactory;
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
+import org.jbpm.bpmn2.handler.ServiceTaskHandler;
 import org.jbpm.bpmn2.xml.BPMNDISemanticModule;
 import org.jbpm.bpmn2.xml.BPMNExtensionsSemanticModule;
 import org.jbpm.bpmn2.xml.BPMNSemanticModule;
@@ -45,6 +50,7 @@ import org.jbpm.process.audit.JPAAuditLogService;
 import org.jbpm.process.audit.AuditLoggerFactory.Type;
 import org.jbpm.process.instance.event.DefaultSignalManagerFactory;
 import org.jbpm.process.instance.impl.DefaultProcessInstanceManagerFactory;
+import org.jbpm.process.instance.impl.demo.SystemOutWorkItemHandler;
 import org.jbpm.ruleflow.core.RuleFlowProcess;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -64,6 +70,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkflowProcessInstance;
 import org.kie.internal.KnowledgeBaseFactory;
 import org.kie.internal.builder.KnowledgeBuilderConfiguration;
 import org.kie.internal.builder.KnowledgeBuilderFactory;
@@ -162,6 +169,35 @@ public class StandaloneBPMNProcessTest {
         params.put("employee", "UserId-12345");
         ProcessInstance processInstance = ksession.startProcess("Evaluation", params);
         assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+    }
+    
+    @Test
+    public void testEvaluationProcess() throws Exception {
+        KieBase kbase = createKnowledgeBase("BPMN2-EvaluationProcess.bpmn2");
+        KieSession ksession = createKnowledgeSession(kbase);
+        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", new SystemOutWorkItemHandler());
+        ksession.getWorkItemManager().registerWorkItemHandler("RegisterRequest", new SystemOutWorkItemHandler());
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("employee", "UserId-12345");
+        ProcessInstance processInstance = ksession.startProcess("Evaluation", params);
+        assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+    }
+    
+    
+    @Test
+    public void testServiceTask() throws Exception {
+        KieBase kbase = createKnowledgeBase("BPMN2-ServiceProcess.bpmn2");
+        KieSession ksession = createKnowledgeSession(kbase);
+        ksession.getWorkItemManager().registerWorkItemHandler("Service Task", new ServiceTaskHandler());
+        Map<String, Object> params = new HashMap<String, Object>();
+        CustomerAccount customerAccount = new CustomerAccount();
+        customerAccount.setCustomerId("111111");
+        customerAccount.setAccountId("7050");
+
+        params.put("customerAccount", customerAccount);
+        WorkflowProcessInstance processInstance = (WorkflowProcessInstance) ksession.startProcess("ServiceProcess", params);
+        //assertProcessInstanceCompleted(processInstance.getId(), ksession);
+        //assertEquals("Hello john!", processInstance.getVariable("s"));
     }
     
     

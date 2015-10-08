@@ -142,7 +142,7 @@
 		<xs:complexContent>
 			<xs:extension base="tns:FlowNode">
 				<xs:sequence>
-					<xs:element name="outputTransitions" type="tns:TransitionBase" minOccurs="0" maxOccurs="unbounded" />					
+					<xs:element name="outputTransition" type="tns:TransitionBase" minOccurs="0" maxOccurs="unbounded" />					
 				</xs:sequence>
 			</xs:extension>			
 		</xs:complexContent>		

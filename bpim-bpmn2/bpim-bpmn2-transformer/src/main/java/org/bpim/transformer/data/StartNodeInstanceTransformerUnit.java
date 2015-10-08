@@ -15,6 +15,8 @@ import org.jbpm.process.instance.context.variable.VariableScopeInstance;
 import org.jbpm.workflow.instance.NodeInstance;
 import org.jbpm.workflow.instance.WorkflowProcessInstance;
 
+import com.google.gson.Gson;
+
 
 public class StartNodeInstanceTransformerUnit extends TransformerUnit {
 
@@ -38,19 +40,21 @@ public class StartNodeInstanceTransformerUnit extends TransformerUnit {
 			DataTransition dataTransition = objectFactory.createDataTransition();
 			
 			DataSnapshotElement targetDataSnapshotElement = null;
-					
+			Gson gson = new Gson();		
     		for (Entry<String, Object> entry : vars.entrySet()){    			
     			
     			if(entry.getValue().getClass().isArray()){
-    				dataPoolElement = objectFactory.createDataItemArray();    			
-    				dataPoolElement.setDataObject(entry.getValue());
+    				dataPoolElement = objectFactory.createDataItemArray();
+    				    				
+    				dataPoolElement.setDataObject(gson.toJson(entry.getValue()));
     				dataPoolElement.setName(entry.getKey());
     				
     			}else{
     				dataPoolElement = objectFactory.createDataItem();    			
-    				dataPoolElement.setDataObject(entry.getValue());
+    				dataPoolElement.setDataObject(gson.toJson(entry.getValue()));
     				dataPoolElement.setName(entry.getKey());
     			}
+    			
     			dataPoolElement.setId(UniqueIdGenerator.nextId());
     			transformationResult.getDataPoolElements().add(dataPoolElement);
     			

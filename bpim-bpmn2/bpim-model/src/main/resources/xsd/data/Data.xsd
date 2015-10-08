@@ -9,7 +9,7 @@
 		
 		<xs:complexType name="DataSnapshotGraphs">
 			<xs:sequence>
-				<xs:element name="dataElement"  type="tns:DataSnapshotElement" minOccurs="1" maxOccurs="1" />
+				<xs:element name="dataSnapshotElement"  type="tns:DataSnapshotElement" minOccurs="1" maxOccurs="1" />
 			</xs:sequence>
 		</xs:complexType>
 		

@@ -45,7 +45,7 @@ public class ProcessInstanceContext {
 		if (!transformationResult.getDataPoolElements().isEmpty()){
 			
 			if (processInstance.getData().getDataSnapshotPool().getDataElement().isEmpty()){
-				processInstance.getData().getDataSnapshotGraphs().setDataElement(
+				processInstance.getData().getDataSnapshotGraphs().setDataSnapshotElement(
 						transformationResult.getInputData());
 			}
 			processInstance.getData().getDataSnapshotPool().getDataElement().addAll(

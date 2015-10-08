@@ -47,7 +47,6 @@ public class BPIMExecutionEngine {
 				
 				jaxbMarshaller.marshal(new JAXBElement<ProcessInstance>(new QName("uri","ProcessInstance"), ProcessInstance.class, processInstance), System.out);
 
-				//jaxbMarshaller.marshal(processInstance, System.out);
 
 			} catch (JAXBException e) {
 				logger.error("Can not serialize process instance", e);

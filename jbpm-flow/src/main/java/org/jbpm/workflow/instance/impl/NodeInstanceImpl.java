@@ -374,11 +374,11 @@ public abstract class NodeInstanceImpl implements org.jbpm.workflow.instance.Nod
     			.getProcessEventSupport().fireBeforeNodeLeft(this, kruntime);
     	}
     	
-    	
+    	//logger.info("Transforming jbpm node: " + this.getClass().getSimpleName());
     	try {    		
     		getBPIMProcessMethod().invoke(null, this);
 		} catch (Exception e) {
-			logger.error("Can not transform to BPIM", e);
+			logger.error("Can not transform to BPIM, NodeInstance: " + this.getClass().getSimpleName(), e);
 		}     	
     	    			
     	

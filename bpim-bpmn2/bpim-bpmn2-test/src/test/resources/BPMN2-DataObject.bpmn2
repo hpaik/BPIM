@@ -6,25 +6,26 @@
              xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
              xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
              xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
              xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
              xmlns:tns="http://www.jboss.org/drools">
 
-  <itemDefinition id="_employeeItem" structureRef="String" />
+  <itemDefinition id="_employee" structureRef="String" />
 
   <process processType="Private" isExecutable="true" id="Evaluation" name="Evaluation Process" >
 
     <!-- process variables -->
-    <dataObject id="employee" itemSubjectRef="_employeeItem"/>
+    <dataObject id="employee" itemSubjectRef="_employee"/>
 
     <!-- nodes -->
-    <startEvent id="_1" name="StartProcess" />
+    <startEvent id="_1" name="StartProcess"  isInterrupting="true"/>
     <scriptTask id="_2" name="Log" >
       <script>System.out.println("Processing evaluation for employee " + employee);</script>
     </scriptTask>
     <endEvent id="_3" name="EndProcess" >
-        <terminateEventDefinition/>
+        <terminateEventDefinition />
     </endEvent>
 
     <!-- connections -->

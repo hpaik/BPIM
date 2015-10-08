@@ -15,27 +15,26 @@
   <itemDefinition id="_instanceMetadataItem" structureRef="org.w3c.dom.Node" />
 
   <process processType="Private" isExecutable="true" id="process" name="process" >
-  
-<!-- process variables -->
+
+    <!-- process variables -->
     <property id="instanceMetadata" itemSubjectRef="_instanceMetadataItem"/>
 
     <!-- nodes -->
-    <startEvent id="_1" name="" />
-    <userTask id="_2" name="Task">
+    <startEvent id="_1" name=""  isInterrupting="true"/>
+    <userTask id="_2" name="Task" >
       <ioSpecification>
-        <dataInput id='coId' name='coId'/>
+        <dataInput id="_2_NodeNameInput" name="NodeName" />
         <inputSet>
-          <dataInputRefs>coId</dataInputRefs>
+          <dataInputRefs>_2_NodeNameInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>instanceMetadata</sourceRef>
-        <targetRef>coId</targetRef>
+        <targetRef>_2_NodeNameInput</targetRef>
         <assignment>
-          <from>@hello</from>
-          <to>.</to>
+          <from xsi:type="tFormalExpression">Task</from>
+          <to xsi:type="tFormalExpression">_2_NodeNameInput</to>
         </assignment>
       </dataInputAssociation>
     </userTask>
@@ -46,5 +45,27 @@
     <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
 
   </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="process" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="0" y="0" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_2" >
+        <dc:Bounds x="105" y="72" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="299" y="44" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_2" >
+        <di:waypoint x="24" y="24" />
+        <di:waypoint x="155" y="96" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
+        <di:waypoint x="155" y="96" />
+        <di:waypoint x="323" y="68" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 
 </definitions>
