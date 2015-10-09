@@ -16,12 +16,11 @@
 		<xs:complexType name="DataSnapshotElement" >
 			<xs:complexContent>
 				<xs:extension base="bpimbase:ElementBase">
-					<xs:sequence>
-						
+					<xs:sequence>						
 						<xs:element name="dataTransition" type="tns:DataTransition" minOccurs="0" maxOccurs="unbounded"/>
 					</xs:sequence>
 					<xs:attribute name="dataPoolElementId" type="xs:string"/>
-					<xs:attribute name="empty" type="xs:boolean" default="true"/>
+					<xs:attribute name="empty" type="xs:boolean" default="true"/>					
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>
@@ -66,6 +65,7 @@
 					<xs:sequence>
 						<xs:element name="dataObject" type="xs:anyType"/>
 					</xs:sequence>
+					<xs:attribute name="version" type="xs:int"/>
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>

@@ -193,6 +193,7 @@ public class StandaloneBPMNProcessTest {
         CustomerAccount customerAccount = new CustomerAccount();
         customerAccount.setCustomerId("111111");
         customerAccount.setAccountId("7050");
+        customerAccount.setObjectId("123456");
 
         params.put("customerAccount", customerAccount);
         WorkflowProcessInstance processInstance = (WorkflowProcessInstance) ksession.startProcess("ServiceProcess", params);

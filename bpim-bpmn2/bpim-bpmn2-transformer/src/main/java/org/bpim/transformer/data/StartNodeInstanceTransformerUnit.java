@@ -9,6 +9,8 @@ import org.bpim.model.data.v1.DataPoolElement;
 import org.bpim.model.data.v1.DataTransition;
 import org.bpim.transformer.base.TransformationResult;
 import org.bpim.transformer.base.TransformerUnit;
+import org.bpim.transformer.util.DataPoolElementHelper;
+import org.bpim.transformer.util.DataSnapshotElementHelper;
 import org.bpim.transformer.util.UniqueIdGenerator;
 import org.jbpm.process.core.context.variable.VariableScope;
 import org.jbpm.process.instance.context.variable.VariableScopeInstance;
@@ -24,49 +26,32 @@ public class StartNodeInstanceTransformerUnit extends TransformerUnit {
 	public void transform(NodeInstance nodeInstance, TransformationResult transformationResult) {
 		WorkflowProcessInstance processInstance = 
 				(WorkflowProcessInstance) nodeInstance.getProcessInstance();
-		//WorkflowProcessInstance processInstance = nodeInstance.getProcessInstance();
 		
-		org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
+		//org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
 		VariableScopeInstance variableScopeInstance = (VariableScopeInstance) processInstance.getContextInstance(VariableScope.VARIABLE_SCOPE);
 		if (variableScopeInstance != null){
     		Map<String, Object> vars = variableScopeInstance.getVariables();
     		
     		DataPoolElement dataPoolElement = null;
     		
-    		DataSnapshotElement inputDataSnapshotElement = objectFactory.createDataSnapshotElement();
+    		DataSnapshotElement inputDataSnapshotElement = dataObjectFactory.createDataSnapshotElement();
 			inputDataSnapshotElement.setEmpty(true);
 			inputDataSnapshotElement.setId(UniqueIdGenerator.nextId());
 			
-			DataTransition dataTransition = objectFactory.createDataTransition();
+			DataTransition dataTransition = null;
 			
 			DataSnapshotElement targetDataSnapshotElement = null;
-			Gson gson = new Gson();		
-    		for (Entry<String, Object> entry : vars.entrySet()){    			
+					
+    		for (Entry<String, Object> entry : vars.entrySet()){    			    			
     			
-    			if(entry.getValue().getClass().isArray()){
-    				dataPoolElement = objectFactory.createDataItemArray();
-    				    				
-    				dataPoolElement.setDataObject(gson.toJson(entry.getValue()));
-    				dataPoolElement.setName(entry.getKey());
-    				
-    			}else{
-    				dataPoolElement = objectFactory.createDataItem();    			
-    				dataPoolElement.setDataObject(gson.toJson(entry.getValue()));
-    				dataPoolElement.setName(entry.getKey());
-    			}
-    			
-    			dataPoolElement.setId(UniqueIdGenerator.nextId());
+    			dataPoolElement = DataPoolElementHelper.create(entry.getValue(), entry.getKey());    			    			
     			transformationResult.getDataPoolElements().add(dataPoolElement);
     			
-    			
-    			dataTransition = objectFactory.createDataTransition();
+    			dataTransition = dataObjectFactory.createDataTransition();
     			dataTransition.setId(UniqueIdGenerator.nextId());
     			dataTransition.setName(transformationResult.getExecPathActivity().getName());
     			
-    			targetDataSnapshotElement = objectFactory.createDataSnapshotElement();
-    			targetDataSnapshotElement.setEmpty(false);
-    			targetDataSnapshotElement.setId(UniqueIdGenerator.nextId());
-    			targetDataSnapshotElement.setDataPoolElementId(dataPoolElement.getId());
+    			targetDataSnapshotElement = DataSnapshotElementHelper.create(dataPoolElement);    					
     			dataTransition.setDataSnapshotElement(targetDataSnapshotElement);
     			inputDataSnapshotElement.getDataTransition().add(dataTransition);    		
     		}

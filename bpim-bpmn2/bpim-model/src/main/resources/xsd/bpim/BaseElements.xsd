@@ -7,6 +7,7 @@
 	<xs:complexType name="ElementBase" abstract="true">
 		<xs:attribute name="id" type="xs:string" />
 		<xs:attribute name="name" type="xs:string" />
+		<xs:attribute name="mappingCorrelationId" type="xs:string" />
 		<!--  
 		<xs:sequence>			
 			<xs:element name="id" type="xs:string" />
