@@ -1,6 +1,6 @@
 package org.bpim.objects;
 
-public class CustomerAccount {
+public class CustomerAccount extends ETollDataObject{
 	
 	private String accountId = null;
 	private String customerId = null;
