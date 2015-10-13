@@ -45,6 +45,7 @@ import org.jbpm.workflow.instance.WorkflowProcessInstance;
 import org.jbpm.workflow.instance.WorkflowRuntimeException;
 import org.jbpm.workflow.instance.node.ActionNodeInstance;
 import org.jbpm.workflow.instance.node.CompositeNodeInstance;
+import org.jbpm.workflow.instance.node.EndNodeInstance;
 import org.kie.api.definition.process.Connection;
 import org.kie.api.definition.process.Node;
 import org.kie.api.runtime.process.NodeInstance;
@@ -377,9 +378,13 @@ public abstract class NodeInstanceImpl implements org.jbpm.workflow.instance.Nod
     	//logger.info("Transforming jbpm node: " + this.getClass().getSimpleName());
     	try {    		
     		getBPIMProcessMethod().invoke(null, this);
+    		if (nodeInstance instanceof EndNodeInstance){
+    			getBPIMProcessMethod().invoke(null, nodeInstance);
+    		}
 		} catch (Exception e) {
 			logger.error("Can not transform to BPIM, NodeInstance: " + this.getClass().getSimpleName(), e);
-		}     	
+		} 
+    	
     	    			
     	
     	// trigger next node

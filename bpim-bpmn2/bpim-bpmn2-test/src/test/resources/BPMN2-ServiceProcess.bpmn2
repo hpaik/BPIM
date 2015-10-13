@@ -12,7 +12,7 @@
              xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
              xmlns:tns="http://www.jboss.org/drools">
 
-  <itemDefinition id="_customerAccount" structureRef="org.bpim.objects.CustomerAccount" />
+  <itemDefinition id="null" />
 
   <itemDefinition id="_2_InMessageType" structureRef="org.bpim.objects.CustomerAccount" />
   <message id="_2_InMessage" itemRef="_2_InMessageType" />
@@ -65,18 +65,18 @@
         <dc:Bounds x="16" y="16" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_2" >
-        <dc:Bounds x="96" y="16" width="100" height="48" />
+        <dc:Bounds x="96" y="16" width="170" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_3" >
-        <dc:Bounds x="228" y="16" width="48" height="48" />
+        <dc:Bounds x="308" y="15" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_1-_2" >
         <di:waypoint x="40" y="40" />
-        <di:waypoint x="146" y="40" />
+        <di:waypoint x="181" y="40" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_2-_3" >
-        <di:waypoint x="146" y="40" />
-        <di:waypoint x="252" y="40" />
+        <di:waypoint x="181" y="40" />
+        <di:waypoint x="332" y="39" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

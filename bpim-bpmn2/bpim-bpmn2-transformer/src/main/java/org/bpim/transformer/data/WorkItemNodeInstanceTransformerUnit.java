@@ -33,7 +33,7 @@ public class WorkItemNodeInstanceTransformerUnit  extends TransformerUnit {
 		
 		DataTransition dataTransition = dataObjectFactory.createDataTransition();
 		dataTransition.setId(UniqueIdGenerator.nextId());
-		//dataTransition.setName(transformationResult.getExecPathActivity().getName());
+		dataTransition.setName(transformationResult.getExecPathActivity().getName());
 		
 		DataSnapshotElement targetDataSnapshotElement = DataSnapshotElementHelper.create(dataPoolElement);    					
 		dataTransition.setDataSnapshotElement(targetDataSnapshotElement);
