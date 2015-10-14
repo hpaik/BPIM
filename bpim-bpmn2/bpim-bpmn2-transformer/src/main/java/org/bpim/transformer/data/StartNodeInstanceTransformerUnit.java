@@ -56,7 +56,7 @@ public class StartNodeInstanceTransformerUnit extends TransformerUnit {
     			inputDataSnapshotElement.getDataTransition().add(dataTransition);    		
     		}
     		
-    		transformationResult.setInputData(inputDataSnapshotElement);
+    		transformationResult.getSourceDataSnapshotElement().add(inputDataSnapshotElement);
     	}				
 	}
 }

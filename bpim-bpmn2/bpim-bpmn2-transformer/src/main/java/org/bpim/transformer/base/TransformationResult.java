@@ -11,10 +11,11 @@ public class TransformationResult {
 	
 	private Activity execPathActivity;	
 	private List<DataPoolElement> dataPoolElements = null;
-	private DataSnapshotElement inputData;
+	private List<DataSnapshotElement> sourceDataSnapshotElement;
 	
 	public TransformationResult(){		
 		dataPoolElements = new ArrayList<DataPoolElement>();
+		sourceDataSnapshotElement = new  ArrayList<DataSnapshotElement>();
 	}
 	
 	public Activity getExecPathActivity() {
@@ -32,12 +33,8 @@ public class TransformationResult {
 		this.dataPoolElements = dataPoolElements;
 	}	
 	
-	public DataSnapshotElement getInputData() {
-		return inputData;
-	}
-
-	public void setInputData(DataSnapshotElement inputData) {
-		this.inputData = inputData;
-	}
+	public List<DataSnapshotElement> getSourceDataSnapshotElement() {
+		return sourceDataSnapshotElement;
+	}	
 
 }

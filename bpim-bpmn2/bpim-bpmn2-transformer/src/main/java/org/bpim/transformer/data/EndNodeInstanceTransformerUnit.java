@@ -8,7 +8,7 @@ public class EndNodeInstanceTransformerUnit extends TransformerUnit {
 	
 	@Override
 	public void transform(NodeInstance nodeInstance, TransformationResult transformationResult) {		
-		transformationResult.setInputData(null);
+		//transformationResult.set(null);
 	}
 
 }

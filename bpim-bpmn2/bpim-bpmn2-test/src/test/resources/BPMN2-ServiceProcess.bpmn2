@@ -52,10 +52,40 @@
     <endEvent id="_3" name="EndProcess" >
         <terminateEventDefinition />
     </endEvent>
+    <userTask id="_jbpm-unique-5" name="Manual Task" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-5_parameterInput" name="parameter" />
+        <dataInput id="_jbpm-unique-5_NodeNameInput" name="NodeName" />
+        <dataOutput id="_jbpm-unique-5_ResultOutput" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-5_parameterInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-5_NodeNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-5_ResultOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>customerAccount</sourceRef>
+        <targetRef>_jbpm-unique-5_parameterInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-5_NodeNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Manual Task</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-5_NodeNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_jbpm-unique-5_ResultOutput</sourceRef>
+        <targetRef>customerAccount</targetRef>
+      </dataOutputAssociation>
+    </userTask>
 
     <!-- connections -->
     <sequenceFlow id="_1-_2" sourceRef="_1" targetRef="_2" />
-    <sequenceFlow id="_2-_3" sourceRef="_2" targetRef="_3" />
+    <sequenceFlow id="_jbpm-unique-5-_3" sourceRef="_jbpm-unique-5" targetRef="_3" />
+    <sequenceFlow id="_2-_jbpm-unique-5" sourceRef="_2" targetRef="_jbpm-unique-5" />
 
   </process>
 
@@ -68,15 +98,22 @@
         <dc:Bounds x="96" y="16" width="170" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_3" >
-        <dc:Bounds x="308" y="15" width="48" height="48" />
+        <dc:Bounds x="437" y="27" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-5" >
+        <dc:Bounds x="299" y="24" width="100" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_1-_2" >
         <di:waypoint x="40" y="40" />
         <di:waypoint x="181" y="40" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_2-_3" >
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-5-_3" >
+        <di:waypoint x="349" y="48" />
+        <di:waypoint x="461" y="51" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2-_jbpm-unique-5" >
         <di:waypoint x="181" y="40" />
-        <di:waypoint x="332" y="39" />
+        <di:waypoint x="349" y="48" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

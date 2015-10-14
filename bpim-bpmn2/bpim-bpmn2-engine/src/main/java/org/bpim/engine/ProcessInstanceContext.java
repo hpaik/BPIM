@@ -49,28 +49,29 @@ public class ProcessInstanceContext {
 			for (TransitionBase outputTransition: currentExecPathActivity.getOutputTransition()){
 				outputTransition.setTo(transformationResult.getExecPathActivity());
 			}
-			currentExecPathActivity = transformationResult.getExecPathActivity();
+			if(transformationResult.getExecPathActivity() != null){
+				currentExecPathActivity = transformationResult.getExecPathActivity();
+			}
 		}
 		
 		if (!transformationResult.getDataPoolElements().isEmpty()){
 			if (processInstance.getData().getDataSnapshotPool().getDataElement().isEmpty()){
-				for (DataPoolElement dataPoolElement: transformationResult.getDataPoolElements()){
-					DataPoolElementHelper.addToPool(dataPoolElement, processInstance);
-					
-				}
-				processInstance.getData().getDataSnapshotGraphs().setDataSnapshotElement(
-						transformationResult.getInputData());								
-			}else{								
-				DataSnapshotElement sourceDataSnapshotElement = getDataSnapshotElement(transformationResult.getInputData().getMappingCorrelationId());
-				sourceDataSnapshotElement.getDataTransition().addAll(transformationResult.getInputData().getDataTransition());
 				
-				for (DataPoolElement dataPoolElement: transformationResult.getDataPoolElements()){
-					DataPoolElementHelper.addToPool(dataPoolElement, processInstance);
-				}
-			}									
+				processInstance.getData().getDataSnapshotGraphs().setDataSnapshotElement(
+						transformationResult.getSourceDataSnapshotElement().get(0));								
+			}else{
+				DataSnapshotElement sourceDataSnapshotElement = null;
+				for (DataSnapshotElement tmpDataSnapshotElement: transformationResult.getSourceDataSnapshotElement()){
+					sourceDataSnapshotElement = getDataSnapshotElement(tmpDataSnapshotElement.getMappingCorrelationId());
+					sourceDataSnapshotElement.getDataTransition().addAll(tmpDataSnapshotElement.getDataTransition());
+				}				
+			}
+			
+			for (DataPoolElement dataPoolElement: transformationResult.getDataPoolElements()){
+				DataPoolElementHelper.addToPool(dataPoolElement, processInstance);
+			}
 		}
-	}
-	
+	} 	
 	private DataPoolElement getDataPoolElement(String objectId){
 		DataPoolElement dataPoolElement = null;
 		for (DataPoolElement tmpDataPoolElement : processInstance.getData().getDataSnapshotPool().getDataElement()){
@@ -96,8 +97,7 @@ public class ProcessInstanceContext {
 			}			
 		}
 		return dataSnapshotElement;
-	}
-	
+	}	
 	private DataSnapshotElement getDataSnapshotElement(List<DataTransition> dataTransitions, String dataPoolElementId){
 		for (DataTransition dTransition: dataTransitions){
 			if (!dTransition.getDataSnapshotElement().isEmpty() && 
@@ -105,7 +105,7 @@ public class ProcessInstanceContext {
 				return dTransition.getDataSnapshotElement(); 
 			}else{
 				if (!dTransition.getDataSnapshotElement().getDataTransition().isEmpty()){
-					getDataSnapshotElement(dTransition.getDataSnapshotElement().getDataTransition(), dataPoolElementId);
+					return getDataSnapshotElement(dTransition.getDataSnapshotElement().getDataTransition(), dataPoolElementId);
 				}else{
 					return null;
 				}
@@ -113,5 +113,4 @@ public class ProcessInstanceContext {
 		}
 		return null;
 	}
-
 }

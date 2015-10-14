@@ -29,7 +29,11 @@ import javax.persistence.Persistence;
 
 
 
+
+
+
 import org.bpim.objects.CustomerAccount;
+import org.bpim.objects.TestWorkItemHandler;
 import org.drools.compiler.builder.impl.KnowledgeBuilderConfigurationImpl;
 import org.drools.core.SessionConfiguration;
 import org.drools.core.audit.WorkingMemoryInMemoryLogger;
@@ -70,6 +74,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 import org.kie.internal.KnowledgeBaseFactory;
 import org.kie.internal.builder.KnowledgeBuilderConfiguration;
@@ -188,7 +193,11 @@ public class StandaloneBPMNProcessTest {
     public void testServiceTask() throws Exception {
         KieBase kbase = createKnowledgeBase("BPMN2-ServiceProcess.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
+        
         ksession.getWorkItemManager().registerWorkItemHandler("Service Task", new ServiceTaskHandler());
+        TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
+        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
+        
         Map<String, Object> params = new HashMap<String, Object>();
         CustomerAccount customerAccount = new CustomerAccount();
         customerAccount.setCustomerId("111111");
@@ -199,6 +208,24 @@ public class StandaloneBPMNProcessTest {
         WorkflowProcessInstance processInstance = (WorkflowProcessInstance) ksession.startProcess("ServiceProcess", params);
         //assertProcessInstanceCompleted(processInstance.getId(), ksession);
         //assertEquals("Hello john!", processInstance.getVariable("s"));
+    }
+    
+    @Test
+    public void testUserTaskParametrizedInput() throws Exception {
+        KieBase kbase = createKnowledgeBase("BPMN2-UserTaskWithParametrizedInput.bpmn2");
+        KieSession ksession = createKnowledgeSession(kbase);
+        TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
+        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
+        ProcessInstance processInstance = ksession.startProcess("UserTask");
+        assertTrue(processInstance.getState() == ProcessInstance.STATE_ACTIVE);
+//        ksession = restoreSession(ksession, true);
+//        WorkItem workItem = workItemHandler.getWorkItem();
+//        assertNotNull(workItem);
+//        assertEquals("Executing task of process instance " + processInstance.getId() + " as work item with Hello", 
+//                workItem.getParameter("Description").toString().trim());
+//        ksession.getWorkItemManager().completeWorkItem(workItem.getId(), null);
+//        assertProcessInstanceFinished(processInstance, ksession);
+//        ksession.dispose();
     }
     
     
