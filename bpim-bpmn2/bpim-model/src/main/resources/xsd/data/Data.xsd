@@ -54,7 +54,7 @@
 		<xs:complexType name="DataItemArray">
 			<xs:complexContent>
 				<xs:extension base="tns:DataPoolElement">						
-					<xs:attribute name="size" type="xs:int" />
+					<xs:attribute name="size" type="xs:int" />					
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>
@@ -66,6 +66,7 @@
 						<xs:element name="dataObject" type="xs:anyType"/>
 					</xs:sequence>
 					<xs:attribute name="version" type="xs:int"/>
+					<xs:attribute name="dataObjectType" type="xs:string" />
 				</xs:extension>			
 			</xs:complexContent>
 		</xs:complexType>

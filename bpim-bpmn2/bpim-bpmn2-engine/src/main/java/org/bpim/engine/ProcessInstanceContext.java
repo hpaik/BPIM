@@ -76,7 +76,9 @@ public class ProcessInstanceContext {
 		DataPoolElement dataPoolElement = null;
 		for (DataPoolElement tmpDataPoolElement : processInstance.getData().getDataSnapshotPool().getDataElement()){
 			if (tmpDataPoolElement.getMappingCorrelationId() != null && tmpDataPoolElement.getMappingCorrelationId().equals(objectId)){
-				if (dataPoolElement !=  null && (dataPoolElement.getVersion() >= tmpDataPoolElement.getVersion())){
+				if (dataPoolElement !=  null 
+						&& dataPoolElement.getDataObjectType().equals(tmpDataPoolElement.getDataObjectType())
+						&&  (dataPoolElement.getVersion() >= tmpDataPoolElement.getVersion())){
 					continue;
 				} 
 				dataPoolElement = tmpDataPoolElement;				

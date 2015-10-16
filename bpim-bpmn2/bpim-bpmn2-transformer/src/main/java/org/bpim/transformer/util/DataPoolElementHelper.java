@@ -14,15 +14,13 @@ public class DataPoolElementHelper {
 		DataPoolElement dataPoolElement = null;
 		Gson gson = new Gson();
 		if(object.getClass().isArray()){
-			dataPoolElement = objectFactory.createDataItemArray();			    				
-			dataPoolElement.setDataObject(gson.toJson(object));
-			dataPoolElement.setName(name);
-			
+			dataPoolElement = objectFactory.createDataItemArray();			    										
 		}else{
-			dataPoolElement = objectFactory.createDataItem();    			
-			dataPoolElement.setDataObject(gson.toJson(object));
-			dataPoolElement.setName(name);
+			dataPoolElement = objectFactory.createDataItem();			
 		}
+		dataPoolElement.setDataObject(gson.toJson(object));
+		dataPoolElement.setDataObjectType(object.getClass().getName());
+		dataPoolElement.setName(name);
 		
 		dataPoolElement.setMappingCorrelationId(((BPIMDataObject)object).getObjectId());		
 		dataPoolElement.setId(UniqueIdGenerator.nextId());
@@ -36,6 +34,7 @@ public class DataPoolElementHelper {
 		for (DataPoolElement tmpDataPoolElement : processInstance.getData().getDataSnapshotPool().getDataElement()){
 			if (tmpDataPoolElement.getMappingCorrelationId() != null && 
 					dataPoolElement.getMappingCorrelationId() != null &&
+					dataPoolElement.getDataObjectType().equals(tmpDataPoolElement.getDataObjectType()) &&
 					tmpDataPoolElement.getMappingCorrelationId().equals(dataPoolElement.getMappingCorrelationId())){
 				version++;
 				id = tmpDataPoolElement.getId();

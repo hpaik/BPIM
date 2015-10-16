@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.example.org/MinimalExample"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="null" />
+
+  <itemDefinition id="_jbpm-unique-7_InMessageType" structureRef="org.bpim.objects.model.JourneyMessage" />
+  <message id="_jbpm-unique-7_InMessage" itemRef="_jbpm-unique-7_InMessageType" />
+  <interface id="_jbpm-unique-7_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+    <operation id="_jbpm-unique-7_ServiceOperation" name="getJourneyDetails" implementationRef="" >
+      <inMessageRef>_jbpm-unique-7_InMessage</inMessageRef>
+    </operation>
+  </interface>
+
+  <itemDefinition id="_jbpm-unique-11_InMessageType" structureRef="org.bpim.objects.model.JourneyMessage" />
+  <message id="_jbpm-unique-11_InMessage" itemRef="_jbpm-unique-11_InMessageType" />
+  <interface id="_jbpm-unique-11_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+    <operation id="_jbpm-unique-11_ServiceOperation" name="processImage" implementationRef="" >
+      <inMessageRef>_jbpm-unique-11_InMessage</inMessageRef>
+    </operation>
+  </interface>
+
+  <itemDefinition id="_jbpm-unique-17_InMessageType" structureRef="org.bpim.objects.model.ImageProcessingResult" />
+  <message id="_jbpm-unique-17_InMessage" itemRef="_jbpm-unique-17_InMessageType" />
+  <interface id="_jbpm-unique-17_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+    <operation id="_jbpm-unique-17_ServiceOperation" name="getCustomerAccountByPlateNumber" implementationRef="" >
+      <inMessageRef>_jbpm-unique-17_InMessage</inMessageRef>
+    </operation>
+  </interface>
+
+  <itemDefinition id="_jbpm-unique-21_InMessageType" />
+  <message id="_jbpm-unique-21_InMessage" itemRef="_jbpm-unique-21_InMessageType" />
+  <interface id="_jbpm-unique-21_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+    <operation id="_jbpm-unique-21_ServiceOperation" name="error" implementationRef="" >
+      <inMessageRef>_jbpm-unique-21_InMessage</inMessageRef>
+    </operation>
+  </interface>
+
+  <itemDefinition id="_jbpm-unique-24_InMessageType" />
+  <message id="_jbpm-unique-24_InMessage" itemRef="_jbpm-unique-24_InMessageType" />
+  <interface id="_jbpm-unique-24_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+    <operation id="_jbpm-unique-24_ServiceOperation" name="extractTransponderId" implementationRef="" >
+      <inMessageRef>_jbpm-unique-24_InMessage</inMessageRef>
+    </operation>
+  </interface>
+
+  <itemDefinition id="_jbpm-unique-25_InMessageType" />
+  <message id="_jbpm-unique-25_InMessage" itemRef="_jbpm-unique-25_InMessageType" />
+  <interface id="_jbpm-unique-25_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+    <operation id="_jbpm-unique-25_ServiceOperation" name="getCustomerAccountByTransponderId" implementationRef="" >
+      <inMessageRef>_jbpm-unique-25_InMessage</inMessageRef>
+    </operation>
+  </interface>
+
+  <process processType="Private" isExecutable="true" id="GetCustomerAccountProcess" name="GetCustomerAccountProcess" >
+
+    <extensionElements>
+     <tns:import name="org.bpim.objects.model.JourneyMessage" />
+     <tns:import name="org.bpim.objects.model.ImageProcessingResult" />
+    </extensionElements>
+    <!-- process variables -->
+    <property id="journeyMessage" itemSubjectRef="null"/>
+    <property id="journeyDetails" itemSubjectRef="null"/>
+    <property id="imageProcessingResult" itemSubjectRef="null"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess"  isInterrupting="true"/>
+    <serviceTask id="_jbpm-unique-7" name="Get Journey Details" operationRef="_jbpm-unique-7_ServiceOperation" implementation="Other" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-7_param" name="Parameter" />
+        <dataOutput id="_jbpm-unique-7_result" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-7_param</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-7_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>journeyMessage</sourceRef>
+        <targetRef>_jbpm-unique-7_param</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_jbpm-unique-7_result</sourceRef>
+        <targetRef>journeyDetails</targetRef>
+      </dataOutputAssociation>
+    </serviceTask>
+    <exclusiveGateway id="_jbpm-unique-10" name="Gateway" gatewayDirection="Diverging" />
+    <serviceTask id="_jbpm-unique-11" name="Process Image" operationRef="_jbpm-unique-11_ServiceOperation" implementation="Other" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-11_param" name="Parameter" />
+        <dataOutput id="_jbpm-unique-11_result" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-11_param</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-11_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>journeyMessage</sourceRef>
+        <targetRef>_jbpm-unique-11_param</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_jbpm-unique-11_result</sourceRef>
+        <targetRef>imageProcessingResult</targetRef>
+      </dataOutputAssociation>
+    </serviceTask>
+    <exclusiveGateway id="_jbpm-unique-13" name="Gateway" gatewayDirection="Diverging" />
+    <userTask id="_jbpm-unique-14" name="Review Image" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-14_ParameterInput" name="Parameter" />
+        <dataInput id="_jbpm-unique-14_NodeNameInput" name="NodeName" />
+        <dataInput id="_jbpm-unique-14_TaskNameInput" name="TaskName" />
+        <dataOutput id="_jbpm-unique-14_ResultOutput" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-14_ParameterInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-14_NodeNameInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-14_TaskNameInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-14_ResultOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>imageProcessingResult</sourceRef>
+        <targetRef>_jbpm-unique-14_ParameterInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-14_NodeNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Review Image</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-14_NodeNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-14_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">ReviewImage</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-14_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_jbpm-unique-14_ResultOutput</sourceRef>
+        <targetRef>imageProcessingResult</targetRef>
+      </dataOutputAssociation>
+    </userTask>
+    <exclusiveGateway id="_jbpm-unique-15" name="Gateway" gatewayDirection="Converging" />
+    <exclusiveGateway id="_jbpm-unique-16" name="Gateway" gatewayDirection="Diverging" />
+    <serviceTask id="_jbpm-unique-17" name="Get Customer by Plate Number" operationRef="_jbpm-unique-17_ServiceOperation" implementation="Other" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-17_param" name="Parameter" />
+        <dataOutput id="_jbpm-unique-17_result" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-17_param</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-17_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>imageProcessingResult</sourceRef>
+        <targetRef>_jbpm-unique-17_param</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_jbpm-unique-17_result</sourceRef>
+        <targetRef>customerAccount</targetRef>
+      </dataOutputAssociation>
+    </serviceTask>
+    <endEvent id="_jbpm-unique-20" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <serviceTask id="_jbpm-unique-21" name="Error" operationRef="_jbpm-unique-21_ServiceOperation" implementation="Other" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-21_param" name="Parameter" />
+        <dataOutput id="_jbpm-unique-21_result" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-21_param</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-21_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+    </serviceTask>
+    <endEvent id="_jbpm-unique-22" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <endEvent id="_jbpm-unique-23" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <serviceTask id="_jbpm-unique-24" name="Extract Transponder Id" operationRef="_jbpm-unique-24_ServiceOperation" implementation="Other" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-24_param" name="Parameter" />
+        <dataOutput id="_jbpm-unique-24_result" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-24_param</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-24_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+    </serviceTask>
+    <serviceTask id="_jbpm-unique-25" name="Get Customer by Transponder Id" operationRef="_jbpm-unique-25_ServiceOperation" implementation="Other" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-25_param" name="Parameter" />
+        <dataOutput id="_jbpm-unique-25_result" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-25_param</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-25_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+    </serviceTask>
+
+    <!-- connections -->
+    <sequenceFlow id="_1-_jbpm-unique-7" sourceRef="_1" targetRef="_jbpm-unique-7" />
+    <sequenceFlow id="_jbpm-unique-7-_jbpm-unique-10" sourceRef="_jbpm-unique-7" targetRef="_jbpm-unique-10" />
+    <sequenceFlow id="_jbpm-unique-10-_jbpm-unique-11" sourceRef="_jbpm-unique-10" targetRef="_jbpm-unique-11" name="Image" >
+      <conditionExpression xsi:type="tFormalExpression" >return  ((JourneyMessage)journeyMessage).getMessageType() == "IMAGE";</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_jbpm-unique-11-_jbpm-unique-13" sourceRef="_jbpm-unique-11" targetRef="_jbpm-unique-13" />
+    <sequenceFlow id="_jbpm-unique-13-_jbpm-unique-14" sourceRef="_jbpm-unique-13" targetRef="_jbpm-unique-14" name="Low Confidence" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_jbpm-unique-13-_jbpm-unique-15" sourceRef="_jbpm-unique-13" targetRef="_jbpm-unique-15" name="High Confidence" >
+      <conditionExpression xsi:type="tFormalExpression" >return  ((ImageProcessingResult)imageProcessingResult).getConfidenceRate() &gt;= 8 ;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_jbpm-unique-16-_jbpm-unique-15" sourceRef="_jbpm-unique-16" targetRef="_jbpm-unique-15" name="successful" >
+      <conditionExpression xsi:type="tFormalExpression" >return  ((ImageProcessingResult)imageProcessingResult).isSuccessful();</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_jbpm-unique-14-_jbpm-unique-16" sourceRef="_jbpm-unique-14" targetRef="_jbpm-unique-16" />
+    <sequenceFlow id="_jbpm-unique-15-_jbpm-unique-17" sourceRef="_jbpm-unique-15" targetRef="_jbpm-unique-17" />
+    <sequenceFlow id="_jbpm-unique-21-_jbpm-unique-20" sourceRef="_jbpm-unique-21" targetRef="_jbpm-unique-20" />
+    <sequenceFlow id="_jbpm-unique-16-_jbpm-unique-21" sourceRef="_jbpm-unique-16" targetRef="_jbpm-unique-21" name="unsuccessful" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.jboss.org/drools/rule" >eval(true)</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_jbpm-unique-17-_jbpm-unique-22" sourceRef="_jbpm-unique-17" targetRef="_jbpm-unique-22" />
+    <sequenceFlow id="_jbpm-unique-25-_jbpm-unique-23" sourceRef="_jbpm-unique-25" targetRef="_jbpm-unique-23" />
+    <sequenceFlow id="_jbpm-unique-10-_jbpm-unique-24" sourceRef="_jbpm-unique-10" targetRef="_jbpm-unique-24" name="Transponder" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.jboss.org/drools/rule" >eval(true)</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_jbpm-unique-24-_jbpm-unique-25" sourceRef="_jbpm-unique-24" targetRef="_jbpm-unique-25" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="GetCustomerAccountProcess" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="449" y="15" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-7" >
+        <dc:Bounds x="404" y="99" width="163" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-10" >
+        <dc:Bounds x="470" y="183" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-11" >
+        <dc:Bounds x="606" y="190" width="116" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-13" >
+        <dc:Bounds x="799" y="192" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-14" >
+        <dc:Bounds x="989" y="193" width="109" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-15" >
+        <dc:Bounds x="823" y="327" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-16" >
+        <dc:Bounds x="1005" y="328" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-17" >
+        <dc:Bounds x="509" y="333" width="209" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-20" >
+        <dc:Bounds x="1031" y="499" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-21" >
+        <dc:Bounds x="998" y="417" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-22" >
+        <dc:Bounds x="590" y="487" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-23" >
+        <dc:Bounds x="219" y="464" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-24" >
+        <dc:Bounds x="160" y="188" width="145" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-25" >
+        <dc:Bounds x="137" y="282" width="206" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_1-_jbpm-unique-7" >
+        <di:waypoint x="473" y="39" />
+        <di:waypoint x="485" y="123" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-7-_jbpm-unique-10" >
+        <di:waypoint x="485" y="123" />
+        <di:waypoint x="494" y="207" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-10-_jbpm-unique-11" >
+        <di:waypoint x="494" y="207" />
+        <di:waypoint x="664" y="214" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-11-_jbpm-unique-13" >
+        <di:waypoint x="664" y="214" />
+        <di:waypoint x="823" y="216" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-13-_jbpm-unique-14" >
+        <di:waypoint x="823" y="216" />
+        <di:waypoint x="1043" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-13-_jbpm-unique-15" >
+        <di:waypoint x="823" y="216" />
+        <di:waypoint x="847" y="351" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-16-_jbpm-unique-15" >
+        <di:waypoint x="1029" y="352" />
+        <di:waypoint x="847" y="351" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-14-_jbpm-unique-16" >
+        <di:waypoint x="1043" y="217" />
+        <di:waypoint x="1029" y="352" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-15-_jbpm-unique-17" >
+        <di:waypoint x="847" y="351" />
+        <di:waypoint x="613" y="358" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-21-_jbpm-unique-20" >
+        <di:waypoint x="1048" y="441" />
+        <di:waypoint x="1055" y="523" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-16-_jbpm-unique-21" >
+        <di:waypoint x="1029" y="352" />
+        <di:waypoint x="1048" y="441" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-17-_jbpm-unique-22" >
+        <di:waypoint x="613" y="358" />
+        <di:waypoint x="614" y="511" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-25-_jbpm-unique-23" >
+        <di:waypoint x="240" y="306" />
+        <di:waypoint x="243" y="488" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-10-_jbpm-unique-24" >
+        <di:waypoint x="494" y="207" />
+        <di:waypoint x="232" y="212" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-24-_jbpm-unique-25" >
+        <di:waypoint x="232" y="212" />
+        <di:waypoint x="240" y="306" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

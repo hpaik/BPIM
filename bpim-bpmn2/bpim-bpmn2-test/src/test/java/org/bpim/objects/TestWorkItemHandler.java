@@ -15,50 +15,25 @@
 
 package org.bpim.objects;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.bpim.objects.model.ImageProcessingResult;
 import org.kie.api.runtime.process.*;
 
 public class TestWorkItemHandler implements WorkItemHandler {
 
-    private List<WorkItem> workItems = new ArrayList<WorkItem>();
-
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {    	
-        workItems.add(workItem);                
-        
-        FairAmount fairAmount  = new FairAmount();
-        fairAmount.setDiscounted(false);
-        fairAmount.setPrice(1000);
-        fairAmount.setObjectId("45678");
-        
-        workItem.getResults().put("Result", fairAmount);
-        
+                        
+        ImageProcessingResult imageProcessingResult = (ImageProcessingResult) workItem.getParameter("Parameter");
+        imageProcessingResult.setPlateNumber("111111");
+        imageProcessingResult.setConfidenceRate(10);
+        imageProcessingResult.setReviewedByHuman(true);
+        imageProcessingResult.setSuccessful(true);                       
+        workItem.getResults().put("Result", imageProcessingResult);        
         
         manager.completeWorkItem(workItem.getId(), null);       
     }
 
     public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {
     	manager.abortWorkItem(workItem.getId());
-    }
-
-    public WorkItem getWorkItem() {
-        if (workItems.size() == 0) {
-            return null;
-        }
-        if (workItems.size() == 1) {
-            WorkItem result = workItems.get(0);
-            this.workItems.clear();
-            return result;
-        } else {
-            throw new IllegalArgumentException("More than one work item active");
-        }
-    }
-
-    public List<WorkItem> getWorkItems() {
-        List<WorkItem> result = new ArrayList<WorkItem>(workItems);
-        workItems.clear();
-        return result;
-    }
+    }   
 
 }

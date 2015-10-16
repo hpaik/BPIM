@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +33,12 @@ import javax.persistence.Persistence;
 
 
 
+
+
+
 import org.bpim.objects.CustomerAccount;
 import org.bpim.objects.TestWorkItemHandler;
+import org.bpim.objects.model.JourneyMessage;
 import org.drools.compiler.builder.impl.KnowledgeBuilderConfigurationImpl;
 import org.drools.core.SessionConfiguration;
 import org.drools.core.audit.WorkingMemoryInMemoryLogger;
@@ -203,9 +208,32 @@ public class StandaloneBPMNProcessTest {
         customerAccount.setCustomerId("111111");
         customerAccount.setAccountId("7050");
         customerAccount.setObjectId("123456");
-
         params.put("customerAccount", customerAccount);
+        
         WorkflowProcessInstance processInstance = (WorkflowProcessInstance) ksession.startProcess("ServiceProcess", params);
+        //assertProcessInstanceCompleted(processInstance.getId(), ksession);
+        //assertEquals("Hello john!", processInstance.getVariable("s"));
+    }
+    
+    @Test
+    public void testCustomerJourney() throws Exception {
+        KieBase kbase = createKnowledgeBase("BPMN2-GetCustomerAccount.bpmn2");
+        KieSession ksession = createKnowledgeSession(kbase);
+        
+        ksession.getWorkItemManager().registerWorkItemHandler("Service Task", new ServiceTaskHandler());
+        TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
+        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+        JourneyMessage journeyMessage = new JourneyMessage();
+        journeyMessage.setGateId("10045");
+        journeyMessage.setCreationDTM(new Date());
+        journeyMessage.setMessageType("IMAGE");
+        journeyMessage.setObjectId("1111");
+        params.put("journeyMessage", journeyMessage);
+       
+//        params.put("customerAccount", customerAccount);
+        WorkflowProcessInstance processInstance = (WorkflowProcessInstance) ksession.startProcess("GetCustomerAccountProcess", params);
         //assertProcessInstanceCompleted(processInstance.getId(), ksession);
         //assertEquals("Hello john!", processInstance.getVariable("s"));
     }
