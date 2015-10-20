@@ -16,10 +16,10 @@ public class DataSnapshotGraphHelper {
 			Map<String, Object> results,
 			TransformationResult transformationResult){
 		
-//		boolean isVoid = false;
-//		if (results == null || results.isEmpty()){
-//			isVoid = true;
-//		}
+		boolean isVoid = false;
+		if (results == null || results.isEmpty()){
+			isVoid = true;
+		}
 		
 		ObjectFactory dataObjectFactory = new ObjectFactory();   
 		DataPoolElement dataPoolElement = null;
@@ -36,17 +36,27 @@ public class DataSnapshotGraphHelper {
 			if (!(parameter.getValue() instanceof BPIMDataObject)){
 				continue;
 			}
-			sourceDataSnapshotElement.setMappingCorrelationId(((BPIMDataObject)parameter.getValue()).getObjectId());
-			for (Entry<String, Object> entry : results.entrySet()){
+			sourceDataSnapshotElement.setMappingCorrelationId(((BPIMDataObject)parameter.getValue()).getObjectId());			
+			if(isVoid){
 				dataTransition = dataObjectFactory.createDataTransition();
 				dataTransition.setId(UniqueIdGenerator.nextId());
-				dataTransition.setName(transformationResult.getExecPathActivity().getName());
-				dataPoolElement = getDataPoolElement(((BPIMDataObject)entry.getValue()).getObjectId(),transformationResult);
-				targetDataSnapshotElement = DataSnapshotElementHelper.create(dataPoolElement);    					
+				dataTransition.setName(transformationResult.getExecPathActivity().getName());				
+				targetDataSnapshotElement = DataSnapshotElementHelper.createEmpty();    					
 				dataTransition.setDataSnapshotElement(targetDataSnapshotElement);
 				sourceDataSnapshotElement.getDataTransition().add(dataTransition);
 				transformationResult.getSourceDataSnapshotElement().add(sourceDataSnapshotElement);
-			}			
+			}else {
+				for (Entry<String, Object> entry : results.entrySet()){
+					dataTransition = dataObjectFactory.createDataTransition();
+					dataTransition.setId(UniqueIdGenerator.nextId());
+					dataTransition.setName(transformationResult.getExecPathActivity().getName());
+					dataPoolElement = getDataPoolElement(((BPIMDataObject)entry.getValue()).getObjectId(),transformationResult);
+					targetDataSnapshotElement = DataSnapshotElementHelper.create(dataPoolElement);    					
+					dataTransition.setDataSnapshotElement(targetDataSnapshotElement);
+					sourceDataSnapshotElement.getDataTransition().add(dataTransition);
+					transformationResult.getSourceDataSnapshotElement().add(sourceDataSnapshotElement);
+				}
+			}
 		}
 		
 	}

@@ -25,17 +25,8 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-
-
-
-
-
-
-
-
-
-
-
+import org.bpim.engine.ExecutionContext;
+import org.bpim.engine.ProcessInstanceContext;
 import org.bpim.objects.CustomerAccount;
 import org.bpim.objects.TestWorkItemHandler;
 import org.bpim.objects.model.JourneyMessage;
@@ -45,6 +36,8 @@ import org.drools.core.audit.WorkingMemoryInMemoryLogger;
 import org.drools.core.impl.EnvironmentFactory;
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
+import org.jbpm.bpmn2.handler.ReceiveTaskHandler;
+import org.bpim.objects.SendTaskHandler;
 import org.jbpm.bpmn2.handler.ServiceTaskHandler;
 import org.jbpm.bpmn2.xml.BPMNDISemanticModule;
 import org.jbpm.bpmn2.xml.BPMNExtensionsSemanticModule;
@@ -79,7 +72,6 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.process.ProcessInstance;
-import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 import org.kie.internal.KnowledgeBaseFactory;
 import org.kie.internal.builder.KnowledgeBuilderConfiguration;
@@ -88,8 +80,6 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.persistence.jpa.JPAKnowledgeService;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.kie.internal.runtime.conf.ForceEagerActivationOption;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import bitronix.tm.TransactionManagerServices;
@@ -217,23 +207,34 @@ public class StandaloneBPMNProcessTest {
     
     @Test
     public void testCustomerJourney() throws Exception {
-        KieBase kbase = createKnowledgeBase("BPMN2-GetCustomerAccount.bpmn2");
+        KieBase kbase = createKnowledgeBase("BPMN2-GetCustomerAccount.bpmn2", "BPMN2-CustomerPayment.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
         
         ksession.getWorkItemManager().registerWorkItemHandler("Service Task", new ServiceTaskHandler());
+        
         TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
         ksession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
+        
+        ReceiveTaskHandler receiveTaskHandler = new ReceiveTaskHandler(ksession);
+        ksession.getWorkItemManager().registerWorkItemHandler("Receive Task", receiveTaskHandler);
+        
+        ksession.getWorkItemManager().registerWorkItemHandler("Send Task", new SendTaskHandler());
         
         Map<String, Object> params = new HashMap<String, Object>();
         JourneyMessage journeyMessage = new JourneyMessage();
         journeyMessage.setGateId("10045");
         journeyMessage.setCreationDTM(new Date());
         journeyMessage.setMessageType("IMAGE");
-        journeyMessage.setObjectId("1111");
+        //journeyMessage.setObjectId("1111");
         params.put("journeyMessage", journeyMessage);
        
-//        params.put("customerAccount", customerAccount);
-        WorkflowProcessInstance processInstance = (WorkflowProcessInstance) ksession.startProcess("GetCustomerAccountProcess", params);
+        WorkflowProcessInstance getCustomerAccountProcessInstance = (WorkflowProcessInstance) ksession.startProcess("GetCustomerAccountProcess", params);
+        ExecutionContext executionContext = new ExecutionContext();
+        ProcessInstanceContext processInstanceContext = executionContext.getProcessInstanceContext(getCustomerAccountProcessInstance.getProcessId()
+        		, getCustomerAccountProcessInstance.getProcessName());
+        
+        WorkflowProcessInstance customerPaymentProcessInstance = (WorkflowProcessInstance) ksession.startProcess("CustomerPaymentProcess");
+        receiveTaskHandler.messageReceived("HelloMessage", "Hello john!");
         //assertProcessInstanceCompleted(processInstance.getId(), ksession);
         //assertEquals("Hello john!", processInstance.getVariable("s"));
     }

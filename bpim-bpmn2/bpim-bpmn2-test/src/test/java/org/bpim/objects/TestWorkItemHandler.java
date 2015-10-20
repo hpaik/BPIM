@@ -23,7 +23,7 @@ public class TestWorkItemHandler implements WorkItemHandler {
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {    	
                         
         ImageProcessingResult imageProcessingResult = (ImageProcessingResult) workItem.getParameter("Parameter");
-        imageProcessingResult.setPlateNumber("111111");
+        imageProcessingResult.setPlateNumber("PlateNumber");
         imageProcessingResult.setConfidenceRate(10);
         imageProcessingResult.setReviewedByHuman(true);
         imageProcessingResult.setSuccessful(true);                       

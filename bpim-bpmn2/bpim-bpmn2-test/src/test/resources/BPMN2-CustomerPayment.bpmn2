@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.example.org/MinimalExample"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="null" />
+
+  <itemDefinition id="_jbpm-unique-33_MessageType" />
+  <message id="CustomerAccount" itemRef="_jbpm-unique-33_MessageType" />
+
+  <process processType="Private" isExecutable="true" id="CustomerPaymentProcess" name="CustomerPaymentProcess" >
+
+    <!-- process variables -->
+    <property id="customerAccount" itemSubjectRef="null"/>
+
+    <!-- nodes -->
+    <receiveTask id="_jbpm-unique-33" name="Receive Task" messageRef="CustomerAccount" implementation="Other" >
+      <ioSpecification>
+        <dataOutput id="_jbpm-unique-33_result" name="Message" />
+        <inputSet/>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-33_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+    </receiveTask>
+    <startEvent id="_jbpm-unique-34" name="Start"  isInterrupting="false"/>
+    <endEvent id="_jbpm-unique-35" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_jbpm-unique-34-_jbpm-unique-33" sourceRef="_jbpm-unique-34" targetRef="_jbpm-unique-33" />
+    <sequenceFlow id="_jbpm-unique-33-_jbpm-unique-35" sourceRef="_jbpm-unique-33" targetRef="_jbpm-unique-35" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="CustomerPaymentProcess" >
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-33" >
+        <dc:Bounds x="136" y="204" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-34" >
+        <dc:Bounds x="34" y="202" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-35" >
+        <dc:Bounds x="329" y="208" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-34-_jbpm-unique-33" >
+        <di:waypoint x="58" y="226" />
+        <di:waypoint x="186" y="228" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-33-_jbpm-unique-35" >
+        <di:waypoint x="186" y="228" />
+        <di:waypoint x="353" y="232" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

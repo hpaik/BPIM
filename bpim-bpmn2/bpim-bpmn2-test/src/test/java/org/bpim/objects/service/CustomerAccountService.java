@@ -4,7 +4,6 @@ import org.bpim.objects.CustomerAccount;
 import org.bpim.objects.model.ImageProcessingResult;
 import org.bpim.objects.model.JourneyDetails;
 import org.bpim.objects.model.JourneyMessage;
-import org.bpim.objects.model.Transponder;
 
 public class CustomerAccountService {
 	
@@ -20,7 +19,7 @@ public class CustomerAccountService {
 		JourneyDetails journeyDetails = new JourneyDetails();
 		journeyDetails.setCreationDTM(journeyMessage.getCreationDTM());
 		journeyDetails.setGateId(journeyMessage.getGateId());
-		journeyDetails.setObjectId(journeyMessage.getObjectId());
+		//journeyDetails.setObjectId(journeyMessage.getObjectId());
 		return journeyDetails; 
 	}
 	

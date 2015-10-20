@@ -5,13 +5,15 @@ import org.bpim.transformer.base.BPIMDataObject;
 public abstract class ETollDataObject implements BPIMDataObject {
 
 	protected String objectId;
-	private static int id = 1000;
+	private static int id = 5000;
+	
+	public ETollDataObject(){
+		objectId = String.valueOf(id);
+		id++;
+	}
 
 	public String getObjectId() {
-		if (objectId == null){
-			objectId = String.valueOf(id);
-			id++;
-		}
+		
 		return objectId;
 	}
 

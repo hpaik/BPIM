@@ -10,6 +10,7 @@ import org.bpim.model.v1.ProcessInstance;
 import org.bpim.transformer.base.TransformationResult;
 import org.bpim.transformer.base.Transformer;
 import org.bpim.transformer.factory.TranformerFactory;
+import org.jbpm.workflow.instance.node.WorkItemNodeInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,16 +22,21 @@ public class BPIMExecutionEngine {
 	static {
 		executionContext = new ExecutionContext();
 	}
-	
-	@SuppressWarnings("unused")
-	public static void process(org.jbpm.workflow.instance.NodeInstance nodeInstance){		
 		
-		Transformer transformer = TranformerFactory.createTransformer(nodeInstance.getClass().getSimpleName());
+	public static void process(org.jbpm.workflow.instance.NodeInstance nodeInstance){
+		String transformerUnitType = nodeInstance.getClass().getSimpleName(); 
+		if (nodeInstance instanceof WorkItemNodeInstance){
+			WorkItemNodeInstance workItemNodeInstance  = (WorkItemNodeInstance) nodeInstance;
+			transformerUnitType = workItemNodeInstance.getWorkItem().getName().replace(" ", "");
+			transformerUnitType += "NodeInstance";
+		}
+		
+		Transformer transformer = TranformerFactory.createTransformer(transformerUnitType);
 		
 		TransformationResult transformationResult = transformer.transform(nodeInstance);
 		
 		ProcessInstanceContext processInstanceContext  = executionContext.getProcessInstanceContext(
-				nodeInstance.getProcessInstance().getProcessId()
+				  String.valueOf(nodeInstance.getProcessInstance().getId())
 				, nodeInstance.getProcessInstance().getProcessName());
 		
 		processInstanceContext.addTransformationResult(transformationResult);
@@ -51,9 +57,6 @@ public class BPIMExecutionEngine {
 			} catch (JAXBException e) {
 				logger.error("Can not serialize process instance", e);
 			}
-
-		
-		int i = 0;
 	}
 
 }

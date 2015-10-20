@@ -27,16 +27,15 @@ public class StartNodeInstanceTransformerUnit extends TransformerUnit {
 		WorkflowProcessInstance processInstance = 
 				(WorkflowProcessInstance) nodeInstance.getProcessInstance();
 		
-		//org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
 		VariableScopeInstance variableScopeInstance = (VariableScopeInstance) processInstance.getContextInstance(VariableScope.VARIABLE_SCOPE);
 		if (variableScopeInstance != null){
     		Map<String, Object> vars = variableScopeInstance.getVariables();
-    		
+    		if (vars == null || vars.size() == 0){
+    			return;
+    		}
     		DataPoolElement dataPoolElement = null;
     		
-    		DataSnapshotElement inputDataSnapshotElement = dataObjectFactory.createDataSnapshotElement();
-			inputDataSnapshotElement.setEmpty(true);
-			inputDataSnapshotElement.setId(UniqueIdGenerator.nextId());
+    		DataSnapshotElement inputDataSnapshotElement = DataSnapshotElementHelper.createEmpty();
 			
 			DataTransition dataTransition = null;
 			

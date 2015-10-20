@@ -20,7 +20,9 @@ public class TranformerFactory {
 		return getTransformer(transformerUnitType);
 	}
 		
-	private static Transformer getTransformer(String transformerUnitType){		
+	private static Transformer getTransformer(String transformerUnitType){	
+				
+		
 		if (transformersCache == null){
 			transformersCache = new HashMap<String, Transformer>(); 
 		}

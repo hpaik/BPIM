@@ -16,7 +16,7 @@ import org.bpim.transformer.util.UniqueIdGenerator;
 import org.jbpm.workflow.instance.NodeInstance;
 import org.jbpm.workflow.instance.node.WorkItemNodeInstance;
 
-public class WorkItemNodeInstanceTransformerUnit  extends TransformerUnit {
+public class ServiceTaskNodeInstanceTransformerUnit  extends TransformerUnit {
 
 	@Override
 	public void transform(NodeInstance nodeInstance,

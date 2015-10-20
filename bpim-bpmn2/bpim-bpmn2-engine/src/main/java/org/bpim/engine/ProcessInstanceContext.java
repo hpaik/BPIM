@@ -40,7 +40,20 @@ public class ProcessInstanceContext {
 		}
 	}
 	
-	public void addTransformationResult(TransformationResult transformationResult){
+	public DataPoolElement getDataPoolElementByType(String objectType){
+		DataPoolElement dataPoolElement = null;
+		for (DataPoolElement tmpDataPoolElement : processInstance.getData().getDataSnapshotPool().getDataElement()){			
+				if (objectType.equals(tmpDataPoolElement.getDataObjectType())){
+					if (dataPoolElement != null && dataPoolElement.getVersion() >= tmpDataPoolElement.getVersion()){
+						continue;
+					}
+					dataPoolElement = tmpDataPoolElement;
+				} 											
+		}
+		return dataPoolElement;
+	}
+	
+ 	public void addTransformationResult(TransformationResult transformationResult){
 		if (currentExecPathActivity == null){
 			processInstance.getExecutionPath().setStart((Start) 
 					transformationResult.getExecPathActivity());
@@ -52,26 +65,27 @@ public class ProcessInstanceContext {
 			if(transformationResult.getExecPathActivity() != null){
 				currentExecPathActivity = transformationResult.getExecPathActivity();
 			}
+		}		
+		
+		if (processInstance.getData().getDataSnapshotPool().getDataElement().isEmpty() && 
+				!transformationResult.getDataPoolElements().isEmpty()){			
+			processInstance.getData().getDataSnapshotGraphs().setDataSnapshotElement(
+					transformationResult.getSourceDataSnapshotElement().get(0));
+			
+		}else{
+			DataSnapshotElement sourceDataSnapshotElement = null;
+			for (DataSnapshotElement tmpDataSnapshotElement: transformationResult.getSourceDataSnapshotElement()){
+				sourceDataSnapshotElement = getDataSnapshotElement(tmpDataSnapshotElement.getMappingCorrelationId());
+				sourceDataSnapshotElement.getDataTransition().addAll(tmpDataSnapshotElement.getDataTransition());
+			}				
 		}
 		
-		if (!transformationResult.getDataPoolElements().isEmpty()){
-			if (processInstance.getData().getDataSnapshotPool().getDataElement().isEmpty()){
-				
-				processInstance.getData().getDataSnapshotGraphs().setDataSnapshotElement(
-						transformationResult.getSourceDataSnapshotElement().get(0));								
-			}else{
-				DataSnapshotElement sourceDataSnapshotElement = null;
-				for (DataSnapshotElement tmpDataSnapshotElement: transformationResult.getSourceDataSnapshotElement()){
-					sourceDataSnapshotElement = getDataSnapshotElement(tmpDataSnapshotElement.getMappingCorrelationId());
-					sourceDataSnapshotElement.getDataTransition().addAll(tmpDataSnapshotElement.getDataTransition());
-				}				
-			}
-			
-			for (DataPoolElement dataPoolElement: transformationResult.getDataPoolElements()){
-				DataPoolElementHelper.addToPool(dataPoolElement, processInstance);
-			}
+		for (DataPoolElement dataPoolElement: transformationResult.getDataPoolElements()){
+			DataPoolElementHelper.addToPool(dataPoolElement, processInstance);
 		}
-	} 	
+		
+	}
+ 	
 	private DataPoolElement getDataPoolElement(String objectId){
 		DataPoolElement dataPoolElement = null;
 		for (DataPoolElement tmpDataPoolElement : processInstance.getData().getDataSnapshotPool().getDataElement()){
@@ -101,18 +115,21 @@ public class ProcessInstanceContext {
 		return dataSnapshotElement;
 	}	
 	private DataSnapshotElement getDataSnapshotElement(List<DataTransition> dataTransitions, String dataPoolElementId){
+		DataSnapshotElement dataSnapshotElement = null;
 		for (DataTransition dTransition: dataTransitions){
 			if (!dTransition.getDataSnapshotElement().isEmpty() && 
 					dTransition.getDataSnapshotElement().getDataPoolElementId().equals(dataPoolElementId)){
-				return dTransition.getDataSnapshotElement(); 
+				dataSnapshotElement = dTransition.getDataSnapshotElement();
+				break;
 			}else{
 				if (!dTransition.getDataSnapshotElement().getDataTransition().isEmpty()){
-					return getDataSnapshotElement(dTransition.getDataSnapshotElement().getDataTransition(), dataPoolElementId);
-				}else{
-					return null;
+					dataSnapshotElement = getDataSnapshotElement(dTransition.getDataSnapshotElement().getDataTransition(), dataPoolElementId);
+					if (dataSnapshotElement != null){
+						break;
+					}
 				}
 			}			
 		}
-		return null;
+		return dataSnapshotElement;
 	}
 }
