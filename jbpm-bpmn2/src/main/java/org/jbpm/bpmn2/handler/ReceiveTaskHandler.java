@@ -47,7 +47,11 @@ public class ReceiveTaskHandler implements WorkItemHandler {
             return;
         }
         Map<String, Object> results = new HashMap<String, Object>();
-        results.put("Message", message);
+        
+        Object[] messageList = (Object[]) message;
+        results.put("journeyDetails", messageList[0]);
+        results.put("customerAccount", messageList[1]);
+        
         ksession.getWorkItemManager().completeWorkItem(workItemId, results);
     }
 

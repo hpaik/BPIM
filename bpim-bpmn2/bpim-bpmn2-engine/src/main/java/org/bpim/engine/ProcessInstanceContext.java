@@ -59,12 +59,25 @@ public class ProcessInstanceContext {
 					transformationResult.getExecPathActivity());
 			currentExecPathActivity = transformationResult.getExecPathActivity();
 		}else {
+			
 			for (TransitionBase outputTransition: currentExecPathActivity.getOutputTransition()){
 				outputTransition.setTo(transformationResult.getExecPathActivity());
 			}
+			
 			if(transformationResult.getExecPathActivity() != null){
 				currentExecPathActivity = transformationResult.getExecPathActivity();
-			}
+			
+				List<TransitionBase> outputTransitions = null; 
+				while (true){
+					outputTransitions = currentExecPathActivity.getOutputTransition();
+					if (!outputTransitions.isEmpty() && 
+							currentExecPathActivity.getOutputTransition().get(0).getTo() != null){
+						currentExecPathActivity = transformationResult.getExecPathActivity().getOutputTransition().get(0).getTo();
+					}else{
+						break;
+					}					
+				}
+			}			
 		}		
 		
 		if (processInstance.getData().getDataSnapshotPool().getDataElement().isEmpty() && 

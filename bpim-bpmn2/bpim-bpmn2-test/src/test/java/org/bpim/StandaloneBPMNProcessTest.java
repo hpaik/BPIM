@@ -27,8 +27,10 @@ import javax.persistence.Persistence;
 
 import org.bpim.engine.ExecutionContext;
 import org.bpim.engine.ProcessInstanceContext;
+import org.bpim.model.data.v1.DataPoolElement;
 import org.bpim.objects.CustomerAccount;
 import org.bpim.objects.TestWorkItemHandler;
+import org.bpim.objects.model.JourneyDetails;
 import org.bpim.objects.model.JourneyMessage;
 import org.drools.compiler.builder.impl.KnowledgeBuilderConfigurationImpl;
 import org.drools.core.SessionConfiguration;
@@ -81,6 +83,8 @@ import org.kie.internal.persistence.jpa.JPAKnowledgeService;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.kie.internal.runtime.conf.ForceEagerActivationOption;
 import org.xml.sax.SAXException;
+
+import com.google.gson.Gson;
 
 import bitronix.tm.TransactionManagerServices;
 import bitronix.tm.resource.jdbc.PoolingDataSource;
@@ -225,16 +229,23 @@ public class StandaloneBPMNProcessTest {
         journeyMessage.setGateId("10045");
         journeyMessage.setCreationDTM(new Date());
         journeyMessage.setMessageType("IMAGE");
-        //journeyMessage.setObjectId("1111");
         params.put("journeyMessage", journeyMessage);
        
         WorkflowProcessInstance getCustomerAccountProcessInstance = (WorkflowProcessInstance) ksession.startProcess("GetCustomerAccountProcess", params);
         ExecutionContext executionContext = new ExecutionContext();
-        ProcessInstanceContext processInstanceContext = executionContext.getProcessInstanceContext(getCustomerAccountProcessInstance.getProcessId()
+        ProcessInstanceContext processInstanceContext = executionContext.getProcessInstanceContext(String.valueOf(getCustomerAccountProcessInstance.getId())
         		, getCustomerAccountProcessInstance.getProcessName());
         
+        Gson gson = new Gson();
+        DataPoolElement journeyDetailsElement = processInstanceContext.getDataPoolElementByType(JourneyDetails.class.getName());
+        JourneyDetails journeyDetails = gson.fromJson(journeyDetailsElement.getDataObject().toString(), JourneyDetails.class);                
+        
+        DataPoolElement customerAccountElement = processInstanceContext.getDataPoolElementByType(CustomerAccount.class.getName());
+        CustomerAccount customerAccount = gson.fromJson(customerAccountElement.getDataObject().toString(), CustomerAccount.class);        
+        
+        
         WorkflowProcessInstance customerPaymentProcessInstance = (WorkflowProcessInstance) ksession.startProcess("CustomerPaymentProcess");
-        receiveTaskHandler.messageReceived("HelloMessage", "Hello john!");
+        receiveTaskHandler.messageReceived("CustomerJourneyDetails", new Object[]{journeyDetails, customerAccount});
         //assertProcessInstanceCompleted(processInstance.getId(), ksession);
         //assertEquals("Hello john!", processInstance.getVariable("s"));
     }

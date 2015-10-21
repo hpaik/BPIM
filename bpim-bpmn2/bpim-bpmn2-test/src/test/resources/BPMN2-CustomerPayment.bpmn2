@@ -15,7 +15,7 @@
   <itemDefinition id="null" />
 
   <itemDefinition id="_jbpm-unique-33_MessageType" />
-  <message id="CustomerAccount" itemRef="_jbpm-unique-33_MessageType" />
+  <message id="CustomerJourneyDetails" itemRef="_jbpm-unique-33_MessageType" />
 
   <process processType="Private" isExecutable="true" id="CustomerPaymentProcess" name="CustomerPaymentProcess" >
 
@@ -23,7 +23,7 @@
     <property id="customerAccount" itemSubjectRef="null"/>
 
     <!-- nodes -->
-    <receiveTask id="_jbpm-unique-33" name="Receive Task" messageRef="CustomerAccount" implementation="Other" >
+    <receiveTask id="_jbpm-unique-33" name="Receive Task" messageRef="CustomerJourneyDetails" implementation="Other" >
       <ioSpecification>
         <dataOutput id="_jbpm-unique-33_result" name="Message" />
         <inputSet/>
