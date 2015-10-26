@@ -18,7 +18,7 @@ public class StartNodeInstanceTransformerUnit extends TransformerUnit {
 		NormalTransition normalTransition = executionPathObjectFactory.createNormalTransition();
 		normalTransition.setId(UniqueIdGenerator.nextId());
 		start.getOutputTransition().add(normalTransition);
-		transformationResult.setExecPathActivity(start);
+		transformationResult.setFlowNode(start);
 	}
 
 }

@@ -54,25 +54,32 @@ public class ProcessInstanceContext {
 	}
 	
  	public void addTransformationResult(TransformationResult transformationResult){
+ 		if (transformationResult.getFlowNode() instanceof TransitionBase){
+ 			currentExecPathActivity.getOutputTransition().clear();
+ 			currentExecPathActivity.getOutputTransition().add(
+ 					(TransitionBase)transformationResult.getFlowNode());
+ 			
+ 			transformationResult.setFlowNode(((TransitionBase)transformationResult.getFlowNode()).getTo());
+ 		}
+ 			
 		if (currentExecPathActivity == null){
 			processInstance.getExecutionPath().setStart((Start) 
-					transformationResult.getExecPathActivity());
-			currentExecPathActivity = transformationResult.getExecPathActivity();
+					transformationResult.getFlowNode());
+			currentExecPathActivity = (Activity) transformationResult.getFlowNode();
 		}else {
 			
 			for (TransitionBase outputTransition: currentExecPathActivity.getOutputTransition()){
-				outputTransition.setTo(transformationResult.getExecPathActivity());
+				outputTransition.setTo((Activity) transformationResult.getFlowNode());
 			}
 			
-			if(transformationResult.getExecPathActivity() != null){
-				currentExecPathActivity = transformationResult.getExecPathActivity();
-			
+			if(transformationResult.getFlowNode() != null){
+				currentExecPathActivity = (Activity) transformationResult.getFlowNode();
 				List<TransitionBase> outputTransitions = null; 
 				while (true){
 					outputTransitions = currentExecPathActivity.getOutputTransition();
 					if (!outputTransitions.isEmpty() && 
 							currentExecPathActivity.getOutputTransition().get(0).getTo() != null){
-						currentExecPathActivity = transformationResult.getExecPathActivity().getOutputTransition().get(0).getTo();
+						currentExecPathActivity = ((Activity)transformationResult.getFlowNode()).getOutputTransition().get(0).getTo();
 					}else{
 						break;
 					}					

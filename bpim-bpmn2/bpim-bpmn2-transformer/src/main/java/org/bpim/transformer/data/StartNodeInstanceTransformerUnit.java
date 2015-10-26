@@ -48,7 +48,7 @@ public class StartNodeInstanceTransformerUnit extends TransformerUnit {
     			
     			dataTransition = dataObjectFactory.createDataTransition();
     			dataTransition.setId(UniqueIdGenerator.nextId());
-    			dataTransition.setName(transformationResult.getExecPathActivity().getName());
+    			dataTransition.setName(transformationResult.getFlowNode().getName());
     			
     			targetDataSnapshotElement = DataSnapshotElementHelper.create(dataPoolElement);    					
     			dataTransition.setDataSnapshotElement(targetDataSnapshotElement);

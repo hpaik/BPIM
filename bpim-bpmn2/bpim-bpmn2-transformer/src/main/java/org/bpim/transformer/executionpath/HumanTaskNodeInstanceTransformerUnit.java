@@ -11,7 +11,7 @@ public class HumanTaskNodeInstanceTransformerUnit  extends TransformerUnit {
 	@Override
 	public void transform(NodeInstance nodeInstance, TransformationResult transformationResult) {
 		AutomatedTask automatedTask = ExecutionPathHelper.createAutomatedTask(nodeInstance);		
-		transformationResult.setExecPathActivity(automatedTask);
+		transformationResult.setFlowNode(automatedTask);
 	}
 
 }

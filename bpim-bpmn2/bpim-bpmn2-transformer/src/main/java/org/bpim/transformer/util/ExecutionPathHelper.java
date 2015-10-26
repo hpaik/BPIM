@@ -21,7 +21,7 @@ public class ExecutionPathHelper {
 		automatedTask.getOutputTransition().add(normalTransition);
 		return automatedTask;
 	}
-	
+	 
 	public static CallProcessInstance createCallProcessInstance(NodeInstance nodeInstance){
 		org.bpim.model.execpath.v1.ObjectFactory executionPathObjectFactory = new ObjectFactory();
 		CallProcessInstance callProcessInstance = executionPathObjectFactory.createCallProcessInstance();
@@ -31,6 +31,13 @@ public class ExecutionPathHelper {
 		normalTransition.setId(UniqueIdGenerator.nextId());
 		callProcessInstance.getOutputTransition().add(normalTransition);
 		return callProcessInstance;
+	}
+	
+	public static MessageTransition createMessageTransition(){
+		org.bpim.model.execpath.v1.ObjectFactory executionPathObjectFactory = new ObjectFactory();
+		MessageTransition messageTransition = executionPathObjectFactory.createMessageTransition();
+		messageTransition.setId(UniqueIdGenerator.nextId());
+		return messageTransition;
 	}
 	
 	public static ReferenceProcessInstance createReferenceProcessInstance(NodeInstance nodeInstance){

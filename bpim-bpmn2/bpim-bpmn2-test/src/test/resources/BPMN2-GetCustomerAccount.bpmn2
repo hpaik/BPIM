@@ -90,10 +90,6 @@
           <dataOutputRefs>_jbpm-unique-7_result</dataOutputRefs>
         </outputSet>
       </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>journeyMessage</sourceRef>
-        <targetRef>_jbpm-unique-7_param</targetRef>
-      </dataInputAssociation>
       <dataOutputAssociation>
         <sourceRef>_jbpm-unique-7_result</sourceRef>
         <targetRef>journeyDetails</targetRef>
@@ -111,10 +107,6 @@
           <dataOutputRefs>_jbpm-unique-11_result</dataOutputRefs>
         </outputSet>
       </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>journeyMessage</sourceRef>
-        <targetRef>_jbpm-unique-11_param</targetRef>
-      </dataInputAssociation>
       <dataOutputAssociation>
         <sourceRef>_jbpm-unique-11_result</sourceRef>
         <targetRef>imageProcessingResult</targetRef>
@@ -172,10 +164,6 @@
           <dataOutputRefs>_jbpm-unique-17_result</dataOutputRefs>
         </outputSet>
       </ioSpecification>
-      <dataInputAssociation>
-        <sourceRef>imageProcessingResult</sourceRef>
-        <targetRef>_jbpm-unique-17_param</targetRef>
-      </dataInputAssociation>
       <dataOutputAssociation>
         <sourceRef>_jbpm-unique-17_result</sourceRef>
         <targetRef>customerAccount</targetRef>

@@ -6,10 +6,12 @@ import java.util.List;
 import org.bpim.model.data.v1.DataPoolElement;
 import org.bpim.model.data.v1.DataSnapshotElement;
 import org.bpim.model.execpath.v1.Activity;
+import org.bpim.model.execpath.v1.FlowNode;
 
 public class TransformationResult {
 	
-	private Activity execPathActivity;	
+	//private Activity execPathActivity;
+	private FlowNode flowNode;
 	private List<DataPoolElement> dataPoolElements = null;
 	private List<DataSnapshotElement> sourceDataSnapshotElement;
 	
@@ -18,12 +20,12 @@ public class TransformationResult {
 		sourceDataSnapshotElement = new  ArrayList<DataSnapshotElement>();
 	}
 	
-	public Activity getExecPathActivity() {
-		return execPathActivity;
-	}
-	public void setExecPathActivity(Activity execPathElement) {
-		this.execPathActivity = execPathElement;
-	}
+//	public Activity getExecPathActivity() {
+//		return execPathActivity;
+//	}
+//	public void setExecPathActivity(Activity execPathElement) {
+//		this.execPathActivity = execPathElement;
+//	}
 
 	public List<DataPoolElement> getDataPoolElements() {
 		return dataPoolElements;
@@ -35,6 +37,14 @@ public class TransformationResult {
 	
 	public List<DataSnapshotElement> getSourceDataSnapshotElement() {
 		return sourceDataSnapshotElement;
+	}
+
+	public FlowNode getFlowNode() {
+		return flowNode;
+	}
+
+	public void setFlowNode(FlowNode flowNode) {
+		this.flowNode = flowNode;
 	}	
 
 }

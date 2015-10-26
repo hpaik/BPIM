@@ -13,7 +13,7 @@ public class EndNodeInstanceTransformerUnit extends TransformerUnit {
 		End  end = executionPathObjectFactory.createEnd();
 		end.setId(UniqueIdGenerator.nextId());
 		end.setName(nodeInstance.getNodeName());		
-		transformationResult.setExecPathActivity(end);
+		transformationResult.setFlowNode(end);
 	}
 
 }

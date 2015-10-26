@@ -15,7 +15,7 @@ public class ServiceTaskNodeInstanceTransformerUnit  extends TransformerUnit {
 	public void transform(NodeInstance nodeInstance,
 			TransformationResult transformationResult) {	
 		AutomatedTask automatedTask = ExecutionPathHelper.createAutomatedTask(nodeInstance);		
-		transformationResult.setExecPathActivity(automatedTask);
+		transformationResult.setFlowNode(automatedTask);
 	}
 
 }

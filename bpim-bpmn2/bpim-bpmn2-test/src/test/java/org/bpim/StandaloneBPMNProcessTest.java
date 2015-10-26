@@ -29,6 +29,8 @@ import org.bpim.engine.ExecutionContext;
 import org.bpim.engine.ProcessInstanceContext;
 import org.bpim.model.data.v1.DataPoolElement;
 import org.bpim.objects.CustomerAccount;
+import org.bpim.objects.ExtendedReceiveTaskHandler;
+import org.bpim.objects.ExtendedServiceTaskHandler;
 import org.bpim.objects.TestWorkItemHandler;
 import org.bpim.objects.model.JourneyDetails;
 import org.bpim.objects.model.JourneyMessage;
@@ -214,12 +216,12 @@ public class StandaloneBPMNProcessTest {
         KieBase kbase = createKnowledgeBase("BPMN2-GetCustomerAccount.bpmn2", "BPMN2-CustomerPayment.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
         
-        ksession.getWorkItemManager().registerWorkItemHandler("Service Task", new ServiceTaskHandler());
+        ksession.getWorkItemManager().registerWorkItemHandler("Service Task", new ExtendedServiceTaskHandler());
         
         TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
         ksession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
         
-        ReceiveTaskHandler receiveTaskHandler = new ReceiveTaskHandler(ksession);
+        ExtendedReceiveTaskHandler receiveTaskHandler = new ExtendedReceiveTaskHandler(ksession);
         ksession.getWorkItemManager().registerWorkItemHandler("Receive Task", receiveTaskHandler);
         
         ksession.getWorkItemManager().registerWorkItemHandler("Send Task", new SendTaskHandler());

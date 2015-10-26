@@ -14,7 +14,7 @@ public class ReceiveTaskNodeInstanceTransformerUnit extends TransformerUnit {
 		ReferenceProcessInstance referenceProcessInstance = ExecutionPathHelper.createReferenceProcessInstance(nodeInstance);
 		Wait wait = ExecutionPathHelper.createWait(nodeInstance);
 		wait.getOutputTransition().get(0).setTo(referenceProcessInstance);
-		transformationResult.setExecPathActivity(wait);
+		transformationResult.setFlowNode(wait);
 	}
 
 }

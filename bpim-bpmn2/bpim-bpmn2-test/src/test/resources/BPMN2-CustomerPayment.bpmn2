@@ -13,17 +13,36 @@
              xmlns:tns="http://www.jboss.org/drools">
 
   <itemDefinition id="null" />
+  <itemDefinition id="_journeyDetails" structureRef="org.bpim.objects.JourneyDetails" />
 
   <itemDefinition id="_jbpm-unique-33_MessageType" />
   <message id="CustomerJourneyDetails" itemRef="_jbpm-unique-33_MessageType" />
+
+  <itemDefinition id="_jbpm-unique-0_InMessageType" structureRef="org.bpim.objects.CustomerAccount,org.bpim.objects.model.JourneyDetails" />
+  <message id="_jbpm-unique-0_InMessage" itemRef="_jbpm-unique-0_InMessageType" />
+  <interface id="_jbpm-unique-0_ServiceInterface" name="org.bpim.objects.service.CustomerPaymentService" implementationRef="" >
+    <operation id="_jbpm-unique-0_ServiceOperation" name="calculateFareAmount" implementationRef="" >
+      <inMessageRef>_jbpm-unique-0_InMessage</inMessageRef>
+    </operation>
+  </interface>
+
+  <itemDefinition id="_jbpm-unique-1_InMessageType" structureRef="org.bpim.objects.CustomerAccount" />
+  <message id="_jbpm-unique-1_InMessage" itemRef="_jbpm-unique-1_InMessageType" />
+  <interface id="_jbpm-unique-1_ServiceInterface" name="org.bpim.objects.service.CustomerPaymentService" implementationRef="" >
+    <operation id="_jbpm-unique-1_ServiceOperation" name="getDiscountEntitlements" implementationRef="" >
+      <inMessageRef>_jbpm-unique-1_InMessage</inMessageRef>
+    </operation>
+  </interface>
 
   <process processType="Private" isExecutable="true" id="CustomerPaymentProcess" name="CustomerPaymentProcess" >
 
     <!-- process variables -->
     <property id="customerAccount" itemSubjectRef="null"/>
+    <property id="fareAmount" itemSubjectRef="null"/>
+    <property id="journeyDetails" itemSubjectRef="null"/>
 
     <!-- nodes -->
-    <receiveTask id="_jbpm-unique-33" name="Receive Task" messageRef="CustomerJourneyDetails" implementation="Other" >
+    <receiveTask id="_jbpm-unique-33" name="GetCustomerAccount" messageRef="CustomerJourneyDetails" implementation="Other" >
       <ioSpecification>
         <dataOutput id="_jbpm-unique-33_result" name="Message" />
         <inputSet/>
@@ -36,31 +55,79 @@
     <endEvent id="_jbpm-unique-35" name="End" >
         <terminateEventDefinition />
     </endEvent>
+    <serviceTask id="_jbpm-unique-0" name="Calculate Fare Amount" operationRef="_jbpm-unique-0_ServiceOperation" implementation="Other" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-0_param" name="Parameter" />
+        <dataOutput id="_jbpm-unique-0_result" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-0_param</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-0_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataOutputAssociation>
+        <sourceRef>_jbpm-unique-0_result</sourceRef>
+        <targetRef>fareAmount</targetRef>
+      </dataOutputAssociation>
+    </serviceTask>
+    <serviceTask id="_jbpm-unique-1" name="Get Discount Entitlements" operationRef="_jbpm-unique-1_ServiceOperation" implementation="Other" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-1_param" name="Parameter" />
+        <dataOutput id="_jbpm-unique-1_result" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-1_param</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-1_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>customerAccount</sourceRef>
+        <targetRef>_jbpm-unique-1_param</targetRef>
+      </dataInputAssociation>
+    </serviceTask>
 
     <!-- connections -->
     <sequenceFlow id="_jbpm-unique-34-_jbpm-unique-33" sourceRef="_jbpm-unique-34" targetRef="_jbpm-unique-33" />
-    <sequenceFlow id="_jbpm-unique-33-_jbpm-unique-35" sourceRef="_jbpm-unique-33" targetRef="_jbpm-unique-35" />
+    <sequenceFlow id="_jbpm-unique-1-_jbpm-unique-35" sourceRef="_jbpm-unique-1" targetRef="_jbpm-unique-35" />
+    <sequenceFlow id="_jbpm-unique-33-_jbpm-unique-0" sourceRef="_jbpm-unique-33" targetRef="_jbpm-unique-0" />
+    <sequenceFlow id="_jbpm-unique-0-_jbpm-unique-1" sourceRef="_jbpm-unique-0" targetRef="_jbpm-unique-1" />
 
   </process>
 
   <bpmndi:BPMNDiagram>
     <bpmndi:BPMNPlane bpmnElement="CustomerPaymentProcess" >
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-33" >
-        <dc:Bounds x="136" y="204" width="100" height="48" />
+        <dc:Bounds x="136" y="204" width="147" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-34" >
         <dc:Bounds x="34" y="202" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-35" >
-        <dc:Bounds x="329" y="208" width="48" height="48" />
+        <dc:Bounds x="613" y="210" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-0" >
+        <dc:Bounds x="320" y="206" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-1" >
+        <dc:Bounds x="459" y="203" width="100" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-34-_jbpm-unique-33" >
         <di:waypoint x="58" y="226" />
-        <di:waypoint x="186" y="228" />
+        <di:waypoint x="209" y="228" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-33-_jbpm-unique-35" >
-        <di:waypoint x="186" y="228" />
-        <di:waypoint x="353" y="232" />
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-1-_jbpm-unique-35" >
+        <di:waypoint x="509" y="227" />
+        <di:waypoint x="637" y="234" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-33-_jbpm-unique-0" >
+        <di:waypoint x="209" y="228" />
+        <di:waypoint x="370" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-0-_jbpm-unique-1" >
+        <di:waypoint x="370" y="230" />
+        <di:waypoint x="509" y="227" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
