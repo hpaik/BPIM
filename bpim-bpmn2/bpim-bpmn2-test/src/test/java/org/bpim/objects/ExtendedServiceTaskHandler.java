@@ -9,6 +9,7 @@ import org.bpim.engine.ExecutionContext;
 import org.bpim.engine.ProcessInstanceContext;
 import org.bpim.model.data.v1.DataPoolElement;
 import org.bpim.objects.model.JourneyDetails;
+import org.bpim.transformer.util.DataPoolElementHelper;
 import org.jbpm.bpmn2.handler.WorkItemHandlerRuntimeException;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemHandler;
@@ -22,8 +23,7 @@ public class ExtendedServiceTaskHandler implements WorkItemHandler {
 	private static final Logger logger = LoggerFactory.getLogger(ExtendedServiceTaskHandler.class);
 	    
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
-        
-    	Gson gson = new Gson();
+            	
     	ExecutionContext executionContext = new ExecutionContext();
         ProcessInstanceContext processInstanceContext = executionContext.getProcessInstanceContext(
         		 String.valueOf(workItem.getProcessInstanceId()));
@@ -65,8 +65,8 @@ public class ExtendedServiceTaskHandler implements WorkItemHandler {
             	params = new Object[paramTypes.length];
             	for (String paramType: paramTypes){
             		classes[counter] = Class.forName(paramType);
-            		dataPoolElement = processInstanceContext.getDataPoolElementByType(paramType);
-            		params[counter] = gson.fromJson(dataPoolElement.getDataObject().toString(), classes[counter]);
+            		dataPoolElement = processInstanceContext.getDataPoolElementByType(paramType);            		
+            		params[counter] = DataPoolElementHelper.deserialize(dataPoolElement);
             		workItem.getParameters().put("Param" + counter, params[counter]);
             		counter++;
             	}

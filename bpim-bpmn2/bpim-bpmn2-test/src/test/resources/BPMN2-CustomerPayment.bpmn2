@@ -13,7 +13,6 @@
              xmlns:tns="http://www.jboss.org/drools">
 
   <itemDefinition id="null" />
-  <itemDefinition id="_journeyDetails" structureRef="org.bpim.objects.JourneyDetails" />
 
   <itemDefinition id="_jbpm-unique-33_MessageType" />
   <message id="CustomerJourneyDetails" itemRef="_jbpm-unique-33_MessageType" />
@@ -34,12 +33,23 @@
     </operation>
   </interface>
 
+  <itemDefinition id="_jbpm-unique-20_multiInstanceItemType" />
+
+  <itemDefinition id="_jbpm-unique-27_InMessageType" structureRef="org.bpim.objects.FairAmount,org.bpim.objects.ETollDataObjectList" />
+  <message id="_jbpm-unique-27_InMessage" itemRef="_jbpm-unique-27_InMessageType" />
+  <interface id="_jbpm-unique-27_ServiceInterface" name="org.bpim.objects.service.CustomerPaymentService" implementationRef="" >
+    <operation id="_jbpm-unique-27_ServiceOperation" name="applyDiscount" implementationRef="" >
+      <inMessageRef>_jbpm-unique-27_InMessage</inMessageRef>
+    </operation>
+  </interface>
+
   <process processType="Private" isExecutable="true" id="CustomerPaymentProcess" name="CustomerPaymentProcess" >
 
     <!-- process variables -->
     <property id="customerAccount" itemSubjectRef="null"/>
     <property id="fareAmount" itemSubjectRef="null"/>
     <property id="journeyDetails" itemSubjectRef="null"/>
+    <property id="discountEntitlements" itemSubjectRef="null"/>
 
     <!-- nodes -->
     <receiveTask id="_jbpm-unique-33" name="GetCustomerAccount" messageRef="CustomerJourneyDetails" implementation="Other" >
@@ -86,48 +96,113 @@
         <sourceRef>customerAccount</sourceRef>
         <targetRef>_jbpm-unique-1_param</targetRef>
       </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_jbpm-unique-1_result</sourceRef>
+        <targetRef>discountEntitlements</targetRef>
+      </dataOutputAssociation>
     </serviceTask>
+    <subProcess id="_jbpm-unique-20" name="For Each DiscountEntitlement"  >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-20_input" name="MultiInstanceInput" />
+        <inputSet/>
+        <outputSet/>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>discountEntitlements</sourceRef>
+        <targetRef>_jbpm-unique-20_input</targetRef>
+      </dataInputAssociation>
+      <multiInstanceLoopCharacteristics>
+        <loopDataInputRef>_jbpm-unique-20_input</loopDataInputRef>
+        <inputDataItem id="discountEntitlement" itemSubjectRef="_jbpm-unique-20_multiInstanceItemType"/>
+      </multiInstanceLoopCharacteristics>
+    <!-- nodes -->
+    <serviceTask id="_jbpm-unique-27" name="Apply Discount" operationRef="_jbpm-unique-27_ServiceOperation" implementation="Other" >
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-27_param" name="Parameter" />
+        <dataOutput id="_jbpm-unique-27_result" name="Result" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-27_param</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-27_result</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+    </serviceTask>
+    <startEvent id="_jbpm-unique-34" name="Start"  isInterrupting="false"/>
+    <endEvent id="_jbpm-unique-35" name="End" >
+        <terminateEventDefinition />
+    </endEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_jbpm-unique-34-_jbpm-unique-27" sourceRef="_jbpm-unique-34" targetRef="_jbpm-unique-27" />
+    <sequenceFlow id="_jbpm-unique-27-_jbpm-unique-35" sourceRef="_jbpm-unique-27" targetRef="_jbpm-unique-35" />
+    </subProcess>
 
     <!-- connections -->
     <sequenceFlow id="_jbpm-unique-34-_jbpm-unique-33" sourceRef="_jbpm-unique-34" targetRef="_jbpm-unique-33" />
-    <sequenceFlow id="_jbpm-unique-1-_jbpm-unique-35" sourceRef="_jbpm-unique-1" targetRef="_jbpm-unique-35" />
+    <sequenceFlow id="_jbpm-unique-20-_jbpm-unique-35" sourceRef="_jbpm-unique-20" targetRef="_jbpm-unique-35" />
     <sequenceFlow id="_jbpm-unique-33-_jbpm-unique-0" sourceRef="_jbpm-unique-33" targetRef="_jbpm-unique-0" />
     <sequenceFlow id="_jbpm-unique-0-_jbpm-unique-1" sourceRef="_jbpm-unique-0" targetRef="_jbpm-unique-1" />
+    <sequenceFlow id="_jbpm-unique-1-_jbpm-unique-20" sourceRef="_jbpm-unique-1" targetRef="_jbpm-unique-20" />
 
   </process>
 
   <bpmndi:BPMNDiagram>
     <bpmndi:BPMNPlane bpmnElement="CustomerPaymentProcess" >
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-33" >
-        <dc:Bounds x="136" y="204" width="147" height="48" />
+        <dc:Bounds x="301" y="106" width="147" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-34" >
-        <dc:Bounds x="34" y="202" width="48" height="48" />
+        <dc:Bounds x="349" y="21" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-35" >
-        <dc:Bounds x="613" y="210" width="48" height="48" />
+        <dc:Bounds x="600" y="492" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-0" >
-        <dc:Bounds x="320" y="206" width="100" height="48" />
+        <dc:Bounds x="323" y="198" width="100" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-1" >
-        <dc:Bounds x="459" y="203" width="100" height="48" />
+        <dc:Bounds x="526" y="199" width="170" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-34-_jbpm-unique-33" >
-        <di:waypoint x="58" y="226" />
-        <di:waypoint x="209" y="228" />
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-20" >
+        <dc:Bounds x="521" y="278" width="224" height="197" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-27" >
+        <dc:Bounds x="552" y="354" width="133" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-34" >
+        <dc:Bounds x="595" y="291" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-35" >
+        <dc:Bounds x="596" y="421" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-34-_jbpm-unique-27" >
+        <di:waypoint x="98" y="37" />
+        <di:waypoint x="97" y="100" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-1-_jbpm-unique-35" >
-        <di:waypoint x="509" y="227" />
-        <di:waypoint x="637" y="234" />
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-27-_jbpm-unique-35" >
+        <di:waypoint x="97" y="100" />
+        <di:waypoint x="99" y="167" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-34-_jbpm-unique-33" >
+        <di:waypoint x="373" y="45" />
+        <di:waypoint x="374" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-20-_jbpm-unique-35" >
+        <di:waypoint x="633" y="376" />
+        <di:waypoint x="624" y="516" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-33-_jbpm-unique-0" >
-        <di:waypoint x="209" y="228" />
-        <di:waypoint x="370" y="230" />
+        <di:waypoint x="374" y="130" />
+        <di:waypoint x="373" y="222" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-0-_jbpm-unique-1" >
-        <di:waypoint x="370" y="230" />
-        <di:waypoint x="509" y="227" />
+        <di:waypoint x="373" y="222" />
+        <di:waypoint x="611" y="223" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-1-_jbpm-unique-20" >
+        <di:waypoint x="611" y="223" />
+        <di:waypoint x="633" y="376" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

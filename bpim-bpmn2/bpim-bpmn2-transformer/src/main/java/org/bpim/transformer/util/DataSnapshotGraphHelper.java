@@ -18,7 +18,7 @@ public class DataSnapshotGraphHelper {
 		
 		DataPoolElement dataPoolElement = null;
 		for (Entry<String, Object> entry : results.entrySet()){
-			dataPoolElement = DataPoolElementHelper.create(entry.getValue(), entry.getValue().getClass().getSimpleName());
+			dataPoolElement = DataPoolElementHelper.create((BPIMDataObject)entry.getValue(), entry.getValue().getClass().getSimpleName());
 			transformationResult.getDataPoolElements().add(dataPoolElement);
 		}
 		

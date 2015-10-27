@@ -10,6 +10,8 @@ import org.bpim.model.v1.ProcessInstance;
 import org.bpim.transformer.base.TransformationResult;
 import org.bpim.transformer.base.Transformer;
 import org.bpim.transformer.factory.TranformerFactory;
+import org.jbpm.workflow.instance.node.CompositeContextNodeInstance;
+import org.jbpm.workflow.instance.node.EndNodeInstance;
 import org.jbpm.workflow.instance.node.WorkItemNodeInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,12 @@ public class BPIMExecutionEngine {
 			WorkItemNodeInstance workItemNodeInstance  = (WorkItemNodeInstance) nodeInstance;
 			transformerUnitType = workItemNodeInstance.getWorkItem().getName().replace(" ", "");
 			transformerUnitType += "NodeInstance";
+		}
+		
+		if (nodeInstance instanceof EndNodeInstance){
+			if (nodeInstance.getNodeInstanceContainer() instanceof CompositeContextNodeInstance){
+				return;
+			}
 		}
 		
 		Transformer transformer = TranformerFactory.createTransformer(transformerUnitType);

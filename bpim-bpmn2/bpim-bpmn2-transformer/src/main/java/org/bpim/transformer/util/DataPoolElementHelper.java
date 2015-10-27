@@ -1,24 +1,53 @@
 package org.bpim.transformer.util;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.List;
+
 import org.bpim.model.data.v1.DataPoolElement;
 import org.bpim.model.data.v1.DataSnapshotElement;
 import org.bpim.model.v1.ProcessInstance;
 import org.bpim.transformer.base.BPIMDataObject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 public class DataPoolElementHelper {
 	
-	public static DataPoolElement create(Object object, String name){
+	private static ObjectMapper mapper = new ObjectMapper();
+	
+	public static void registerParentChildClass(Class parent, Class child){
+//		RuntimeTypeAdapterFactory<DataPoolElementHelper> adapter = null;
+//                RuntimeTypeAdapterFactory
+//               .of(parent)
+//               .registerSubtype(child);
+
+	}
+	
+	public static <T> DataPoolElement create(T object, String name){
 		org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
 		DataPoolElement dataPoolElement = null;
 		Gson gson = new Gson();
-		if(object.getClass().isArray()){
+		if(object.getClass().isArray() || object instanceof List){
 			dataPoolElement = objectFactory.createDataItemArray();			    										
 		}else{
 			dataPoolElement = objectFactory.createDataItem();			
 		}
-		dataPoolElement.setDataObject(gson.toJson(object));
+		
+//		dataPoolElement.setDataObject(gson.toJson(object));
+		try {
+			mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+			dataPoolElement.setDataObject(mapper.writeValueAsString(object));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 		dataPoolElement.setDataObjectType(object.getClass().getName());
 		dataPoolElement.setName(name);
 		
@@ -48,6 +77,55 @@ public class DataPoolElementHelper {
 		dataPoolElement.setVersion(new Integer(version));
 		processInstance.getData().getDataSnapshotPool().getDataElement().add(dataPoolElement);
 		return dataPoolElement;
+	}
+	
+	public static Object deserialize(String jsonString, Class cls){
+		Object result = null;
+		try {
+			result = mapper.readValue(jsonString, cls);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static <T> T deserialize(DataPoolElement dataPoolElement){		
+		Gson gson = new Gson();
+		try {
+//			Object result = gson.fromJson(dataPoolElement.getDataObject().toString()
+//					, Class.forName(dataPoolElement.getDataObjectType()));
+			Class cls = Class.forName(dataPoolElement.getDataObjectType());
+			Object result = null;
+			try {
+				result = mapper.readValue((String)dataPoolElement.getDataObject(), cls);
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (result instanceof BPIMDataObject){
+				((BPIMDataObject)result).setObjectId(dataPoolElement.getMappingCorrelationId());
+			}
+			return (T) result;
+		} catch (JsonSyntaxException e) {			
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {			
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

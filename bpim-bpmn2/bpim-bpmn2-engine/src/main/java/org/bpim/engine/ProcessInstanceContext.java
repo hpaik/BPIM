@@ -61,6 +61,10 @@ public class ProcessInstanceContext {
  			
  			transformationResult.setFlowNode(((TransitionBase)transformationResult.getFlowNode()).getTo());
  		}
+ 		
+ 		if (transformationResult.getFlowNode() instanceof Start && currentExecPathActivity != null){
+ 			return;
+ 		}
  			
 		if (currentExecPathActivity == null){
 			processInstance.getExecutionPath().setStart((Start) 

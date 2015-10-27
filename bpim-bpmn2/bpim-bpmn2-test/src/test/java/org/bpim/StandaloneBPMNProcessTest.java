@@ -42,6 +42,7 @@ import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
 import org.jbpm.bpmn2.handler.ReceiveTaskHandler;
 import org.bpim.objects.SendTaskHandler;
+import org.bpim.transformer.util.DataPoolElementHelper;
 import org.jbpm.bpmn2.handler.ServiceTaskHandler;
 import org.jbpm.bpmn2.xml.BPMNDISemanticModule;
 import org.jbpm.bpmn2.xml.BPMNExtensionsSemanticModule;
@@ -238,12 +239,14 @@ public class StandaloneBPMNProcessTest {
         ProcessInstanceContext processInstanceContext = executionContext.getProcessInstanceContext(String.valueOf(getCustomerAccountProcessInstance.getId())
         		, getCustomerAccountProcessInstance.getProcessName());
         
-        Gson gson = new Gson();
+        
         DataPoolElement journeyDetailsElement = processInstanceContext.getDataPoolElementByType(JourneyDetails.class.getName());
-        JourneyDetails journeyDetails = gson.fromJson(journeyDetailsElement.getDataObject().toString(), JourneyDetails.class);                
+        JourneyDetails journeyDetails = DataPoolElementHelper.deserialize(journeyDetailsElement); 
+        		//gson.fromJson(journeyDetailsElement.getDataObject().toString(), JourneyDetails.class);                
         
         DataPoolElement customerAccountElement = processInstanceContext.getDataPoolElementByType(CustomerAccount.class.getName());
-        CustomerAccount customerAccount = gson.fromJson(customerAccountElement.getDataObject().toString(), CustomerAccount.class);        
+        CustomerAccount customerAccount = DataPoolElementHelper.deserialize(customerAccountElement); 
+        		//gson.fromJson(customerAccountElement.getDataObject().toString(), CustomerAccount.class);        
         
         
         WorkflowProcessInstance customerPaymentProcessInstance = (WorkflowProcessInstance) ksession.startProcess("CustomerPaymentProcess");
