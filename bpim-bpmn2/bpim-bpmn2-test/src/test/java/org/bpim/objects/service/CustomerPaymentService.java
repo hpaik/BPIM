@@ -8,10 +8,13 @@ import org.bpim.objects.CustomerAccount;
 import org.bpim.objects.DiscountEntitlement;
 import org.bpim.objects.ETollDataObjectList;
 import org.bpim.objects.FairAmount;
+import org.bpim.objects.PaymentResponse;
 import org.bpim.objects.model.JourneyDetails;
 import org.bpim.transformer.util.DataPoolElementHelper;
 
 public class CustomerPaymentService {
+	
+	private static int discountEntitlementCounter = 0;
 	
 	public FairAmount calculateFareAmount(CustomerAccount customerAccount
 			, JourneyDetails journeyDetails){
@@ -42,7 +45,7 @@ public class CustomerPaymentService {
 	}
 	
 	public FairAmount applyDiscount(FairAmount fairAmount, org.bpim.objects.ETollDataObjectList discountEntitlements){
-	    Map<String, Object> jsonMap = (Map<String, Object>)discountEntitlements.get(counter);
+	    Map<String, Object> jsonMap = (Map<String, Object>)discountEntitlements.get(discountEntitlementCounter);
 	   
 	    String jsonstr = "{";
 	    for (Entry<String, Object> entry : jsonMap.entrySet()){
@@ -53,10 +56,16 @@ public class CustomerPaymentService {
 	    DiscountEntitlement discountEntitlement = (DiscountEntitlement)DataPoolElementHelper.deserialize(jsonstr, DiscountEntitlement.class);
 		fairAmount.setDiscounted(true);
 		fairAmount.setPrice(fairAmount.getPrice() - discountEntitlement.getAmount());
-		counter++;
+		discountEntitlementCounter++;
 		return fairAmount;
 	}
 	
-	private static int counter = 0;
+	public PaymentResponse customerPayment(CustomerAccount customerAccount, FairAmount fairAmount){
+		PaymentResponse response = new PaymentResponse();
+		response.setObjectId("4443");
+		response.setMessage("Can not connect to the payment gateway");
+		response.setResponseCode("41");
+		return response;
+	}
 
 }

@@ -251,6 +251,8 @@ public class StandaloneBPMNProcessTest {
         
         WorkflowProcessInstance customerPaymentProcessInstance = (WorkflowProcessInstance) ksession.startProcess("CustomerPaymentProcess");
         receiveTaskHandler.messageReceived("CustomerJourneyDetails", new Object[]{journeyDetails, customerAccount});
+        
+        Thread.sleep(3000);
         //assertProcessInstanceCompleted(processInstance.getId(), ksession);
         //assertEquals("Hello john!", processInstance.getVariable("s"));
     }

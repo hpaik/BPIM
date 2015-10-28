@@ -2,6 +2,7 @@ package org.bpim.transformer.util;
 
 import org.bpim.model.execpath.v1.AutomatedTask;
 import org.bpim.model.execpath.v1.CallProcessInstance;
+import org.bpim.model.execpath.v1.EventTransition;
 import org.bpim.model.execpath.v1.MessageTransition;
 import org.bpim.model.execpath.v1.NormalTransition;
 import org.bpim.model.execpath.v1.ObjectFactory;
@@ -51,7 +52,7 @@ public class ExecutionPathHelper {
 		return referenceProcessInstance;
 	}
 	
-	public static Wait createWait(NodeInstance nodeInstance){
+	public static Wait createWaitWithMessageTransition(NodeInstance nodeInstance){
 		org.bpim.model.execpath.v1.ObjectFactory executionPathObjectFactory = new ObjectFactory();
 		Wait wait = executionPathObjectFactory.createWait();
 		wait.setId(UniqueIdGenerator.nextId());
@@ -59,6 +60,17 @@ public class ExecutionPathHelper {
 		MessageTransition messageTransition = executionPathObjectFactory.createMessageTransition();
 		messageTransition.setId(UniqueIdGenerator.nextId());
 		wait.getOutputTransition().add(messageTransition);
+		return wait;
+	}
+	
+	public static Wait createWaitWithEventTransition(NodeInstance nodeInstance){
+		org.bpim.model.execpath.v1.ObjectFactory executionPathObjectFactory = new ObjectFactory();
+		Wait wait = executionPathObjectFactory.createWait();
+		wait.setId(UniqueIdGenerator.nextId());
+		wait.setName("Wait");
+		EventTransition eventTransition = executionPathObjectFactory.createEventTransition();
+		eventTransition.setId(UniqueIdGenerator.nextId());
+		wait.getOutputTransition().add(eventTransition);
 		return wait;
 	}
 
