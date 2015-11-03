@@ -43,12 +43,7 @@ public class DataSnapshotGraphHelper {
 				transformationResult.getSourceDataSnapshotElement().add(sourceDataSnapshotElement);
 			}
 		}
-			
-		
-		 
-		
-		
-		
+							 					
 		DataSnapshotElement sourceDataSnapshotElement = null;
 		DataTransition dataTransition = null;
 		DataSnapshotElement targetDataSnapshotElement = null;
@@ -57,7 +52,8 @@ public class DataSnapshotGraphHelper {
 			if (!(parameter.getValue() instanceof BPIMDataObject)){
 				continue;
 			}
-			sourceDataSnapshotElement.setMappingCorrelationId(((BPIMDataObject)parameter.getValue()).getObjectId());			
+			sourceDataSnapshotElement.setMappingCorrelationId(((BPIMDataObject)parameter.getValue()).getObjectId());
+			sourceDataSnapshotElement.setEmpty(false);
 			if(isVoid){
 				dataTransition = dataObjectFactory.createDataTransition();
 				dataTransition.setId(UniqueIdGenerator.nextId());

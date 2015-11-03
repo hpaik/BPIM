@@ -16,20 +16,20 @@ public class ReceiveTaskNodeInstanceTransformerUnit extends TransformerUnit {
 
 	@Override
 	public void transform(NodeInstance nodeInstance, TransformationResult transformationResult) {
-		WorkItemNodeInstance workItemNodeInstance = (WorkItemNodeInstance) nodeInstance;
-		Map<String, Object> parameters = workItemNodeInstance.getWorkItem().getParameters();
-		parameters.clear();
-		Map<String, Object> results = workItemNodeInstance.getWorkItem().getResults();
-		WorkflowProcessInstance processInstance = 
-				(WorkflowProcessInstance) nodeInstance.getProcessInstance();
-		VariableScopeInstance variableScopeInstance = (VariableScopeInstance) processInstance.getContextInstance(VariableScope.VARIABLE_SCOPE);
-		if (variableScopeInstance != null){
-			for (Entry<String, Object> entry: results.entrySet()){
-				variableScopeInstance.setVariable(entry.getKey(), entry.getValue());
-			}
-		}
-		
-		DataSnapshotGraphHelper.createDataSnapshotWithMultiParamsandResults(parameters, results, transformationResult);
+//		WorkItemNodeInstance workItemNodeInstance = (WorkItemNodeInstance) nodeInstance;
+//		Map<String, Object> parameters = workItemNodeInstance.getWorkItem().getParameters();
+//		parameters.clear();
+//		Map<String, Object> results = workItemNodeInstance.getWorkItem().getResults();
+//		WorkflowProcessInstance processInstance = 
+//				(WorkflowProcessInstance) nodeInstance.getProcessInstance();
+//		VariableScopeInstance variableScopeInstance = (VariableScopeInstance) processInstance.getContextInstance(VariableScope.VARIABLE_SCOPE);
+//		if (variableScopeInstance != null){
+//			for (Entry<String, Object> entry: results.entrySet()){
+//				variableScopeInstance.setVariable(entry.getKey(), entry.getValue());
+//			}
+//		}
+//		
+//		DataSnapshotGraphHelper.createDataSnapshotWithMultiParamsandResults(parameters, results, transformationResult);
 	}
 
 }

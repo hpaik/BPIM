@@ -327,7 +327,7 @@ public class RuleFlowProcessValidator implements ProcessValidator {
                             compiler.setVerifying(true);
                             ParserContext parserContext = new ParserContext();
                             //parserContext.setStrictTypeEnforcement(true);
-                            compiler.compile(parserContext);
+                            compiler.compile();
                             List<ErrorDetail> mvelErrors = parserContext.getErrorList();
                             if (mvelErrors != null) {
                                 for (Iterator<ErrorDetail> iterator = mvelErrors.iterator(); iterator.hasNext(); ) {

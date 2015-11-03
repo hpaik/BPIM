@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.bpim.model.data.v1.DataPoolElement;
 import org.bpim.model.data.v1.DataSnapshotElement;
+import org.bpim.model.data.v1.DataSnapshotPool;
+import org.bpim.model.v1.CompositeProcessInstance;
 import org.bpim.model.v1.ProcessInstance;
 import org.bpim.transformer.base.BPIMDataObject;
 
@@ -57,10 +59,10 @@ public class DataPoolElementHelper {
 		return dataPoolElement;
 	}
 	
-	public static DataPoolElement addToPool(DataPoolElement dataPoolElement, ProcessInstance processInstance){
+	public static DataPoolElement addToPool(DataPoolElement dataPoolElement, DataSnapshotPool dataSnapshotPool){
 		int version = 1;
 		String id = null;
-		for (DataPoolElement tmpDataPoolElement : processInstance.getData().getDataSnapshotPool().getDataElement()){
+		for (DataPoolElement tmpDataPoolElement : dataSnapshotPool.getDataElement()){
 			if (tmpDataPoolElement.getMappingCorrelationId() != null && 
 					dataPoolElement.getMappingCorrelationId() != null &&
 					dataPoolElement.getDataObjectType().equals(tmpDataPoolElement.getDataObjectType()) &&
@@ -75,7 +77,7 @@ public class DataPoolElementHelper {
 //			dataPoolElement.setId(id);
 //		}
 		dataPoolElement.setVersion(new Integer(version));
-		processInstance.getData().getDataSnapshotPool().getDataElement().add(dataPoolElement);
+		dataSnapshotPool.getDataElement().add(dataPoolElement);
 		return dataPoolElement;
 	}
 	

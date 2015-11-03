@@ -16,8 +16,7 @@ public class CustomerPaymentService {
 	
 	private static int discountEntitlementCounter = 0;
 	
-	public FairAmount calculateFareAmount(CustomerAccount customerAccount
-			, JourneyDetails journeyDetails){
+	public FairAmount calculateFareAmount(CustomerAccount customerAccount, JourneyDetails journeyDetails){
 		FairAmount fairAmount = new FairAmount();
 		fairAmount.setDiscounted(false);
 		fairAmount.setPrice(150);

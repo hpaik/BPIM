@@ -11,6 +11,18 @@
     <xs:import namespace="http://www.bpim.org/model/base/v1" schemaLocation="BaseElements.xsd" />
     <xs:import namespace="http://www.bpim.org/model/execpath/v1" schemaLocation="../execpath/ExecPath.xsd" />
     <xs:import namespace="http://www.bpim.org/model/data/v1" schemaLocation="../data/Data.xsd" />
+    
+    <xs:element name="CompositeProcessInstance" type="tns:CompositeProcessInstance" />
+    <xs:complexType name="CompositeProcessInstance">
+		<xs:complexContent>
+			<xs:extension base="bpimbase:ElementBase">
+				<xs:sequence>
+					<xs:element name="processInstance" type="tns:ProcessInstance" minOccurs="0" maxOccurs="unbounded"/>
+					<xs:element name="dataSnapshotPool" type="data:DataSnapshotPool" />
+				</xs:sequence>				
+			</xs:extension>			
+		</xs:complexContent>		
+	</xs:complexType>
         
     <xs:element name="ProcessInstance" type="tns:ProcessInstance" />
 	<xs:complexType name="ProcessInstance">
@@ -34,7 +46,9 @@
 	<xs:complexType name="Data">
 		<xs:sequence>
 			<xs:element name="dataSnapshotGraphs" type="data:DataSnapshotGraphs" />
+			<!--  
 			<xs:element name="dataSnapshotPool" type="data:DataSnapshotPool" />
+			-->
 		</xs:sequence>
 	</xs:complexType>
 	

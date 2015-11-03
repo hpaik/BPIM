@@ -214,7 +214,12 @@ public class StandaloneBPMNProcessTest {
     
     @Test
     public void testCustomerJourney() throws Exception {
-        KieBase kbase = createKnowledgeBase("BPMN2-GetCustomerAccount.bpmn2", "BPMN2-CustomerPayment.bpmn2");
+    	ExecutionContext executionContext = new ExecutionContext();
+    	executionContext.startCompositeProcessInstance("CustomerJourneyProcess");
+    	
+    	executionContext.storeProcessInstance();
+    	
+    	KieBase kbase = createKnowledgeBase("BPMN2-GetCustomerAccount.bpmn2", "BPMN2-CustomerPayment.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
         
         ksession.getWorkItemManager().registerWorkItemHandler("Service Task", new ExtendedServiceTaskHandler());
@@ -235,7 +240,7 @@ public class StandaloneBPMNProcessTest {
         params.put("journeyMessage", journeyMessage);
        
         WorkflowProcessInstance getCustomerAccountProcessInstance = (WorkflowProcessInstance) ksession.startProcess("GetCustomerAccountProcess", params);
-        ExecutionContext executionContext = new ExecutionContext();
+        
         ProcessInstanceContext processInstanceContext = executionContext.getProcessInstanceContext(String.valueOf(getCustomerAccountProcessInstance.getId())
         		, getCustomerAccountProcessInstance.getProcessName());
         
