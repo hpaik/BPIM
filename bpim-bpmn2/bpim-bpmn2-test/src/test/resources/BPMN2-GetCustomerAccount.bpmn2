@@ -65,7 +65,7 @@
   <itemDefinition id="_jbpm-unique-36_MessageType" />
   <message id="_jbpm-unique-36_Message" itemRef="_jbpm-unique-36_MessageType" />
 
-  <process processType="Private" isExecutable="true" id="GetCustomerAccountProcess" name="GetCustomerAccountProcess" >
+  <process processType="Private" isExecutable="true" id="GetCustomerAccountProcess" name="Get Customer Account Process" >
 
     <extensionElements>
      <tns:import name="org.bpim.objects.model.JourneyMessage" />

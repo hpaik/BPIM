@@ -1,12 +1,33 @@
 package org.bpim.engine;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+import org.bpim.model.base.v1.ElementBase;
+import org.bpim.model.data.v1.DataPoolElement;
+import org.bpim.model.execpath.v1.Activity;
+import org.bpim.model.execpath.v1.Start;
+import org.bpim.model.execpath.v1.TransitionBase;
 import org.bpim.model.v1.CompositeProcessInstance;
 import org.bpim.model.v1.ObjectFactory;
 import org.bpim.model.v1.ProcessInstance;
@@ -14,8 +35,11 @@ import org.bpim.transformer.util.UniqueIdGenerator;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.tooling.GlobalGraphOperations;
 
 public class ExecutionContext {
 	private static Map<String, ProcessInstanceContext> processInstances = null;
@@ -66,12 +90,13 @@ public class ExecutionContext {
 	
 	public void storeProcessInstance(){
 		 File dbFile = new File("C:\\work\\TPNeo4jDB");
-		 if (dbFile.exists()){
-			 dbFile.delete();
-			 dbFile.mkdir();
-		 }
+//		 if (dbFile.exists()){
+//			 dbFile.delete();
+//			 dbFile.mkdir();
+//		 }
 		 GraphDatabaseFactory dbFactory = new GraphDatabaseFactory();
 		 GraphDatabaseService db= dbFactory.newEmbeddedDatabase(dbFile);
+		 
 		 /*
 		 try (Transaction tx = db.beginTx()) {
 				// Perform DB operations
@@ -91,29 +116,124 @@ public class ExecutionContext {
 			scalaNode.setProperty("Status", "Completed");
 		 }	
 		 */
-		 
-		 Node piNode = null;
-		for(final ProcessInstance pi :compositeProcessInstance.getProcessInstance()){
-			
-			try (Transaction tx = db.beginTx()) {
-				piNode = db.createNode();
-				piNode.addLabel(new Label() {
-					
-					@Override
-					public String name() {
-						
-						return pi.getName();
-					}
-				});
+		 try (Transaction tx = db.beginTx()) {
+			 for (Relationship relationship: GlobalGraphOperations.at(db).getAllRelationships()){
+				 relationship.delete();
+			 }
+			 for(Node node: GlobalGraphOperations.at(db).getAllNodes()){
+				node.delete();
+			 }
+			 
+			 Node compositPINode = createNode(db, compositeProcessInstance);
+			 
+			 Node dataPoolNode = createNode(db, "Data Pool");
+			 createRelationship(compositPINode, dataPoolNode, "Data");
+			 Node dataPoolElementNode = null;
+			 for(DataPoolElement dataPoolElement: compositeProcessInstance.getDataSnapshotPool().getDataElement()){
+				 dataPoolElementNode = createNode(db, dataPoolElement);
+				 createRelationship(dataPoolNode, dataPoolElementNode, "Contains");
+			 }
+			 
+			 Node piNode = null;
+			 Node execPathNode = null;
+			 Node dataSnapshotNode = null;
+			 Node startNode = null;
+			for(final ProcessInstance pi :compositeProcessInstance.getProcessInstance()){							
+				piNode = createNode(db, pi);
+				createRelationship(compositPINode, piNode, "Contains");												
 				
+				execPathNode = createNode(db, "Execution Path");
+				createRelationship(piNode, execPathNode, "Activities");
+				
+				Activity start = pi.getExecutionPath().getStart();
+				startNode = createNode(db, start);
+				createRelationship(execPathNode, startNode, "Begins");
+				transformExecPath(db, startNode, start.getOutputTransition());
 			}
-		}
+			
+			tx.success();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		} 
+		
 		db.shutdown();
 	}
 	
-	
-	public enum Tutorials implements Label {
-		JAVA,SCALA,SQL,NEO4J;
+	private void transformExecPath(GraphDatabaseService db, Node parentNode, List<TransitionBase> transList) throws Exception{
+		Node childNode = null;
+		Activity child = null;
+		for (TransitionBase trans: transList){
+			child = trans.getTo();
+			if (child != null){
+				childNode = createNode(db, child);
+				createRelationship(parentNode, childNode, "Transition");
+				if (!child.getOutputTransition().isEmpty()){
+					transformExecPath(db, childNode, child.getOutputTransition());
+				}
+			}
+		}
 	}
+	
+	private Node createNode(GraphDatabaseService db, final String name) throws Exception{
+		Node node = db.createNode(
+				new Label() {			
+			@Override
+			public String name() {
+				
+				return name;
+			}
+		});
+		node.setProperty("Title", name);		
+		return node;
+	}
+	
+	private Node createNode(GraphDatabaseService db, final ElementBase bpimElement) throws Exception{
+		Node node = createNode(db, bpimElement.getName());
+		Object value = null;
+		for (Method method :bpimElement.getClass().getMethods()){
+//			if (method.getReturnType().getName().equals(Object.class.getName())){
+//				value = method.invoke(bpimElement, null);
+//				if(value != null){
+//					node.setProperty(method.getName().replace("get", "")
+//							, value);
+//				}
+//			}
+			try{
+			if (method.getName().startsWith("get") && 
+					(method.getReturnType().isPrimitive() || 
+				     method.getReturnType().getName().equals(String.class.getName())||
+				     method.getReturnType().getName().equals(Object.class.getName())
+					)
+			   ){
+				value = method.invoke(bpimElement, null);
+				if(value != null){
+					node.setProperty(method.getName().replace("get", "")
+							, value);
+				}
+			}
+			}catch (Exception exp){
+				throw exp;
+			}
+		}
+		
+		return node;
+	}
+	
+	private void createRelationship(Node from, Node to, final String relationshipType){
+		from.createRelationshipTo(to, new RelationshipType() {
+			
+			@Override
+			public String name() {
+				
+				return relationshipType;
+			}
+		});
+	}
+	
+	
+//	public enum Tutorials implements Label {
+//		CustomerJourneyProcess;
+//	}
 
 }

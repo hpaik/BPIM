@@ -215,9 +215,9 @@ public class StandaloneBPMNProcessTest {
     @Test
     public void testCustomerJourney() throws Exception {
     	ExecutionContext executionContext = new ExecutionContext();
-    	executionContext.startCompositeProcessInstance("CustomerJourneyProcess");
+    	executionContext.startCompositeProcessInstance("Customer Journey Process");
     	
-    	executionContext.storeProcessInstance();
+    	
     	
     	KieBase kbase = createKnowledgeBase("BPMN2-GetCustomerAccount.bpmn2", "BPMN2-CustomerPayment.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
@@ -257,7 +257,8 @@ public class StandaloneBPMNProcessTest {
         WorkflowProcessInstance customerPaymentProcessInstance = (WorkflowProcessInstance) ksession.startProcess("CustomerPaymentProcess");
         receiveTaskHandler.messageReceived("CustomerJourneyDetails", new Object[]{journeyDetails, customerAccount});
         
-        Thread.sleep(3000);
+//        Thread.sleep(3000);
+        executionContext.storeProcessInstance();
         //assertProcessInstanceCompleted(processInstance.getId(), ksession);
         //assertEquals("Hello john!", processInstance.getVariable("s"));
     }

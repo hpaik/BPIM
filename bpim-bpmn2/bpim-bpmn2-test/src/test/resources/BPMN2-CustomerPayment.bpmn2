@@ -51,7 +51,7 @@
     </operation>
   </interface>
 
-  <process processType="Private" isExecutable="true" id="CustomerPaymentProcess" name="CustomerPaymentProcess" >
+  <process processType="Private" isExecutable="true" id="CustomerPaymentProcess" name="Customer Payment Process" >
 
     <extensionElements>
      <tns:import name="org.bpim.objects.PaymentResponse" />
