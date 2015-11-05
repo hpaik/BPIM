@@ -13,6 +13,7 @@ public class DataSnapshotElementHelper {
 		targetDataSnapshotElement.setId(UniqueIdGenerator.nextId());
 		targetDataSnapshotElement.setDataPoolElementId(dataPoolElement.getId());
 		targetDataSnapshotElement.setMappingCorrelationId(dataPoolElement.getMappingCorrelationId());
+		targetDataSnapshotElement.setName(dataPoolElement.getName());
 		
 		return targetDataSnapshotElement;
 	}

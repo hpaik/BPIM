@@ -23,8 +23,13 @@ import java.util.Map;
 
 
 
+
+
+
 import org.bpim.model.base.v1.ElementBase;
 import org.bpim.model.data.v1.DataPoolElement;
+import org.bpim.model.data.v1.DataSnapshotElement;
+import org.bpim.model.data.v1.DataTransition;
 import org.bpim.model.execpath.v1.Activity;
 import org.bpim.model.execpath.v1.Start;
 import org.bpim.model.execpath.v1.TransitionBase;
@@ -32,6 +37,7 @@ import org.bpim.model.v1.CompositeProcessInstance;
 import org.bpim.model.v1.ObjectFactory;
 import org.bpim.model.v1.ProcessInstance;
 import org.bpim.transformer.util.UniqueIdGenerator;
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
@@ -136,8 +142,9 @@ public class ExecutionContext {
 			 
 			 Node piNode = null;
 			 Node execPathNode = null;
-			 Node dataSnapshotNode = null;
+			 Node dataSnapshotGraphNode = null;
 			 Node startNode = null;
+			 Node dataSnapshotNode = null;
 			for(final ProcessInstance pi :compositeProcessInstance.getProcessInstance()){							
 				piNode = createNode(db, pi);
 				createRelationship(compositPINode, piNode, "Contains");												
@@ -149,15 +156,56 @@ public class ExecutionContext {
 				startNode = createNode(db, start);
 				createRelationship(execPathNode, startNode, "Begins");
 				transformExecPath(db, startNode, start.getOutputTransition());
-			}
-			
+				
+				dataSnapshotGraphNode = createNode(db, "Data Snapshot Graphs");
+				createRelationship(piNode, dataSnapshotGraphNode, "Snapshot Graph");
+				
+				for (DataSnapshotElement dse: pi.getData().getDataSnapshotGraphs().getDataSnapshotElement()){
+					dataSnapshotNode = createNode(db, dse);
+					createRelationship(dataSnapshotGraphNode, dataSnapshotNode, "Begins");
+					transformSnapshotGraph(db, dataSnapshotNode, dse.getDataTransition());
+				}				
+			}			
 			tx.success();
-		} catch (Exception e) {
-			
+		} catch (Exception e) {			
 			e.printStackTrace();
 		} 
 		
 		db.shutdown();
+	}
+	
+	private void transformSnapshotGraph(GraphDatabaseService db, Node parentNode, List<DataTransition> dtList) throws Exception{
+		DataSnapshotElement child = null;
+		Node childNode = null;
+		for (DataTransition dt: dtList){
+			child = dt.getDataSnapshotElement();
+			if (child != null){
+				childNode = getNode(db, child);
+				if (childNode == null){
+					childNode = createNode(db, child);
+				}
+//				else{
+//					int i= 0;
+//					i++;
+//				}
+				Iterable<Relationship> relationships = getRelationShips(parentNode, dt.getName());
+				int i = 0;
+				boolean flag = false;
+				for (Relationship relationship: relationships){
+					i++;
+					if (relationship.getEndNode().getId() == childNode.getId()){
+						flag = true;
+					}
+				}
+				//parentNode.getRelationships(dt.getName());
+				if (!flag){
+					createRelationship(parentNode, childNode, dt.getName());
+				}
+				if (!child.getDataTransition().isEmpty()){
+					transformSnapshotGraph(db, childNode, child.getDataTransition());
+				}
+			}
+		}
 	}
 	
 	private void transformExecPath(GraphDatabaseService db, Node parentNode, List<TransitionBase> transList) throws Exception{
@@ -175,16 +223,31 @@ public class ExecutionContext {
 		}
 	}
 	
+	private Node getNode(GraphDatabaseService db, final ElementBase bpimElement) throws Exception{
+		Label label = new Label() {			
+			@Override
+			public String name() {
+				return bpimElement.getName();
+			}
+		};
+		return db.findNode(label, "Id", bpimElement.getId());
+	}
+	
 	private Node createNode(GraphDatabaseService db, final String name) throws Exception{
+		
 		Node node = db.createNode(
 				new Label() {			
 			@Override
 			public String name() {
-				
-				return name;
+				if(name != null){
+					return name;
+				}else{
+					return "Empty";
+				}
 			}
 		});
-		node.setProperty("Title", name);		
+		if(name != null)
+			node.setProperty("Title", name);		
 		return node;
 	}
 	
@@ -192,26 +255,19 @@ public class ExecutionContext {
 		Node node = createNode(db, bpimElement.getName());
 		Object value = null;
 		for (Method method :bpimElement.getClass().getMethods()){
-//			if (method.getReturnType().getName().equals(Object.class.getName())){
-//				value = method.invoke(bpimElement, null);
-//				if(value != null){
-//					node.setProperty(method.getName().replace("get", "")
-//							, value);
-//				}
-//			}
 			try{
-			if (method.getName().startsWith("get") && 
-					(method.getReturnType().isPrimitive() || 
-				     method.getReturnType().getName().equals(String.class.getName())||
-				     method.getReturnType().getName().equals(Object.class.getName())
-					)
-			   ){
-				value = method.invoke(bpimElement, null);
-				if(value != null){
-					node.setProperty(method.getName().replace("get", "")
-							, value);
+				if (method.getName().startsWith("get") && 
+						(method.getReturnType().isPrimitive() || 
+					     method.getReturnType().getName().equals(String.class.getName())||
+					     method.getReturnType().getName().equals(Object.class.getName())
+						)
+				   ){
+					value = method.invoke(bpimElement, null);
+					if(value != null){
+						node.setProperty(method.getName().replace("get", "")
+								, value);
+					}
 				}
-			}
 			}catch (Exception exp){
 				throw exp;
 			}
@@ -229,6 +285,18 @@ public class ExecutionContext {
 				return relationshipType;
 			}
 		});
+	}
+	
+	private Iterable<Relationship> getRelationShips(Node node, final String relationshipType){
+		RelationshipType type = new RelationshipType() {
+			
+			@Override
+			public String name() {
+				
+				return relationshipType;
+			}
+		};
+		return node.getRelationships(type, Direction.OUTGOING);
 	}
 	
 	
