@@ -1,5 +1,6 @@
 package org.bpim.engine;
 
+import java.util.Date;
 import java.util.List;
 
 import org.bpim.model.data.v1.DataPoolElement;
@@ -7,6 +8,7 @@ import org.bpim.model.data.v1.DataSnapshotElement;
 import org.bpim.model.data.v1.DataSnapshotPool;
 import org.bpim.model.data.v1.DataTransition;
 import org.bpim.model.execpath.v1.Activity;
+import org.bpim.model.execpath.v1.End;
 import org.bpim.model.execpath.v1.Start;
 import org.bpim.model.execpath.v1.TransitionBase;
 import org.bpim.model.v1.CompositeProcessInstance;
@@ -68,6 +70,11 @@ public class ProcessInstanceContext {
  		if (transformationResult.getFlowNode() instanceof Start && currentExecPathActivity != null){
  			return;
  		}
+ 		
+ 		if (transformationResult.getFlowNode() instanceof End){
+ 			processInstance.setState("FINISHED");
+ 			processInstance.setEndDateTime((new Date()).toString());
+ 		}
  			
 		if (currentExecPathActivity == null){
 			processInstance.getExecutionPath().setStart((Start) 
@@ -92,7 +99,8 @@ public class ProcessInstanceContext {
 					}					
 				}
 			}			
-		}
+		}				
+		
 		DataSnapshotElement sourceDataSnapshotElement = null;
 		DataPoolElement dataPoolElement = null;
 		DataSnapshotElement targetDataSnapshotElement = null;
@@ -106,9 +114,9 @@ public class ProcessInstanceContext {
 				}
 				
 				for (DataTransition dataTransition : tmpDataSnapshotElement.getDataTransition()){
-					if (dataTransition.getName().equals("Apply Discount")){
-						targetDataSnapshotElement = getDataSnapshotElement(dataTransition.getDataSnapshotElement().getDataPoolElementId());
-					}
+//					if (dataTransition.getName().equals("Apply Discount")){
+//						targetDataSnapshotElement = getDataSnapshotElement(dataTransition.getDataSnapshotElement().getDataPoolElementId());
+//					}
 					targetDataSnapshotElement = getDataSnapshotElement(dataTransition.getDataSnapshotElement().getDataPoolElementId());
 					if (targetDataSnapshotElement != null){
 						dataTransition.setDataSnapshotElement(targetDataSnapshotElement); 
@@ -122,6 +130,19 @@ public class ProcessInstanceContext {
 		
 		for (DataPoolElement tmpDataPoolElement: transformationResult.getDataPoolElements()){
 			DataPoolElementHelper.addToPool(tmpDataPoolElement, getDataSnapshotPool());
+		}
+		
+		for (DataSnapshotElement tmpDataSnapshotElement: transformationResult.getSourceDataSnapshotElement()){
+			for (DataTransition dataTransition : tmpDataSnapshotElement.getDataTransition()){
+				for (DataPoolElement tmpDataPoolElement: transformationResult.getDataPoolElements()){
+					if(dataTransition.getDataSnapshotElement() != null && 
+							dataTransition.getDataSnapshotElement().getDataPoolElementId() != null &&
+							tmpDataPoolElement.getId().equals(dataTransition.getDataSnapshotElement().getDataPoolElementId())){
+						dataTransition.getDataSnapshotElement().setName(tmpDataPoolElement.getName());
+//						tmpDataPoolElement.setCreationDateTime(tmpDataPoolElement.getCreationDateTime());
+					}
+				}
+			}
 		}
 		
 	}

@@ -2,6 +2,7 @@ package org.bpim.transformer.util;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 import org.bpim.model.data.v1.DataPoolElement;
@@ -23,27 +24,17 @@ import com.google.gson.reflect.TypeToken;
 
 public class DataPoolElementHelper {
 	
-	private static ObjectMapper mapper = new ObjectMapper();
-	
-	public static void registerParentChildClass(Class parent, Class child){
-//		RuntimeTypeAdapterFactory<DataPoolElementHelper> adapter = null;
-//                RuntimeTypeAdapterFactory
-//               .of(parent)
-//               .registerSubtype(child);
-
-	}
+	private static ObjectMapper mapper = new ObjectMapper();		
 	
 	public static <T> DataPoolElement create(T object, String name){
 		org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
-		DataPoolElement dataPoolElement = null;
-		Gson gson = new Gson();
+		DataPoolElement dataPoolElement = null;		
 		if(object.getClass().isArray() || object instanceof List){
 			dataPoolElement = objectFactory.createDataItemArray();			    										
 		}else{
 			dataPoolElement = objectFactory.createDataItem();			
 		}
 		
-//		dataPoolElement.setDataObject(gson.toJson(object));
 		try {
 			mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 			dataPoolElement.setDataObject(mapper.writeValueAsString(object));
@@ -52,6 +43,7 @@ public class DataPoolElementHelper {
 		}
 		dataPoolElement.setDataObjectType(object.getClass().getName());
 		dataPoolElement.setName(name);
+		dataPoolElement.setCreationDateTime((new Date()).toString());
 		
 		dataPoolElement.setMappingCorrelationId(((BPIMDataObject)object).getObjectId());		
 		dataPoolElement.setId(UniqueIdGenerator.nextId());
@@ -71,12 +63,8 @@ public class DataPoolElementHelper {
 				id = tmpDataPoolElement.getId();
 			}
 		}
-//		if (version == 1){
-//			dataPoolElement.setId(UniqueIdGenerator.nextId());
-//		}else{
-//			dataPoolElement.setId(id);
-//		}
 		dataPoolElement.setVersion(new Integer(version));
+		dataPoolElement.setName(dataPoolElement.getName() + " " + dataPoolElement.getVersion());
 		dataSnapshotPool.getDataElement().add(dataPoolElement);
 		return dataPoolElement;
 	}

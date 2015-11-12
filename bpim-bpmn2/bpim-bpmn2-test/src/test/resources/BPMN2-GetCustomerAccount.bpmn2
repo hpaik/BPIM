@@ -116,13 +116,19 @@
     <userTask id="_jbpm-unique-14" name="Review Image" >
       <ioSpecification>
         <dataInput id="_jbpm-unique-14_ParameterInput" name="Parameter" />
+        <dataInput id="_jbpm-unique-14_CommentInput" name="Comment" />
         <dataInput id="_jbpm-unique-14_NodeNameInput" name="NodeName" />
         <dataInput id="_jbpm-unique-14_TaskNameInput" name="TaskName" />
+        <dataInput id="_jbpm-unique-14_ContentInput" name="Content" />
+        <dataInput id="_jbpm-unique-14_GroupIdInput" name="GroupId" />
         <dataOutput id="_jbpm-unique-14_ResultOutput" name="Result" />
         <inputSet>
           <dataInputRefs>_jbpm-unique-14_ParameterInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-14_CommentInput</dataInputRefs>
           <dataInputRefs>_jbpm-unique-14_NodeNameInput</dataInputRefs>
           <dataInputRefs>_jbpm-unique-14_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-14_ContentInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-14_GroupIdInput</dataInputRefs>
         </inputSet>
         <outputSet>
           <dataOutputRefs>_jbpm-unique-14_ResultOutput</dataOutputRefs>
@@ -131,6 +137,13 @@
       <dataInputAssociation>
         <sourceRef>imageProcessingResult</sourceRef>
         <targetRef>_jbpm-unique-14_ParameterInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-14_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Review was successfull</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-14_CommentInput</to>
+        </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_jbpm-unique-14_NodeNameInput</targetRef>
@@ -146,10 +159,29 @@
           <to xsi:type="tFormalExpression">_jbpm-unique-14_TaskNameInput</to>
         </assignment>
       </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-14_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Dave Smith</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-14_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-14_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Admin</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-14_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
       <dataOutputAssociation>
         <sourceRef>_jbpm-unique-14_ResultOutput</sourceRef>
         <targetRef>imageProcessingResult</targetRef>
       </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>1025</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
     </userTask>
     <exclusiveGateway id="_jbpm-unique-15" name="Gateway" gatewayDirection="Converging" />
     <exclusiveGateway id="_jbpm-unique-16" name="Gateway" gatewayDirection="Diverging" />

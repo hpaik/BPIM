@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.bpim.objects.CustomerAccount;
 import org.bpim.objects.DiscountEntitlement;
-import org.bpim.objects.ETollDataObjectList;
+import org.bpim.objects.DiscountEntitlementList;
 import org.bpim.objects.FairAmount;
 import org.bpim.objects.PaymentResponse;
 import org.bpim.objects.model.JourneyDetails;
@@ -23,8 +23,8 @@ public class CustomerPaymentService {
 		return fairAmount;
 	}
 	
-	public ETollDataObjectList<DiscountEntitlement> getDiscountEntitlements(CustomerAccount customerAccount){
-		ETollDataObjectList<DiscountEntitlement> discountEntitlements = new ETollDataObjectList<DiscountEntitlement>();
+	public DiscountEntitlementList<DiscountEntitlement> getDiscountEntitlements(CustomerAccount customerAccount){
+		DiscountEntitlementList<DiscountEntitlement> discountEntitlements = new DiscountEntitlementList<DiscountEntitlement>();
 		
 		DiscountEntitlement discountEntitlement = new DiscountEntitlement();
 		discountEntitlement.setAmount(10);
@@ -43,7 +43,7 @@ public class CustomerPaymentService {
 		return discountEntitlements;
 	}
 	
-	public FairAmount applyDiscount(FairAmount fairAmount, org.bpim.objects.ETollDataObjectList discountEntitlements){
+	public FairAmount applyDiscount(FairAmount fairAmount, org.bpim.objects.DiscountEntitlementList discountEntitlements){
 	    Map<String, Object> jsonMap = (Map<String, Object>)discountEntitlements.get(discountEntitlementCounter);
 	   
 	    String jsonstr = "{";

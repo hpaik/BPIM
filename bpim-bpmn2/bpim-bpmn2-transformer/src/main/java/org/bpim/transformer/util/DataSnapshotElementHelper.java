@@ -22,6 +22,7 @@ public class DataSnapshotElementHelper {
 		org.bpim.model.data.v1.ObjectFactory dataObjectFactory = new org.bpim.model.data.v1.ObjectFactory();
 		DataSnapshotElement inputDataSnapshotElement = dataObjectFactory.createDataSnapshotElement();
 		inputDataSnapshotElement.setEmpty(true);
+		inputDataSnapshotElement.setName("Empty");
 		inputDataSnapshotElement.setId(UniqueIdGenerator.nextId());
 		return inputDataSnapshotElement;
 	}

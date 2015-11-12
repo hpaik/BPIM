@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import org.bpim.transformer.base.BPIMDataObject;
 
-public class ETollDataObjectList<T> extends ArrayList<T> implements BPIMDataObject{
+public class DiscountEntitlementList<T> extends ArrayList<T> implements BPIMDataObject{
 
 	private static final long serialVersionUID = 1L;
 	//public static int id = 50000;
 	
 	protected String objectId;
 	
-	public ETollDataObjectList(){
+	public DiscountEntitlementList(){
 		objectId = String.valueOf(ETollDataObject.id);
 		ETollDataObject.id ++;
 	}

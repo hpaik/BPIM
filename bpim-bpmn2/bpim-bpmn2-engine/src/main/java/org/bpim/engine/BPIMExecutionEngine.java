@@ -62,23 +62,23 @@ public class BPIMExecutionEngine {
 		processInstanceContext.addTransformationResult(transformationResult);
 		
 		//ProcessInstance processInstance = processInstanceContext.getProcessInstance();
-		CompositeProcessInstance compositeProcessInstance = processInstanceContext.getCompositeProcessInstance();
-		
-		 try {
-
-				JAXBContext jaxbContext = JAXBContext.newInstance(ProcessInstance.class);
-				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-
-				// output pretty printed
-				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-				
-//				jaxbMarshaller.marshal(new JAXBElement<CompositeProcessInstance>(new QName("uri","CompositeProcessInstance")
-//					, CompositeProcessInstance.class, compositeProcessInstance), System.out);								
-
-
-			} catch (JAXBException e) {
-				logger.error("Can not serialize process instance", e);
-			}
+//		CompositeProcessInstance compositeProcessInstance = processInstanceContext.getCompositeProcessInstance();
+//		
+//		 try {
+//
+//				JAXBContext jaxbContext = JAXBContext.newInstance(ProcessInstance.class);
+//				Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+//
+//				// output pretty printed
+//				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+//				
+////				jaxbMarshaller.marshal(new JAXBElement<CompositeProcessInstance>(new QName("uri","CompositeProcessInstance")
+////					, CompositeProcessInstance.class, compositeProcessInstance), System.out);								
+//
+//
+//			} catch (JAXBException e) {
+//				logger.error("Can not serialize process instance", e);
+//			}
 		 
 		
 		 

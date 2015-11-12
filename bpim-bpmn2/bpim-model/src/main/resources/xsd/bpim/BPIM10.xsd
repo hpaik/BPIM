@@ -25,14 +25,19 @@
 	</xs:complexType>
         
     <xs:element name="ProcessInstance" type="tns:ProcessInstance" />
-	<xs:complexType name="ProcessInstance">
+	<xs:complexType name="ProcessInstance">		
 		<xs:complexContent>
 			<xs:extension base="bpimbase:ElementBase">
 				<xs:sequence>
 					<xs:element name="executionPath" type="tns:ExecutionPath" />
 					<xs:element name="data" type="tns:Data" />
+					<xs:element name="server" type="bpimbase:Server" />
 				</xs:sequence>
-			</xs:extension>			
+				<xs:attribute name="modelId" type="xs:string" />
+				<xs:attribute name="endDateTime" type="xs:string" />
+				<xs:attribute name="creator" type="xs:string" />				
+				<xs:attribute name="state" type="xs:string" />
+			</xs:extension>
 		</xs:complexContent>		
 	</xs:complexType>
 	

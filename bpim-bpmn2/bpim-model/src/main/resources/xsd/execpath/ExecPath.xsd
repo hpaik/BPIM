@@ -49,15 +49,7 @@
 				</xs:sequence>
 			</xs:extension>			
 		</xs:complexContent>		
-	</xs:complexType>
-	
-	<xs:element name="Server" type="tns:Server" />
-	<xs:complexType name="Server">
-		<xs:complexContent>
-			<xs:extension base="bpimbase:ElementBase">
-			</xs:extension>			
-		</xs:complexContent>		
-	</xs:complexType>
+	</xs:complexType>	
 	
 	<xs:element name="ApplicationPerformer" type="tns:ApplicationPerformer" />
 	<xs:complexType name="ApplicationPerformer">
@@ -77,7 +69,7 @@
 	
 	<xs:complexType name="Performer" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="bpimbase:ElementBase">
+			<xs:extension base="bpimbase:MetaDataBase">
 			</xs:extension>			
 		</xs:complexContent>		
 	</xs:complexType>
@@ -102,6 +94,10 @@
 	<xs:complexType name="ManualTask">
 		<xs:complexContent>
 			<xs:extension base="tns:Activity">
+			<xs:attribute name="userId" type="xs:string"/>
+			<xs:attribute name="userName" type="xs:string"/>
+			<xs:attribute name="role" type="xs:string"/>
+			<xs:attribute name="comments" type="xs:string"/>
 			</xs:extension>			
 		</xs:complexContent>		
 	</xs:complexType>
@@ -144,7 +140,9 @@
 				<xs:sequence>
 					<xs:element name="outputTransition" type="tns:TransitionBase" minOccurs="0" maxOccurs="unbounded" />					
 				</xs:sequence>
-			</xs:extension>			
+				<xs:attribute name="executionDateTime" type="xs:string"/>
+				<xs:attribute name="state" type="xs:string"/>				
+			</xs:extension>				
 		</xs:complexContent>		
 	</xs:complexType>
 	
