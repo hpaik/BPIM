@@ -126,13 +126,13 @@ public class ExecutionContext {
 				node.delete();
 			 }
 			 
-			 Node compositPINode = createNode(db, compositeProcessInstance, "");
+			 Node compositPINode = createNode(db, compositeProcessInstance, "CompositeProcessInstance", "");
 			 
-			 Node dataPoolNode = createNode(db, "Data Pool", "");
+			 Node dataPoolNode = createNode(db, "Data Pool", "DataPoolRoot", "");
 			 createRelationship(compositPINode, dataPoolNode, "Data");
 			 Node dataPoolElementNode = null;
 			 for(DataPoolElement dataPoolElement: compositeProcessInstance.getDataSnapshotPool().getDataElement()){
-				 dataPoolElementNode = createNode(db, dataPoolElement, "");
+				 dataPoolElementNode = createNode(db, dataPoolElement, "DataPoolElement", "");
 				 createRelationship(dataPoolNode, dataPoolElementNode, "Contains");
 			 }
 			 
@@ -142,22 +142,22 @@ public class ExecutionContext {
 			 Node startNode = null;
 			 Node dataSnapshotNode = null;
 			for(final ProcessInstance pi :compositeProcessInstance.getProcessInstance()){							
-				piNode = createNode(db, pi, "");
+				piNode = createNode(db, pi, "ProcessInstance", "");
 				createRelationship(compositPINode, piNode, "Contains");												
 				
-				execPathNode = createNode(db, "Execution Path", "");
+				execPathNode = createNode(db, "Execution Path", "ExecutionPathRoot", "");
 				createRelationship(piNode, execPathNode, "Activities");
 				
 				Activity start = pi.getExecutionPath().getStart();
-				startNode = createNode(db, start, "");
+				startNode = createNode(db, start, "Activity", "");
 				createRelationship(execPathNode, startNode, "Begins");
 				transformExecPath(db, startNode, start.getOutputTransition());
 				
-				dataSnapshotGraphNode = createNode(db, "Data Snapshot Graphs", "");
+				dataSnapshotGraphNode = createNode(db, "Data Snapshot Graphs", "DataSnapshotGraphRoot", "");
 				createRelationship(piNode, dataSnapshotGraphNode, "Snapshot Graph");
 				
 				for (DataSnapshotElement dse: pi.getData().getDataSnapshotGraphs().getDataSnapshotElement()){
-					dataSnapshotNode = createNode(db, dse, " Snapshot");
+					dataSnapshotNode = createNode(db, dse, "DataSnapshotElement", " Snapshot");
 					createRelationship(dataSnapshotGraphNode, dataSnapshotNode, "Begins");
 					transformSnapshotGraph(db, dataSnapshotNode, dse.getDataTransition());
 				}				
@@ -172,14 +172,15 @@ public class ExecutionContext {
 	
 	private void transformSnapshotGraph(GraphDatabaseService db, Node parentNode, List<DataTransition> dtList) throws Exception{
 		String snapshotPostfix = " Snapshot";
+		String label = "DataSnapshotElement";
 		DataSnapshotElement child = null;
 		Node childNode = null;
 		for (DataTransition dt: dtList){
 			child = dt.getDataSnapshotElement();
 			if (child != null){
-				childNode = getNode(db, child, snapshotPostfix);
+				childNode = getNode(db, child, label, snapshotPostfix);
 				if (childNode == null){
-					childNode = createNode(db, child, snapshotPostfix);
+					childNode = createNode(db, child, label, snapshotPostfix);
 				}
 
 				Iterable<Relationship> relationships = getRelationShips(parentNode, dt.getName());
@@ -207,7 +208,7 @@ public class ExecutionContext {
 		for (TransitionBase trans: transList){
 			child = trans.getTo();
 			if (child != null){
-				childNode = createNode(db, child, "");
+				childNode = createNode(db, child, "Activity", "");
 				createRelationship(parentNode, childNode, "Transition");
 				if (!child.getOutputTransition().isEmpty()){
 					transformExecPath(db, childNode, child.getOutputTransition());
@@ -216,36 +217,37 @@ public class ExecutionContext {
 		}
 	}
 	
-	private Node getNode(GraphDatabaseService db, final ElementBase bpimElement, final String postfix) throws Exception{
+	private Node getNode(GraphDatabaseService db, final ElementBase bpimElement, final String labelName, final String postfix) throws Exception{
 		Label label = new Label() {			
 			@Override
 			public String name() {
-				return bpimElement.getName() + postfix;
+				return labelName;
 			}
 		};
 		return db.findNode(label, "Id", bpimElement.getId());
 	}
 	
 	
-	private Node createNode(GraphDatabaseService db, final String name, final String postfix) throws Exception{
+	private Node createNode(GraphDatabaseService db, final String caption, final String labelName, final String postfix) throws Exception{
 		
 		Node node = db.createNode(
 				new Label() {			
 			@Override
 			public String name() {
-				if(name != null){					
-					return name + postfix;
+				if(caption != null){					
+					return labelName;
 				}else{
 					return "Empty";
 				}
 			}
 		});
-		if(name != null){
-			String normalizedName = name;
+		if(caption != null){
+			String normalizedName = caption;
 			int lenghtLimit = 15;
 			if (normalizedName.length() > lenghtLimit){
 				lenghtLimit--;
-				normalizedName = name.substring(0, lenghtLimit) + " " + name.substring(lenghtLimit);
+				if (!normalizedName.substring(0, lenghtLimit).contains(" "))
+					normalizedName = normalizedName.substring(0, lenghtLimit) + " " + caption.substring(lenghtLimit);
 			}
 			node.setProperty("Caption", normalizedName);
 			node.setProperty("Name", normalizedName);
@@ -255,9 +257,9 @@ public class ExecutionContext {
 	
 	
 	
-	private Node createNode(GraphDatabaseService db, final ElementBase bpimElement, String postfix) throws Exception{
+	private Node createNode(GraphDatabaseService db, final ElementBase bpimElement, final String labelName, String postfix) throws Exception{
 		
-		Node node = createNode(db, bpimElement.getName(), postfix);
+		Node node = createNode(db, bpimElement.getName(), labelName, postfix);
 		Object value = null;
 		
 		for (Method method :bpimElement.getClass().getMethods()){
