@@ -126,6 +126,7 @@ public class ExecutionContext {
 				node.delete();
 			 }
 			 
+			 
 			 Node compositPINode = createNode(db, compositeProcessInstance, "CompositeProcessInstance", "");
 			 
 			 Node dataPoolNode = createNode(db, "Data Pool", "DataPoolRoot", "");
