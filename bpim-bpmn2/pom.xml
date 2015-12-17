@@ -30,6 +30,35 @@
 	  	 	<artifactId>bpim-bpmn2-transformer</artifactId>
 	  	 	<version>${project.version}</version>  	 	
 	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.bpim</groupId>
+	  		<artifactId>bpim-bpmn2-engine</artifactId>
+	  		<version>${project.version}</version>
+	  	</dependency>
+	  	<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>3.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>		
+			<version>2.4.0</version>
+		</dependency>
+		<dependency>
+		   <groupId>org.neo4j</groupId>
+		   <artifactId>neo4j</artifactId>
+		   <version>2.3.0</version>
+		</dependency>
+		<dependency>
+		   <groupId>org.neo4j</groupId>
+		   <artifactId>neo4j-kernel</artifactId>
+		   <version>2.3.0</version>
+		</dependency>	
   	</dependencies>
   </dependencyManagement>
+  <properties>
+  	<maven.compiler.source>1.7</maven.compiler.source>
+  	<maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
 </project>

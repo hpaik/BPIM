@@ -1,4 +1,4 @@
-package org.bpim.objects;
+package org.bpim.example.customerjourney.model;
 
 public class CustomerAccount extends ETollDataObject{
 	

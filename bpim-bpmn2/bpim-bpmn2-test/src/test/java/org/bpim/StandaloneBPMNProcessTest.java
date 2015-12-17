@@ -27,13 +27,12 @@ import javax.persistence.Persistence;
 
 import org.bpim.engine.ExecutionContext;
 import org.bpim.engine.ProcessInstanceContext;
+import org.bpim.example.customerjourney.handler.CustomerAccountSendTaskHandler;
+import org.bpim.example.customerjourney.handler.ImageProcessingWorkItemHandler;
+import org.bpim.example.customerjourney.model.CustomerAccount;
+import org.bpim.example.customerjourney.model.JourneyDetails;
+import org.bpim.example.customerjourney.model.JourneyMessage;
 import org.bpim.model.data.v1.DataPoolElement;
-import org.bpim.objects.CustomerAccount;
-import org.bpim.objects.ExtendedReceiveTaskHandler;
-import org.bpim.objects.ExtendedServiceTaskHandler;
-import org.bpim.objects.TestWorkItemHandler;
-import org.bpim.objects.model.JourneyDetails;
-import org.bpim.objects.model.JourneyMessage;
 import org.drools.compiler.builder.impl.KnowledgeBuilderConfigurationImpl;
 import org.drools.core.SessionConfiguration;
 import org.drools.core.audit.WorkingMemoryInMemoryLogger;
@@ -41,7 +40,8 @@ import org.drools.core.impl.EnvironmentFactory;
 import org.h2.tools.DeleteDbFiles;
 import org.h2.tools.Server;
 import org.jbpm.bpmn2.handler.ReceiveTaskHandler;
-import org.bpim.objects.SendTaskHandler;
+import org.bpim.process.handler.ExtendedReceiveTaskHandler;
+import org.bpim.process.handler.ExtendedServiceTaskHandler;
 import org.bpim.transformer.util.DataPoolElementHelper;
 import org.jbpm.bpmn2.handler.ServiceTaskHandler;
 import org.jbpm.bpmn2.xml.BPMNDISemanticModule;
@@ -160,77 +160,24 @@ public class StandaloneBPMNProcessTest {
      * Tests
      */
     
-    @Test
-    public void testMinimalProcessWithGraphical() throws Exception {
-        KieBase kbase = createKnowledgeBase("BPMN2-MinimalProcessWithGraphical.bpmn2");
-        KieSession ksession = createKnowledgeSession(kbase);
-        ProcessInstance processInstance = ksession.startProcess("Minimal");
-        assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
-    }
-    
-    @Test
-    public void testDataObject() throws Exception {
-        KieBase kbase = createKnowledgeBase("BPMN2-DataObject.bpmn2");
-        KieSession ksession = createKnowledgeSession(kbase);
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("employee", "UserId-12345");
-        ProcessInstance processInstance = ksession.startProcess("Evaluation", params);
-        assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
-    }
-    
-    @Test
-    public void testEvaluationProcess() throws Exception {
-        KieBase kbase = createKnowledgeBase("BPMN2-EvaluationProcess.bpmn2");
-        KieSession ksession = createKnowledgeSession(kbase);
-        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", new SystemOutWorkItemHandler());
-        ksession.getWorkItemManager().registerWorkItemHandler("RegisterRequest", new SystemOutWorkItemHandler());
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("employee", "UserId-12345");
-        ProcessInstance processInstance = ksession.startProcess("Evaluation", params);
-        assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
-    }
-    
-    
-    @Test
-    public void testServiceTask() throws Exception {
-        KieBase kbase = createKnowledgeBase("BPMN2-ServiceProcess.bpmn2");
-        KieSession ksession = createKnowledgeSession(kbase);
-        
-        ksession.getWorkItemManager().registerWorkItemHandler("Service Task", new ServiceTaskHandler());
-        TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
-        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
-        
-        Map<String, Object> params = new HashMap<String, Object>();
-        CustomerAccount customerAccount = new CustomerAccount();
-        customerAccount.setCustomerId("111111");
-        customerAccount.setAccountId("7050");
-        customerAccount.setObjectId("123456");
-        params.put("customerAccount", customerAccount);
-        
-        WorkflowProcessInstance processInstance = (WorkflowProcessInstance) ksession.startProcess("ServiceProcess", params);
-        //assertProcessInstanceCompleted(processInstance.getId(), ksession);
-        //assertEquals("Hello john!", processInstance.getVariable("s"));
-    }
     
     @Test
     public void testCustomerJourney() throws Exception {
     	ExecutionContext executionContext = new ExecutionContext();
-    	executionContext.startCompositeProcessInstance("Customer Journey Process");
-    	
-    	
+    	executionContext.startCompositeProcessInstance("Customer Journey Process");    	    	
     	
     	KieBase kbase = createKnowledgeBase("BPMN2-GetCustomerAccount.bpmn2", "BPMN2-CustomerPayment.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
         
         ksession.getWorkItemManager().registerWorkItemHandler("Service Task", new ExtendedServiceTaskHandler());
         
-        TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
+        ImageProcessingWorkItemHandler workItemHandler = new ImageProcessingWorkItemHandler();
         ksession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
         
         ExtendedReceiveTaskHandler receiveTaskHandler = new ExtendedReceiveTaskHandler(ksession);
         ksession.getWorkItemManager().registerWorkItemHandler("Receive Task", receiveTaskHandler);
         
-        ksession.getWorkItemManager().registerWorkItemHandler("Send Task", new SendTaskHandler());
+        ksession.getWorkItemManager().registerWorkItemHandler("Send Task", new CustomerAccountSendTaskHandler());
         
         Map<String, Object> params = new HashMap<String, Object>();
         JourneyMessage journeyMessage = new JourneyMessage();
@@ -246,43 +193,25 @@ public class StandaloneBPMNProcessTest {
         
         
         DataPoolElement journeyDetailsElement = processInstanceContext.getDataPoolElementByType(JourneyDetails.class.getName());
-        JourneyDetails journeyDetails = DataPoolElementHelper.deserialize(journeyDetailsElement); 
-        		//gson.fromJson(journeyDetailsElement.getDataObject().toString(), JourneyDetails.class);                
+        JourneyDetails journeyDetails = DataPoolElementHelper.deserialize(journeyDetailsElement);         		               
         
         DataPoolElement customerAccountElement = processInstanceContext.getDataPoolElementByType(CustomerAccount.class.getName());
-        CustomerAccount customerAccount = DataPoolElementHelper.deserialize(customerAccountElement); 
-        		//gson.fromJson(customerAccountElement.getDataObject().toString(), CustomerAccount.class);        
+        CustomerAccount customerAccount = DataPoolElementHelper.deserialize(customerAccountElement);                 
         
         
         WorkflowProcessInstance customerPaymentProcessInstance = (WorkflowProcessInstance) ksession.startProcess("CustomerPaymentProcess");
-        receiveTaskHandler.messageReceived("CustomerJourneyDetails", new Object[]{journeyDetails, customerAccount});
         
-//        Thread.sleep(3000);
+        Map<String, Object> message = new HashMap<String, Object>();
+        message.put("journeyDetails", journeyDetails);
+        message.put("customerAccount",customerAccount);
+        
+        receiveTaskHandler.messageReceived("CustomerJourneyDetails", message);
+        
         executionContext.storeProcessInstance();
-        //assertProcessInstanceCompleted(processInstance.getId(), ksession);
-        //assertEquals("Hello john!", processInstance.getVariable("s"));
+       
     }
     
-    @Test
-    public void testUserTaskParametrizedInput() throws Exception {
-        KieBase kbase = createKnowledgeBase("BPMN2-UserTaskWithParametrizedInput.bpmn2");
-        KieSession ksession = createKnowledgeSession(kbase);
-        TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
-        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", workItemHandler);
-        ProcessInstance processInstance = ksession.startProcess("UserTask");
-        assertTrue(processInstance.getState() == ProcessInstance.STATE_ACTIVE);
-//        ksession = restoreSession(ksession, true);
-//        WorkItem workItem = workItemHandler.getWorkItem();
-//        assertNotNull(workItem);
-//        assertEquals("Executing task of process instance " + processInstance.getId() + " as work item with Hello", 
-//                workItem.getParameter("Description").toString().trim());
-//        ksession.getWorkItemManager().completeWorkItem(workItem.getId(), null);
-//        assertProcessInstanceFinished(processInstance, ksession);
-//        ksession.dispose();
-    }
-    
-    
-    
+            
     public static void setUpDataSource() throws Exception {
         setupDataSource = true;
         server.start();

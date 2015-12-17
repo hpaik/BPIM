@@ -1,4 +1,4 @@
-package org.bpim.objects;
+package org.bpim.example.customerjourney.model;
 
 import java.util.ArrayList;
 

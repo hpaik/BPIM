@@ -7,22 +7,30 @@
   </parent>
   <artifactId>bpim-bpmn2-test</artifactId>
   <dependencies>
-  <!-- -->
+    <!-- -->
+     <dependency>
+  	 	<groupId>org.bpim</groupId>
+  	 	<artifactId>bpim-bpmn2-transformer</artifactId>  	 	
+  	 </dependency>
+  	  <dependency>
+  	 	<groupId>org.bpim</groupId>
+  	 	<artifactId>bpim-model</artifactId>  	 	
+  	 </dependency>
   	<dependency>
 		<groupId>org.apache.lucene</groupId>
-		<artifactId>lucene-core</artifactId>
-		<version>3.6.2</version>
+		<artifactId>lucene-core</artifactId>		
 	</dependency>
-
+    <dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>		
+	</dependency>
   	<dependency>
 	   <groupId>org.neo4j</groupId>
-	   <artifactId>neo4j</artifactId>
-	   <version>2.3.0</version>
-	  </dependency>	  
+	   <artifactId>neo4j</artifactId>	   
+	</dependency>	  
   	<dependency>
   		<groupId>org.bpim</groupId>
-  		<artifactId>bpim-bpmn2-engine</artifactId>
-  		<version>1.0.0-SNAPSHOT</version>
+  		<artifactId>bpim-bpmn2-engine</artifactId>  		
   	</dependency>
   	<dependency>
       <groupId>org.jbpm</groupId>

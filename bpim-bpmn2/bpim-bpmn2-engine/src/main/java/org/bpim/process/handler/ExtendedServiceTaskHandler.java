@@ -1,4 +1,4 @@
-package org.bpim.objects;
+package org.bpim.process.handler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,7 +8,6 @@ import java.util.Map;
 import org.bpim.engine.ExecutionContext;
 import org.bpim.engine.ProcessInstanceContext;
 import org.bpim.model.data.v1.DataPoolElement;
-import org.bpim.objects.model.JourneyDetails;
 import org.bpim.transformer.util.DataPoolElementHelper;
 import org.jbpm.bpmn2.handler.WorkItemHandlerRuntimeException;
 import org.kie.api.runtime.process.WorkItem;
@@ -16,8 +15,6 @@ import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.process.WorkItemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
 
 public class ExtendedServiceTaskHandler implements WorkItemHandler {
 	private static final Logger logger = LoggerFactory.getLogger(ExtendedServiceTaskHandler.class);
@@ -70,12 +67,6 @@ public class ExtendedServiceTaskHandler implements WorkItemHandler {
             		workItem.getParameters().put("Param" + counter, params[counter]);
             		counter++;
             	}
-//                classes = new Class<?>[] {
-//                    Class.forName(parameterType)
-//                };
-//                params = new Object[] {
-//                    parameter
-//                };
             }
            
             Method method = c.getMethod(operation, classes);

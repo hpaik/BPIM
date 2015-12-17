@@ -1,4 +1,4 @@
-package org.bpim.objects;
+package org.bpim.process.handler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,13 +33,15 @@ public class ExtendedReceiveTaskHandler  implements WorkItemHandler {
         if (workItemId == null) {
             return;
         }
-        Map<String, Object> results = new HashMap<String, Object>();
+        Map<String, Object> messageMap = null;
+        if (message instanceof Map){
+        	messageMap = (Map<String, Object>) message;
+        }else{
+        	messageMap = new HashMap<String, Object>();
+        	messageMap.put("Message", message);
+        }
         
-        Object[] messageList = (Object[]) message;
-        results.put("journeyDetails", messageList[0]);
-        results.put("customerAccount", messageList[1]);
-        
-        ksession.getWorkItemManager().completeWorkItem(workItemId, results);
+        ksession.getWorkItemManager().completeWorkItem(workItemId, messageMap);
     }
 
     public void abortWorkItem(WorkItem workItem, WorkItemManager manager) {

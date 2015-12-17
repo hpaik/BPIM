@@ -1,8 +1,6 @@
-package org.bpim.objects.model;
+package org.bpim.example.customerjourney.model;
 
 import java.util.Date;
-
-import org.bpim.objects.ETollDataObject;
 
 public class JourneyMessage extends ETollDataObject{
 	private String gateId;

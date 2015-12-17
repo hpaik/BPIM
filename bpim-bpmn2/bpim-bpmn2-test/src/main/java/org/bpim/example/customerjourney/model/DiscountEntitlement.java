@@ -1,4 +1,4 @@
-package org.bpim.objects;
+package org.bpim.example.customerjourney.model;
 
 public class DiscountEntitlement extends ETollDataObject{
 	private long amount;

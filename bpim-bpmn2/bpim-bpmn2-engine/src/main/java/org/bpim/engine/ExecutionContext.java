@@ -185,10 +185,8 @@ public class ExecutionContext {
 				}
 
 				Iterable<Relationship> relationships = getRelationShips(parentNode, dt.getName());
-				int i = 0;
 				boolean flag = false;
 				for (Relationship relationship: relationships){
-					i++;
 					if (relationship.getEndNode().getId() == childNode.getId()){
 						flag = true;
 					}

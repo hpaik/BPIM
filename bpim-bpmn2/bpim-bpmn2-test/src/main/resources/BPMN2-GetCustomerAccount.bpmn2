@@ -14,25 +14,25 @@
 
   <itemDefinition id="null" />
 
-  <itemDefinition id="_jbpm-unique-7_InMessageType" structureRef="org.bpim.objects.model.JourneyMessage" />
+  <itemDefinition id="_jbpm-unique-7_InMessageType" structureRef="org.bpim.example.customerjourney.model.JourneyMessage" />
   <message id="_jbpm-unique-7_InMessage" itemRef="_jbpm-unique-7_InMessageType" />
-  <interface id="_jbpm-unique-7_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+  <interface id="_jbpm-unique-7_ServiceInterface" name="org.bpim.example.customerjourney.service.CustomerAccountService" implementationRef="" >
     <operation id="_jbpm-unique-7_ServiceOperation" name="getJourneyDetails" implementationRef="" >
       <inMessageRef>_jbpm-unique-7_InMessage</inMessageRef>
     </operation>
   </interface>
 
-  <itemDefinition id="_jbpm-unique-11_InMessageType" structureRef="org.bpim.objects.model.JourneyMessage" />
+  <itemDefinition id="_jbpm-unique-11_InMessageType" structureRef="org.bpim.example.customerjourney.model.JourneyMessage" />
   <message id="_jbpm-unique-11_InMessage" itemRef="_jbpm-unique-11_InMessageType" />
-  <interface id="_jbpm-unique-11_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+  <interface id="_jbpm-unique-11_ServiceInterface" name="org.bpim.example.customerjourney.service.CustomerAccountService" implementationRef="" >
     <operation id="_jbpm-unique-11_ServiceOperation" name="processImage" implementationRef="" >
       <inMessageRef>_jbpm-unique-11_InMessage</inMessageRef>
     </operation>
   </interface>
 
-  <itemDefinition id="_jbpm-unique-17_InMessageType" structureRef="org.bpim.objects.model.ImageProcessingResult" />
+  <itemDefinition id="_jbpm-unique-17_InMessageType" structureRef="org.bpim.example.customerjourney.model.ImageProcessingResult" />
   <message id="_jbpm-unique-17_InMessage" itemRef="_jbpm-unique-17_InMessageType" />
-  <interface id="_jbpm-unique-17_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+  <interface id="_jbpm-unique-17_ServiceInterface" name="org.bpim.example.customerjourney.service.CustomerAccountService" implementationRef="" >
     <operation id="_jbpm-unique-17_ServiceOperation" name="getCustomerAccountByPlateNumber" implementationRef="" >
       <inMessageRef>_jbpm-unique-17_InMessage</inMessageRef>
     </operation>
@@ -40,7 +40,7 @@
 
   <itemDefinition id="_jbpm-unique-21_InMessageType" />
   <message id="_jbpm-unique-21_InMessage" itemRef="_jbpm-unique-21_InMessageType" />
-  <interface id="_jbpm-unique-21_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+  <interface id="_jbpm-unique-21_ServiceInterface" name="org.bpim.example.customerjourney.service.CustomerAccountService" implementationRef="" >
     <operation id="_jbpm-unique-21_ServiceOperation" name="error" implementationRef="" >
       <inMessageRef>_jbpm-unique-21_InMessage</inMessageRef>
     </operation>
@@ -48,7 +48,7 @@
 
   <itemDefinition id="_jbpm-unique-24_InMessageType" />
   <message id="_jbpm-unique-24_InMessage" itemRef="_jbpm-unique-24_InMessageType" />
-  <interface id="_jbpm-unique-24_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+  <interface id="_jbpm-unique-24_ServiceInterface" name="org.bpim.example.customerjourney.service.CustomerAccountService" implementationRef="" >
     <operation id="_jbpm-unique-24_ServiceOperation" name="extractTransponderId" implementationRef="" >
       <inMessageRef>_jbpm-unique-24_InMessage</inMessageRef>
     </operation>
@@ -56,7 +56,7 @@
 
   <itemDefinition id="_jbpm-unique-25_InMessageType" />
   <message id="_jbpm-unique-25_InMessage" itemRef="_jbpm-unique-25_InMessageType" />
-  <interface id="_jbpm-unique-25_ServiceInterface" name="org.bpim.objects.service.CustomerAccountService" implementationRef="" >
+  <interface id="_jbpm-unique-25_ServiceInterface" name="org.bpim.example.customerjourney.service.CustomerAccountService" implementationRef="" >
     <operation id="_jbpm-unique-25_ServiceOperation" name="getCustomerAccountByTransponderId" implementationRef="" >
       <inMessageRef>_jbpm-unique-25_InMessage</inMessageRef>
     </operation>
@@ -68,8 +68,8 @@
   <process processType="Private" isExecutable="true" id="GetCustomerAccountProcess" name="Get Customer Account Process" >
 
     <extensionElements>
-     <tns:import name="org.bpim.objects.model.JourneyMessage" />
-     <tns:import name="org.bpim.objects.model.ImageProcessingResult" />
+     <tns:import name="org.bpim.example.customerjourney.model.JourneyMessage" />
+     <tns:import name="org.bpim.example.customerjourney.model.ImageProcessingResult" />
     </extensionElements>
     <!-- process variables -->
     <property id="journeyMessage" itemSubjectRef="null"/>
@@ -309,7 +309,7 @@
         <dc:Bounds x="989" y="193" width="109" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-15" >
-        <dc:Bounds x="823" y="327" width="48" height="48" />
+        <dc:Bounds x="805" y="331" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-16" >
         <dc:Bounds x="1005" y="328" width="48" height="48" />
@@ -360,18 +360,19 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-13-_jbpm-unique-15" >
         <di:waypoint x="823" y="216" />
-        <di:waypoint x="847" y="351" />
+        <di:waypoint x="826" y="285" />
+        <di:waypoint x="829" y="355" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-16-_jbpm-unique-15" >
         <di:waypoint x="1029" y="352" />
-        <di:waypoint x="847" y="351" />
+        <di:waypoint x="829" y="355" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-14-_jbpm-unique-16" >
         <di:waypoint x="1043" y="217" />
         <di:waypoint x="1029" y="352" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-15-_jbpm-unique-17" >
-        <di:waypoint x="847" y="351" />
+        <di:waypoint x="829" y="355" />
         <di:waypoint x="613" y="358" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-21-_jbpm-unique-20" >

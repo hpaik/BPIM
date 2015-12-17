@@ -1,9 +1,9 @@
-package org.bpim.objects.service;
+package org.bpim.example.customerjourney.service;
 
-import org.bpim.objects.CustomerAccount;
-import org.bpim.objects.model.ImageProcessingResult;
-import org.bpim.objects.model.JourneyDetails;
-import org.bpim.objects.model.JourneyMessage;
+import org.bpim.example.customerjourney.model.CustomerAccount;
+import org.bpim.example.customerjourney.model.ImageProcessingResult;
+import org.bpim.example.customerjourney.model.JourneyDetails;
+import org.bpim.example.customerjourney.model.JourneyMessage;
 
 public class CustomerAccountService {
 	

@@ -1,6 +1,5 @@
-package org.bpim.objects.model;
+package org.bpim.example.customerjourney.model;
 
-import org.bpim.objects.ETollDataObject;
 
 public class ImageProcessingResult extends ETollDataObject{
 	private int confidenceRate;

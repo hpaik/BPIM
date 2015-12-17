@@ -1,15 +1,15 @@
-package org.bpim.objects.service;
+package org.bpim.example.customerjourney.service;
 
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.bpim.objects.CustomerAccount;
-import org.bpim.objects.DiscountEntitlement;
-import org.bpim.objects.DiscountEntitlementList;
-import org.bpim.objects.FairAmount;
-import org.bpim.objects.PaymentResponse;
-import org.bpim.objects.model.JourneyDetails;
+import org.bpim.example.customerjourney.model.CustomerAccount;
+import org.bpim.example.customerjourney.model.DiscountEntitlement;
+import org.bpim.example.customerjourney.model.DiscountEntitlementList;
+import org.bpim.example.customerjourney.model.FairAmount;
+import org.bpim.example.customerjourney.model.JourneyDetails;
+import org.bpim.example.customerjourney.model.PaymentResponse;
 import org.bpim.transformer.util.DataPoolElementHelper;
 
 public class CustomerPaymentService {
@@ -43,7 +43,7 @@ public class CustomerPaymentService {
 		return discountEntitlements;
 	}
 	
-	public FairAmount applyDiscount(FairAmount fairAmount, org.bpim.objects.DiscountEntitlementList discountEntitlements){
+	public FairAmount applyDiscount(FairAmount fairAmount, org.bpim.example.customerjourney.model.DiscountEntitlementList discountEntitlements){
 	    Map<String, Object> jsonMap = (Map<String, Object>)discountEntitlements.get(discountEntitlementCounter);
 	   
 	    String jsonstr = "{";

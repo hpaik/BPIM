@@ -13,12 +13,12 @@
  * limitations under the License.
 */
 
-package org.bpim.objects;
+package org.bpim.example.customerjourney.handler;
 
-import org.bpim.objects.model.ImageProcessingResult;
+import org.bpim.example.customerjourney.model.ImageProcessingResult;
 import org.kie.api.runtime.process.*;
 
-public class TestWorkItemHandler implements WorkItemHandler {
+public class ImageProcessingWorkItemHandler implements WorkItemHandler {
 
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {    	
                         

@@ -1,18 +1,16 @@
-package org.bpim.objects;
+package org.bpim.example.customerjourney.handler;
 
 import org.bpim.engine.ExecutionContext;
 import org.bpim.engine.ProcessInstanceContext;
+import org.bpim.example.customerjourney.model.CustomerAccount;
+import org.bpim.example.customerjourney.model.JourneyDetails;
 import org.bpim.model.data.v1.DataPoolElement;
-import org.bpim.objects.model.JourneyDetails;
 import org.bpim.transformer.util.DataPoolElementHelper;
 import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkItemHandler;
 import org.kie.api.runtime.process.WorkItemManager;
 
-import com.google.gson.Gson;
-
-
-public class SendTaskHandler  implements WorkItemHandler {
+public class CustomerAccountSendTaskHandler  implements WorkItemHandler {
     
     public void executeWorkItem(WorkItem workItem, WorkItemManager manager) {
         
@@ -22,13 +20,11 @@ public class SendTaskHandler  implements WorkItemHandler {
         
         DataPoolElement journeyDetailsElement = processInstanceContext.getDataPoolElementByType(JourneyDetails.class.getName());
         JourneyDetails journeyDetails = DataPoolElementHelper.deserialize(journeyDetailsElement);
-        		
-        		//gson.fromJson(journeyDetailsElement.getDataObject().toString(), JourneyDetails.class);        
+        
         workItem.getParameters().put("journeyDetails", journeyDetails);
         
         DataPoolElement customerAccountElement = processInstanceContext.getDataPoolElementByType(CustomerAccount.class.getName());
         CustomerAccount customerAccount = DataPoolElementHelper.deserialize(customerAccountElement);
-        		//gson.fromJson(customerAccountElement.getDataObject().toString(), CustomerAccount.class);        
         workItem.getParameters().put("customerAccount", customerAccount);
         
         manager.completeWorkItem(workItem.getId(), null);
