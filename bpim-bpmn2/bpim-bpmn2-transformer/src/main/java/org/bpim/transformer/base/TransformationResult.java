@@ -10,22 +10,15 @@ import org.bpim.model.execpath.v1.FlowNode;
 
 public class TransformationResult {
 	
-	//private Activity execPathActivity;
 	private FlowNode flowNode;
 	private List<DataPoolElement> dataPoolElements = null;
-	private List<DataSnapshotElement> sourceDataSnapshotElement;
+	private List<DataSnapshotElement> sourceDataSnapshotElement = null;
+	private List<Long> corelatedProcessInstances = null;
 	
 	public TransformationResult(){		
 		dataPoolElements = new ArrayList<DataPoolElement>();
 		sourceDataSnapshotElement = new  ArrayList<DataSnapshotElement>();
 	}
-	
-//	public Activity getExecPathActivity() {
-//		return execPathActivity;
-//	}
-//	public void setExecPathActivity(Activity execPathElement) {
-//		this.execPathActivity = execPathElement;
-//	}
 
 	public List<DataPoolElement> getDataPoolElements() {
 		return dataPoolElements;
@@ -45,6 +38,18 @@ public class TransformationResult {
 
 	public void setFlowNode(FlowNode flowNode) {
 		this.flowNode = flowNode;
+	}
+
+	public List<Long> getCorelatedProcessInstances() {
+		if (corelatedProcessInstances == null){
+			corelatedProcessInstances = new ArrayList<Long>();
+		}
+		return corelatedProcessInstances;
+	}
+
+	public void setCorelatedProcessInstances(
+			List<Long> corelatedProcessInstances) {
+		this.corelatedProcessInstances = corelatedProcessInstances;
 	}	
 
 }

@@ -51,9 +51,9 @@
 	<xs:complexType name="Data">
 		<xs:sequence>
 			<xs:element name="dataSnapshotGraphs" type="data:DataSnapshotGraphs" />
-			<!--  
+			<!---->  
 			<xs:element name="dataSnapshotPool" type="data:DataSnapshotPool" />
-			-->
+			
 		</xs:sequence>
 	</xs:complexType>
 	

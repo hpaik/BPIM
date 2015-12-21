@@ -42,6 +42,7 @@ public class DataSnapshotGraphHelper {
 				sourceDataSnapshotElement.getDataTransition().add(dataTransition);
 				transformationResult.getSourceDataSnapshotElement().add(sourceDataSnapshotElement);
 			}
+			return;
 		}
 							 					
 		DataSnapshotElement sourceDataSnapshotElement = null;

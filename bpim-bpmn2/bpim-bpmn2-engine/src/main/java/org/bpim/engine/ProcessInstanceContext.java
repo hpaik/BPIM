@@ -1,5 +1,6 @@
 package org.bpim.engine;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,10 +25,13 @@ public class ProcessInstanceContext {
 	private org.bpim.model.v1.ObjectFactory objectFatory = null;
 	private org.bpim.model.data.v1.ObjectFactory dataObjectFatory = null;
 	private Activity currentExecPathActivity = null;
+	private List<Long> corelatedProcessInstances = null;
+	private ExecutionContext executionContext = null;
 	
-	public ProcessInstanceContext(){
+	public ProcessInstanceContext(ExecutionContext executionContext){
 		objectFatory = new org.bpim.model.v1.ObjectFactory();
 		dataObjectFatory = new org.bpim.model.data.v1.ObjectFactory();
+		this.executionContext = executionContext;
 	}
 
 	public ProcessInstance getProcessInstance() {
@@ -39,6 +43,7 @@ public class ProcessInstanceContext {
 		if (processInstance.getData() == null){
 			processInstance.setData(objectFatory.createData());
 			processInstance.getData().setDataSnapshotGraphs(dataObjectFatory.createDataSnapshotGraphs());			
+			processInstance.getData().setDataSnapshotPool(dataObjectFatory.createDataSnapshotPool());
 		}
 		if (processInstance.getExecutionPath() == null){
 			processInstance.setExecutionPath(objectFatory.createExecutionPath());
@@ -47,18 +52,27 @@ public class ProcessInstanceContext {
 	
 	public DataPoolElement getDataPoolElementByType(String objectType){
 		DataPoolElement dataPoolElement = null;
-		for (DataPoolElement tmpDataPoolElement : getDataSnapshotPool().getDataElement()){			
-				if (objectType.equals(tmpDataPoolElement.getDataObjectType())){
-					if (dataPoolElement != null && dataPoolElement.getVersion() >= tmpDataPoolElement.getVersion()){
-						continue;
-					}
-					dataPoolElement = tmpDataPoolElement;
-				} 											
+		for (DataPoolElement tmpDataPoolElement : getReadOnlyDataSnapshotPool().getDataElement()){			
+			if (objectType.equals(tmpDataPoolElement.getDataObjectType())){
+				if (dataPoolElement != null && dataPoolElement.getVersion() >= tmpDataPoolElement.getVersion()){
+					continue;
+				}
+				dataPoolElement = tmpDataPoolElement;
+			} 											
 		}
 		return dataPoolElement;
 	}
 	
  	public void addTransformationResult(TransformationResult transformationResult){
+ 		
+ 		if(!transformationResult.getCorelatedProcessInstances().isEmpty()){
+ 			for(Long processId : transformationResult.getCorelatedProcessInstances()){
+ 				if(!getCorelatedProcessInstances().contains(processId)){
+ 					getCorelatedProcessInstances().add(processId);
+ 				}
+ 			}
+ 		}
+ 		
  		if (transformationResult.getFlowNode() instanceof TransitionBase){
  			currentExecPathActivity.getOutputTransition().clear();
  			currentExecPathActivity.getOutputTransition().add(
@@ -114,9 +128,6 @@ public class ProcessInstanceContext {
 				}
 				
 				for (DataTransition dataTransition : tmpDataSnapshotElement.getDataTransition()){
-//					if (dataTransition.getName().equals("Apply Discount")){
-//						targetDataSnapshotElement = getDataSnapshotElement(dataTransition.getDataSnapshotElement().getDataPoolElementId());
-//					}
 					targetDataSnapshotElement = getDataSnapshotElement(dataTransition.getDataSnapshotElement().getDataPoolElementId());
 					if (targetDataSnapshotElement != null){
 						dataTransition.setDataSnapshotElement(targetDataSnapshotElement); 
@@ -129,7 +140,7 @@ public class ProcessInstanceContext {
 		}		
 		
 		for (DataPoolElement tmpDataPoolElement: transformationResult.getDataPoolElements()){
-			DataPoolElementHelper.addToPool(tmpDataPoolElement, getDataSnapshotPool());
+			DataPoolElementHelper.addToPool(tmpDataPoolElement, getEditableDataSnapshotPool());
 		}
 		
 		for (DataSnapshotElement tmpDataSnapshotElement: transformationResult.getSourceDataSnapshotElement()){
@@ -138,6 +149,7 @@ public class ProcessInstanceContext {
 					if(dataTransition.getDataSnapshotElement() != null && 
 							dataTransition.getDataSnapshotElement().getDataPoolElementId() != null &&
 							tmpDataPoolElement.getId().equals(dataTransition.getDataSnapshotElement().getDataPoolElementId())){
+						
 						dataTransition.getDataSnapshotElement().setName(tmpDataPoolElement.getName());
 //						tmpDataPoolElement.setCreationDateTime(tmpDataPoolElement.getCreationDateTime());
 					}
@@ -149,7 +161,7 @@ public class ProcessInstanceContext {
  	
 	private DataPoolElement getDataPoolElement(String objectId){
 		DataPoolElement dataPoolElement = null;
-		for (DataPoolElement tmpDataPoolElement : getDataSnapshotPool().getDataElement()){
+		for (DataPoolElement tmpDataPoolElement : getReadOnlyDataSnapshotPool().getDataElement()){
 			if (tmpDataPoolElement.getMappingCorrelationId() != null && tmpDataPoolElement.getMappingCorrelationId().equals(objectId)){
 				if (dataPoolElement !=  null 
 						&& dataPoolElement.getDataObjectType().equals(tmpDataPoolElement.getDataObjectType())
@@ -161,8 +173,7 @@ public class ProcessInstanceContext {
 		}
 		return dataPoolElement;
 	}
-	
-	
+		
 	private DataSnapshotElement getDataSnapshotElement(String dataPoolElementId){
 		DataSnapshotElement dataSnapshotElement = null;
 
@@ -214,10 +225,34 @@ public class ProcessInstanceContext {
 		
 	}
 	
-	public DataSnapshotPool getDataSnapshotPool(){
+	public DataSnapshotPool getReadOnlyDataSnapshotPool(){
 		if (compositeProcessInstance != null){
 			return compositeProcessInstance.getDataSnapshotPool();
+		}else{
+			org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
+			DataSnapshotPool result = objectFactory.createDataSnapshotPool();
+			result.getDataElement().addAll(this.getProcessInstance().getData().getDataSnapshotPool().getDataElement());
+			for (Long processId : getCorelatedProcessInstances()){
+				result.getDataElement().addAll(
+						executionContext.getProcessInstanceContext(
+								processId.toString()).getReadOnlyDataSnapshotPool().getDataElement());
+			}
+			return this.getProcessInstance().getData().getDataSnapshotPool();
 		}
-		return null;
+	}
+	
+	private DataSnapshotPool getEditableDataSnapshotPool(){
+		if (compositeProcessInstance != null){
+			return compositeProcessInstance.getDataSnapshotPool();
+		}else{
+			return this.getProcessInstance().getData().getDataSnapshotPool();
+		}
+	}
+	
+	private List<Long> getCorelatedProcessInstances() {
+		if (corelatedProcessInstances == null){
+			corelatedProcessInstances = new ArrayList<Long>();
+		}
+		return corelatedProcessInstances;
 	}
 }

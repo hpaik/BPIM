@@ -164,7 +164,7 @@ public class StandaloneBPMNProcessTest {
     @Test
     public void testCustomerJourney() throws Exception {
     	ExecutionContext executionContext = new ExecutionContext();
-    	executionContext.startCompositeProcessInstance("Customer Journey Process");    	    	
+    	//executionContext.startCompositeProcessInstance("Customer Journey Process");    	    	
     	
     	KieBase kbase = createKnowledgeBase("BPMN2-GetCustomerAccount.bpmn2", "BPMN2-CustomerPayment.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
@@ -204,6 +204,7 @@ public class StandaloneBPMNProcessTest {
         Map<String, Object> message = new HashMap<String, Object>();
         message.put("journeyDetails", journeyDetails);
         message.put("customerAccount",customerAccount);
+        message.put("SourceProcessId", getCustomerAccountProcessInstance.getId());
         
         receiveTaskHandler.messageReceived("CustomerJourneyDetails", message);
         

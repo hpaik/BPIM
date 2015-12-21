@@ -89,7 +89,7 @@ public class ExecutionContext {
 		if(processInstances.containsKey(bpmnInstanceId)){
 			processInstanceContext = getProcessInstanceContext(bpmnInstanceId);
 		}else{
-			processInstanceContext = new ProcessInstanceContext();
+			processInstanceContext = new ProcessInstanceContext(this);
 			org.bpim.model.v1.ObjectFactory objectFatory = new ObjectFactory();
 			ProcessInstance processInstance = objectFatory.createProcessInstance();
 			processInstance.setId(UniqueIdGenerator.nextId());
@@ -127,24 +127,34 @@ public class ExecutionContext {
 			 }
 			 
 			 
-			 Node compositPINode = createNode(db, compositeProcessInstance, "CompositeProcessInstance", "");
-			 
-			 Node dataPoolNode = createNode(db, "Data Pool", "DataPoolRoot", "");
-			 createRelationship(compositPINode, dataPoolNode, "Data");
-			 Node dataPoolElementNode = null;
-			 for(DataPoolElement dataPoolElement: compositeProcessInstance.getDataSnapshotPool().getDataElement()){
-				 dataPoolElementNode = createNode(db, dataPoolElement, "DataPoolElement", "");
-				 createRelationship(dataPoolNode, dataPoolElementNode, "Contains");
-			 }
+//			 Node compositPINode = createNode(db, compositeProcessInstance, "CompositeProcessInstance", "");
+//			 
+//			 Node dataPoolNode = createNode(db, "Data Pool", "DataPoolRoot", "");
+//			 createRelationship(compositPINode, dataPoolNode, "Data");
+//			 Node dataPoolElementNode = null;
+//			 for(DataPoolElement dataPoolElement: compositeProcessInstance.getDataSnapshotPool().getDataElement()){
+//				 dataPoolElementNode = createNode(db, dataPoolElement, "DataPoolElement", "");
+//				 createRelationship(dataPoolNode, dataPoolElementNode, "Contains");
+//			 }
 			 
 			 Node piNode = null;
 			 Node execPathNode = null;
 			 Node dataSnapshotGraphNode = null;
 			 Node startNode = null;
 			 Node dataSnapshotNode = null;
-			for(final ProcessInstance pi :compositeProcessInstance.getProcessInstance()){							
+			 Node dataPoolNode = null;
+			 ProcessInstance pi = null;
+			for(final ProcessInstanceContext pic : processInstances.values()){  //compositeProcessInstance.getProcessInstance()){
+				pi = pic.getProcessInstance();
 				piNode = createNode(db, pi, "ProcessInstance", "");
-				createRelationship(compositPINode, piNode, "Contains");												
+				//createRelationship(compositPINode, piNode, "Contains");				
+				 dataPoolNode = createNode(db, "Data Pool", "DataPoolRoot", "");
+				 createRelationship(piNode, dataPoolNode, "Data");
+				 Node dataPoolElementNode = null;
+				 for(DataPoolElement dataPoolElement: pi.getData().getDataSnapshotPool().getDataElement()){
+					 dataPoolElementNode = createNode(db, dataPoolElement, "DataPoolElement", "");
+					 createRelationship(dataPoolNode, dataPoolElementNode, "Contains");
+				 }
 				
 				execPathNode = createNode(db, "Execution Path", "ExecutionPathRoot", "");
 				createRelationship(piNode, execPathNode, "Activities");
@@ -225,8 +235,7 @@ public class ExecutionContext {
 		};
 		return db.findNode(label, "Id", bpimElement.getId());
 	}
-	
-	
+		
 	private Node createNode(GraphDatabaseService db, final String caption, final String labelName, final String postfix) throws Exception{
 		
 		Node node = db.createNode(
@@ -253,9 +262,7 @@ public class ExecutionContext {
 		}
 		return node;
 	}
-	
-	
-	
+		
 	private Node createNode(GraphDatabaseService db, final ElementBase bpimElement, final String labelName, String postfix) throws Exception{
 		
 		Node node = createNode(db, bpimElement.getName(), labelName, postfix);

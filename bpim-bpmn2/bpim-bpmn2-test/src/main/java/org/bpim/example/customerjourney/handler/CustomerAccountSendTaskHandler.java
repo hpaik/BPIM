@@ -27,6 +27,8 @@ public class CustomerAccountSendTaskHandler  implements WorkItemHandler {
         CustomerAccount customerAccount = DataPoolElementHelper.deserialize(customerAccountElement);
         workItem.getParameters().put("customerAccount", customerAccount);
         
+        workItem.getParameters().put("SourceProcessId", workItem.getProcessInstanceId());
+        
         manager.completeWorkItem(workItem.getId(), null);
     }
 
