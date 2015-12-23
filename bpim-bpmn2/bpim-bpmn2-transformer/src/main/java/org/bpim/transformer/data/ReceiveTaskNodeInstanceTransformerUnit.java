@@ -32,21 +32,9 @@ public class ReceiveTaskNodeInstanceTransformerUnit extends TransformerUnit {
 			transformationResult.setFlowNode(((Activity)transformationResult.getFlowNode()).getOutputTransition().get(0).getTo());
 			DataSnapshotGraphHelper.createDataSnapshotWithMultiParamsandResults(null, results, transformationResult);
 			transformationResult.setFlowNode(tmpFlowNode);
+			transformationResult.getDataPoolElements();
+			transformationResult.setAddToPool(false);
 		}
-		
-//		DataSnapshotElement inputDataSnapshotElement = DataSnapshotElementHelper.createEmpty();
-//		parameters.clear();
-//		Map<String, Object> results = workItemNodeInstance.getWorkItem().getResults();
-//		WorkflowProcessInstance processInstance = 
-//				(WorkflowProcessInstance) nodeInstance.getProcessInstance();
-//		VariableScopeInstance variableScopeInstance = (VariableScopeInstance) processInstance.getContextInstance(VariableScope.VARIABLE_SCOPE);
-//		if (variableScopeInstance != null){
-//			for (Entry<String, Object> entry: results.entrySet()){
-//				variableScopeInstance.setVariable(entry.getKey(), entry.getValue());
-//			}
-//		}
-//		
-//		DataSnapshotGraphHelper.createDataSnapshotWithMultiParamsandResults(parameters, results, transformationResult);
 	}
 
 }

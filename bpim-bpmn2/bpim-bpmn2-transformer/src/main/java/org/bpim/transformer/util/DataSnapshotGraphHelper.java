@@ -36,12 +36,12 @@ public class DataSnapshotGraphHelper {
 				dataTransition = dataObjectFactory.createDataTransition();
 				dataTransition.setId(UniqueIdGenerator.nextId());
 				dataTransition.setName(transformationResult.getFlowNode().getName());
-				dataPoolElement = getDataPoolElement(((BPIMDataObject)entry.getValue()).getObjectId(),transformationResult);
+				dataPoolElement = getDataPoolElement(((BPIMDataObject)entry.getValue()).getObjectId(),transformationResult);				
 				targetDataSnapshotElement = DataSnapshotElementHelper.create(dataPoolElement);    					
 				dataTransition.setDataSnapshotElement(targetDataSnapshotElement);
-				sourceDataSnapshotElement.getDataTransition().add(dataTransition);
-				transformationResult.getSourceDataSnapshotElement().add(sourceDataSnapshotElement);
+				sourceDataSnapshotElement.getDataTransition().add(dataTransition);				
 			}
+			transformationResult.getSourceDataSnapshotElement().add(sourceDataSnapshotElement);
 			return;
 		}
 							 					

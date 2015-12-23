@@ -86,23 +86,17 @@ public class DataPoolElementHelper {
 		return result;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T> T deserialize(DataPoolElement dataPoolElement){		
-		Gson gson = new Gson();
+		
 		try {
-//			Object result = gson.fromJson(dataPoolElement.getDataObject().toString()
-//					, Class.forName(dataPoolElement.getDataObjectType()));
+
 			Class cls = Class.forName(dataPoolElement.getDataObjectType());
 			Object result = null;
 			try {
 				result = mapper.readValue((String)dataPoolElement.getDataObject(), cls);
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
+				
 				e.printStackTrace();
 			}
 			

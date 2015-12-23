@@ -113,20 +113,28 @@ public class ProcessInstanceContext {
 					}					
 				}
 			}			
-		}				
-		
-		DataSnapshotElement sourceDataSnapshotElement = null;
+		}
 		DataPoolElement dataPoolElement = null;
+		DataSnapshotElement transDataSnapshotElement = null;
+		if(!transformationResult.isAddToPool()){
+			for (DataPoolElement transResultDataPoolElement: transformationResult.getDataPoolElements()){
+				dataPoolElement = getDataPoolElement(transResultDataPoolElement.getMappingCorrelationId());
+				transDataSnapshotElement = getDataSnapshotElementFromTransformationResult(transformationResult, transResultDataPoolElement.getId());
+				transDataSnapshotElement.setDataPoolElementId(dataPoolElement.getId());
+			}
+			transformationResult.getDataPoolElements().clear();
+		}
+		
+		DataSnapshotElement sourceDataSnapshotElement = null;		
 		DataSnapshotElement targetDataSnapshotElement = null;
 		for (DataSnapshotElement tmpDataSnapshotElement: transformationResult.getSourceDataSnapshotElement()){
 			if (!tmpDataSnapshotElement.isEmpty()){
 				dataPoolElement = getDataPoolElement(tmpDataSnapshotElement.getMappingCorrelationId());
 				sourceDataSnapshotElement = getDataSnapshotElement(dataPoolElement);
-				if (sourceDataSnapshotElement == null){
-					sourceDataSnapshotElement = DataSnapshotElementHelper.create(dataPoolElement);
-					processInstance.getData().getDataSnapshotGraphs().getDataSnapshotElement().add(sourceDataSnapshotElement);	
-				}
-				
+//				if (sourceDataSnapshotElement == null){
+//					sourceDataSnapshotElement = DataSnapshotElementHelper.create(dataPoolElement);
+//					processInstance.getData().getDataSnapshotGraphs().getDataSnapshotElement().add(sourceDataSnapshotElement);	
+//				}				
 				for (DataTransition dataTransition : tmpDataSnapshotElement.getDataTransition()){
 					targetDataSnapshotElement = getDataSnapshotElement(dataTransition.getDataSnapshotElement().getDataPoolElementId());
 					if (targetDataSnapshotElement != null){
@@ -134,8 +142,8 @@ public class ProcessInstanceContext {
 					}
 				}
 				sourceDataSnapshotElement.getDataTransition().addAll(tmpDataSnapshotElement.getDataTransition());
-			}else{
-				processInstance.getData().getDataSnapshotGraphs().getDataSnapshotElement().add(transformationResult.getSourceDataSnapshotElement().get(0));
+			}else{				
+				processInstance.getData().getDataSnapshotGraphs().getDataSnapshotElement().add(tmpDataSnapshotElement);
 			}
 		}		
 		
@@ -155,9 +163,27 @@ public class ProcessInstanceContext {
 					}
 				}
 			}
-		}
-		
+		}	
 	}
+ 	
+ 	private DataSnapshotElement getDataSnapshotElementFromTransformationResult(TransformationResult transformationResult, String dataPoolElementId){
+		DataSnapshotElement dataSnapshotElement = null;
+
+		List<DataSnapshotElement> dataSnapshotElementList = transformationResult.getSourceDataSnapshotElement();
+		for (DataSnapshotElement root : dataSnapshotElementList){
+			if (!root.isEmpty() && root.getDataPoolElementId().equals(dataPoolElementId)){ //!root.isEmpty() &&
+				dataSnapshotElement = root;
+			}else{
+				dataSnapshotElement = getDataSnapshotElement(root.getDataTransition(), dataPoolElementId);
+			}
+			
+			if (dataSnapshotElement != null){
+				break;
+			}
+		}
+		return dataSnapshotElement;
+	}
+ 	
  	
 	private DataPoolElement getDataPoolElement(String objectId){
 		DataPoolElement dataPoolElement = null;
@@ -178,8 +204,8 @@ public class ProcessInstanceContext {
 		DataSnapshotElement dataSnapshotElement = null;
 
 		List<DataSnapshotElement> dataSnapshotElementList = processInstance.getData().getDataSnapshotGraphs().getDataSnapshotElement();
-		for (DataSnapshotElement root:dataSnapshotElementList){
-			if (!root.isEmpty() && root.getDataPoolElementId().equals(dataPoolElementId)){
+		for (DataSnapshotElement root : dataSnapshotElementList){
+			if (!root.isEmpty() && root.getDataPoolElementId().equals(dataPoolElementId)){ //!root.isEmpty() &&
 				dataSnapshotElement = root;
 			}else{
 				dataSnapshotElement = getDataSnapshotElement(root.getDataTransition(), dataPoolElementId);
@@ -237,7 +263,7 @@ public class ProcessInstanceContext {
 						executionContext.getProcessInstanceContext(
 								processId.toString()).getReadOnlyDataSnapshotPool().getDataElement());
 			}
-			return this.getProcessInstance().getData().getDataSnapshotPool();
+			return result;
 		}
 	}
 	
