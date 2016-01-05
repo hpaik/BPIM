@@ -92,8 +92,15 @@ public class ProcessInstanceContext {
  			
 		if (currentExecPathActivity == null){
 			processInstance.getExecutionPath().setStart((Start) 
-					transformationResult.getFlowNode());
+					transformationResult.getFlowNode());			
 			currentExecPathActivity = (Activity) transformationResult.getFlowNode();
+			while (!currentExecPathActivity.getOutputTransition().isEmpty()){
+				if(currentExecPathActivity.getOutputTransition().get(0).getTo() != null){
+					currentExecPathActivity = currentExecPathActivity.getOutputTransition().get(0).getTo(); 
+				}else{
+					break;
+				}
+			}
 		}else {
 			
 			for (TransitionBase outputTransition: currentExecPathActivity.getOutputTransition()){

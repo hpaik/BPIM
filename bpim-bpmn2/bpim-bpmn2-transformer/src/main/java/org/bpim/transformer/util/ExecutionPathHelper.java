@@ -76,6 +76,13 @@ public class ExecutionPathHelper {
 		return messageTransition;
 	}
 	
+	public static NormalTransition createNormalTransition(){
+		org.bpim.model.execpath.v1.ObjectFactory executionPathObjectFactory = new ObjectFactory();
+		NormalTransition normalTransition = executionPathObjectFactory.createNormalTransition();
+		normalTransition.setId(UniqueIdGenerator.nextId());
+		return normalTransition;
+	}
+	
 	public static ReferenceProcessInstance createReferenceProcessInstance(NodeInstance nodeInstance){
 		org.bpim.model.execpath.v1.ObjectFactory executionPathObjectFactory = new ObjectFactory();
 		ReferenceProcessInstance referenceProcessInstance = executionPathObjectFactory.createReferenceProcessInstance();
@@ -83,8 +90,7 @@ public class ExecutionPathHelper {
 		referenceProcessInstance.setName(nodeInstance.getNodeName());
 		referenceProcessInstance.setExecutionDateTime((new Date()).toString());
 		
-		NormalTransition normalTransition = executionPathObjectFactory.createNormalTransition();
-		normalTransition.setId(UniqueIdGenerator.nextId());
+		NormalTransition normalTransition = createNormalTransition();
 		referenceProcessInstance.getOutputTransition().add(normalTransition);
 		return referenceProcessInstance;
 	}

@@ -1,6 +1,6 @@
 package org.bpim;
 
-import static org.junit.Assert.*;
+
 import static org.kie.api.runtime.EnvironmentName.ENTITY_MANAGER_FACTORY;
 import static org.kie.api.runtime.EnvironmentName.OBJECT_MARSHALLING_STRATEGIES;
 import static org.kie.api.runtime.EnvironmentName.TRANSACTION_MANAGER;
@@ -43,7 +43,7 @@ import org.jbpm.bpmn2.handler.ReceiveTaskHandler;
 import org.bpim.process.handler.ExtendedReceiveTaskHandler;
 import org.bpim.process.handler.ExtendedServiceTaskHandler;
 import org.bpim.transformer.util.DataPoolElementHelper;
-import org.jbpm.bpmn2.handler.ServiceTaskHandler;
+import org.jbpm.bpim.objects.TestWorkItemHandler;
 import org.jbpm.bpmn2.xml.BPMNDISemanticModule;
 import org.jbpm.bpmn2.xml.BPMNExtensionsSemanticModule;
 import org.jbpm.bpmn2.xml.BPMNSemanticModule;
@@ -57,7 +57,6 @@ import org.jbpm.process.audit.JPAAuditLogService;
 import org.jbpm.process.audit.AuditLoggerFactory.Type;
 import org.jbpm.process.instance.event.DefaultSignalManagerFactory;
 import org.jbpm.process.instance.impl.DefaultProcessInstanceManagerFactory;
-import org.jbpm.process.instance.impl.demo.SystemOutWorkItemHandler;
 import org.jbpm.ruleflow.core.RuleFlowProcess;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -77,6 +76,7 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.process.ProcessInstance;
+import org.kie.api.runtime.process.WorkItem;
 import org.kie.api.runtime.process.WorkflowProcessInstance;
 import org.kie.internal.KnowledgeBaseFactory;
 import org.kie.internal.builder.KnowledgeBuilderConfiguration;
@@ -87,7 +87,7 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.kie.internal.runtime.conf.ForceEagerActivationOption;
 import org.xml.sax.SAXException;
 
-import com.google.gson.Gson;
+
 
 import bitronix.tm.TransactionManagerServices;
 import bitronix.tm.resource.jdbc.PoolingDataSource;
@@ -159,6 +159,46 @@ public class StandaloneBPMNProcessTest {
     /**
      * Tests
      */
+    
+    @Test
+    public void testSubProcess() throws Exception {
+    	ExecutionContext executionContext = new ExecutionContext();
+        KieBase kbase = createKnowledgeBase("BPMN2-SubProcess.bpmn2");
+        KieSession ksession = createKnowledgeSession(kbase);
+        ProcessInstance processInstance = ksession.startProcess("SubProcess");
+        executionContext.storeProcessInstance();
+        //assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
+    }
+    
+    @Test
+	public void testCallActivity2() throws Exception {
+    	
+    	ExecutionContext executionContext = new ExecutionContext();
+    	
+		KieBase kbase = createKnowledgeBase("BPMN2-CallActivity2.bpmn2",
+				"BPMN2-CallActivitySubProcess.bpmn2");
+		KieSession ksession = createKnowledgeSession(kbase);
+		TestWorkItemHandler workItemHandler = new TestWorkItemHandler();
+		ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
+                workItemHandler);
+//		ksession.getProcessInstance(processInstanceId)
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("x", "oldValue");
+		ProcessInstance processInstance = ksession.startProcess(
+				"ParentProcess", params);
+//		assertProcessInstanceActive(processInstance);
+//		assertEquals("new value",
+//				((WorkflowProcessInstance) processInstance).getVariable("y"));
+
+//		ksession = restoreSession(ksession, true);
+		WorkItem workItem = workItemHandler.getWorkItem();
+//		assertNotNull(workItem);
+//		assertEquals("krisv", workItem.getParameter("ActorId"));
+		ksession.getWorkItemManager().completeWorkItem(workItem.getId(), null);
+
+//		assertProcessInstanceFinished(processInstance, ksession);
+		executionContext.storeProcessInstance();
+	}
     
     
     @Test

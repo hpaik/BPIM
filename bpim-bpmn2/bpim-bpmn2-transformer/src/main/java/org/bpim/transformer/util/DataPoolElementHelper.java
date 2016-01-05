@@ -44,8 +44,9 @@ public class DataPoolElementHelper {
 		dataPoolElement.setDataObjectType(object.getClass().getName());
 		dataPoolElement.setName(name);
 		dataPoolElement.setCreationDateTime((new Date()).toString());
-		
-		dataPoolElement.setMappingCorrelationId(((BPIMDataObject)object).getObjectId());		
+		if (object instanceof BPIMDataObject){
+			dataPoolElement.setMappingCorrelationId(((BPIMDataObject)object).getObjectId());
+		}
 		dataPoolElement.setId(UniqueIdGenerator.nextId());
 		
 		return dataPoolElement;
