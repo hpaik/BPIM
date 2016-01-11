@@ -57,6 +57,7 @@ import org.jbpm.process.audit.JPAAuditLogService;
 import org.jbpm.process.audit.AuditLoggerFactory.Type;
 import org.jbpm.process.instance.event.DefaultSignalManagerFactory;
 import org.jbpm.process.instance.impl.DefaultProcessInstanceManagerFactory;
+import org.jbpm.process.instance.impl.demo.SystemOutWorkItemHandler;
 import org.jbpm.ruleflow.core.RuleFlowProcess;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -86,6 +87,7 @@ import org.kie.internal.persistence.jpa.JPAKnowledgeService;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.kie.internal.runtime.conf.ForceEagerActivationOption;
 import org.xml.sax.SAXException;
+
 
 
 
@@ -159,6 +161,21 @@ public class StandaloneBPMNProcessTest {
     /**
      * Tests
      */
+    
+    @Test
+    public void testIntermediateCatchEventSignal() throws Exception {
+    	ExecutionContext executionContext = new ExecutionContext();
+    	KieBase kbase = createKnowledgeBase("BPMN2-IntermediateCatchEventSignal.bpmn2");
+        KieSession ksession = createKnowledgeSession(kbase);
+        ksession.getWorkItemManager().registerWorkItemHandler("Human Task", new SystemOutWorkItemHandler());
+        ProcessInstance processInstance = ksession.startProcess("IntermediateCatchEvent");
+       // assertTrue(processInstance.getState() == ProcessInstance.STATE_ACTIVE);
+        //ksession = restoreSession(ksession, true);
+        // now signal process instance
+        ksession.signalEvent("MyMessage", "SomeValue", processInstance.getId());
+        //assertProcessInstanceCompleted(processInstance.getId(), ksession);
+        executionContext.storeProcessInstance();
+    }
     
     @Test
     public void testSubProcess() throws Exception {

@@ -136,7 +136,7 @@ public class ExecutionContext {
 //				 dataPoolElementNode = createNode(db, dataPoolElement, "DataPoolElement", "");
 //				 createRelationship(dataPoolNode, dataPoolElementNode, "Contains");
 //			 }
-			 
+			 final String rootNodeType = "RootNode";
 			 Node piNode = null;
 			 Node execPathNode = null;
 			 Node dataSnapshotGraphNode = null;
@@ -148,7 +148,7 @@ public class ExecutionContext {
 				pi = pic.getProcessInstance();
 				piNode = createNode(db, pi, "ProcessInstance", "");
 				//createRelationship(compositPINode, piNode, "Contains");				
-				 dataPoolNode = createNode(db, "Data Pool", "DataPoolRoot", "");
+				 dataPoolNode = createNode(db, "Data Pool", "DataPoolRoot", "", rootNodeType);
 				 createRelationship(piNode, dataPoolNode, "Data");
 				 Node dataPoolElementNode = null;
 				 for(DataPoolElement dataPoolElement: pi.getData().getDataSnapshotPool().getDataElement()){
@@ -156,7 +156,7 @@ public class ExecutionContext {
 					 createRelationship(dataPoolNode, dataPoolElementNode, "Contains");
 				 }
 				
-				execPathNode = createNode(db, "Execution Path", "ExecutionPathRoot", "");
+				execPathNode = createNode(db, "Execution Path", "ExecutionPathRoot", "", rootNodeType);
 				createRelationship(piNode, execPathNode, "Activities");
 				
 				Activity start = pi.getExecutionPath().getStart();
@@ -164,7 +164,7 @@ public class ExecutionContext {
 				createRelationship(execPathNode, startNode, "Begins");
 				transformExecPath(db, startNode, start.getOutputTransition());
 				
-				dataSnapshotGraphNode = createNode(db, "Data Snapshot Graphs", "DataSnapshotGraphRoot", "");
+				dataSnapshotGraphNode = createNode(db, "Data Snapshot Graphs", "DataSnapshotGraphRoot", "", rootNodeType);
 				createRelationship(piNode, dataSnapshotGraphNode, "Snapshot Graph");
 				
 				for (DataSnapshotElement dse: pi.getData().getDataSnapshotGraphs().getDataSnapshotElement()){
@@ -218,7 +218,7 @@ public class ExecutionContext {
 			child = trans.getTo();
 			if (child != null){
 				childNode = createNode(db, child, "Activity", "");
-				createRelationship(parentNode, childNode, "Transition");
+				createRelationship(parentNode, childNode, trans.getClass().getSimpleName());
 				if (!child.getOutputTransition().isEmpty()){
 					transformExecPath(db, childNode, child.getOutputTransition());
 				}
@@ -236,14 +236,15 @@ public class ExecutionContext {
 		return db.findNode(label, "Id", bpimElement.getId());
 	}
 		
-	private Node createNode(GraphDatabaseService db, final String caption, final String labelName, final String postfix) throws Exception{
+	private Node createNode(GraphDatabaseService db, final String caption, final String labelName
+			, final String postfix, final String type) throws Exception{
 		
 		Node node = db.createNode(
 				new Label() {			
 			@Override
 			public String name() {
 				if(caption != null){					
-					return labelName;
+					return type;
 				}else{
 					return "Empty";
 				}
@@ -259,13 +260,14 @@ public class ExecutionContext {
 			}
 			node.setProperty("Caption", normalizedName);
 			node.setProperty("Name", normalizedName);
+			node.setProperty("Type", type);
 		}
 		return node;
 	}
 		
 	private Node createNode(GraphDatabaseService db, final ElementBase bpimElement, final String labelName, String postfix) throws Exception{
 		
-		Node node = createNode(db, bpimElement.getName(), labelName, postfix);
+		Node node = createNode(db, bpimElement.getName(), labelName, postfix, bpimElement.getClass().getSimpleName());
 		Object value = null;
 		
 		for (Method method :bpimElement.getClass().getMethods()){
@@ -297,7 +299,7 @@ public class ExecutionContext {
 	}
 	
 	private void createRelationship(Node from, Node to, final String relationshipType){
-		from.createRelationshipTo(to, new RelationshipType() {
+		Relationship relationship = from.createRelationshipTo(to, new RelationshipType() {
 			
 			@Override
 			public String name() {
@@ -305,6 +307,7 @@ public class ExecutionContext {
 				return relationshipType;
 			}
 		});
+		relationship.setProperty("Caption", relationshipType.replace("Transition", ""));
 	}
 	
 	private Iterable<Relationship> getRelationShips(Node node, final String relationshipType){

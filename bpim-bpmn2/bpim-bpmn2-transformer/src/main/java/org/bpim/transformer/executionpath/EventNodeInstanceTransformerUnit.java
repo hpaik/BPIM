@@ -10,35 +10,33 @@ import org.bpim.transformer.base.TransformationResult;
 import org.bpim.transformer.base.TransformerUnit;
 import org.bpim.transformer.util.ExecutionPathHelper;
 import org.jbpm.workflow.instance.NodeInstance;
-import org.jbpm.workflow.instance.node.WorkItemNodeInstance;
+import org.jbpm.workflow.instance.node.EventNodeInstance;
 
-public class ReceiveTaskNodeInstanceTransformerUnit extends TransformerUnit {
-
+public class EventNodeInstanceTransformerUnit  extends TransformerUnit {
+	
 	@Override
-	public void transform(NodeInstance nodeInstance, TransformationResult transformationResult) {
-		WorkItemNodeInstance workItemNodeInstance = (WorkItemNodeInstance) nodeInstance;
-		Map<String, Object> results = workItemNodeInstance.getWorkItem().getResults();
+	public void transform(NodeInstance nodeInstance, TransformationResult transformationResult) {		
+		EventNodeInstance eventNodeInstance = (EventNodeInstance) nodeInstance;
+		Object sourceProcessId = eventNodeInstance.getVariable("SourceProcessId");
 		ReferenceProcessInstance referenceProcessInstance = null;
-		if (results.containsKey("SourceProcessId")){
+		if (sourceProcessId != null){
 			referenceProcessInstance = ExecutionPathHelper.createReferenceProcessInstance(nodeInstance);			
 		}
 		
-		if (!workItemNodeInstance.getNode().getIncomingConnections().isEmpty()){
-			Wait wait = ExecutionPathHelper.createWaitWithMessageTransition(nodeInstance);
+		if (!eventNodeInstance.getNode().getIncomingConnections().isEmpty()){
+			Wait wait = ExecutionPathHelper.createWaitWithEventTransition(nodeInstance);
 			if (referenceProcessInstance != null){
 				wait.getOutputTransition().get(0).setTo(referenceProcessInstance);
 			}
 			transformationResult.setFlowNode(wait);
 			
 		}else{
-			MessageTransition messageTransition = ExecutionPathHelper.createMessageTransition();
+			EventTransition eventTransition = ExecutionPathHelper.createEventTransition();
 			if (referenceProcessInstance != null){
-				messageTransition.setTo(referenceProcessInstance);
+				eventTransition.setTo(referenceProcessInstance);
 			}
-			transformationResult.setFlowNode(messageTransition);
+			transformationResult.setFlowNode(eventTransition);
 		}
-		
-		
 	}
 
 }

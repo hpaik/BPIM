@@ -1,0 +1,130 @@
+node {
+  diameter: 50px;
+  color: #A5ABB6;
+  border-color: #9AA1AC;
+  border-width: 2px;
+  text-color-internal:  #604A0E;;
+  font-size: 10px;
+}
+
+relationship {
+  color: #A5ABB6;
+  shaft-width: 1px;
+  font-size: 8px;
+  padding: 3px;
+  text-color-external: #000000;
+  text-color-internal:  #604A0E;;
+  caption: '<type>';
+}
+
+node.ProcessInstance {
+  color: #FFD86E;
+  border-color: #EDBA39;
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 80px;
+}
+
+node.RootNode {
+  color: rgb(95,245,240);
+  border-color: rgb(176,176,255);
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 80px;
+}
+
+node.DataItem {
+  color: rgb(253,217,226);
+  border-color: rgb(250,160,185);
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 100px;
+  word-wrap: break-word;
+}
+
+node.DataItemArray {
+  color: rgb(250,160,185);
+  border-color: rgb(248,101,141);
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 100px;
+}
+
+node.Start {
+  color: #6DCE9E;
+  border-color: #60B58B;
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 80px;
+}
+
+node.Wait {
+  color: rgb(215,235,255);
+  border-color: rgb(125,190,255);
+  text-color-internal: #604A0E;
+  caption: '{Name}';
+  diameter: 80px;
+}
+
+node.AutomatedTask {
+  color: #68BDF6;
+  border-color: #5CA8DB;
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 80px;
+}
+
+node.DataSnapshotElement {
+  color: rgb(237,255,223);
+  border-color: rgb(175,255,115);
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 100px;  
+}
+
+node.ManualTask {
+  color: #DE9BF9;
+  border-color: #BF85D6;
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 80px;
+}
+
+node.CallProcessInstance {
+  color: rgb(249,232,191);
+  border-color: rgb(242,205,119);
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 80px;
+}
+
+node.ReferenceProcessInstance {
+  color: rgb(249,232,191);
+  border-color: rgb(242,205,119);
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 80px;
+}
+
+node.End {
+  color: #FF756E;
+  border-color: #E06760;
+  text-color-internal:  #604A0E;;
+  caption: '{Name}';
+  diameter: 80px;
+}
+
+relationship.MessageTransition {
+  caption: '{Caption}';
+}
+
+relationship.NormalTransition {
+  caption: '{Caption}';
+}
+
+relationship.EventTransition {
+  caption: '{Caption}';
+}
+
+
+

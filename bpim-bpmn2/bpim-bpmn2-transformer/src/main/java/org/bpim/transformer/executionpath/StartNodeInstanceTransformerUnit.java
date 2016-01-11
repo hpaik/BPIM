@@ -1,5 +1,6 @@
 package org.bpim.transformer.executionpath;
 
+import org.bpim.model.execpath.v1.EventTransition;
 import org.bpim.model.execpath.v1.NormalTransition;
 import org.bpim.model.execpath.v1.ReferenceProcessInstance;
 import org.bpim.model.execpath.v1.Start;
@@ -18,9 +19,9 @@ public class StartNodeInstanceTransformerUnit extends TransformerUnit {
 		Start  start = executionPathObjectFactory.createStart();
 		start.setId(UniqueIdGenerator.nextId());
 		start.setName(nodeInstance.getNodeName());
-		NormalTransition normalTransition = executionPathObjectFactory.createNormalTransition();
-		normalTransition.setId(UniqueIdGenerator.nextId());
-		start.getOutputTransition().add(normalTransition);
+		EventTransition eventTransition = ExecutionPathHelper.createEventTransition();
+		eventTransition.setId(UniqueIdGenerator.nextId());
+		start.getOutputTransition().add(eventTransition);
 		transformationResult.setFlowNode(start);
 		
 		long parentProcessId = nodeInstance.getProcessInstance().getParentProcessInstanceId();
@@ -30,7 +31,7 @@ public class StartNodeInstanceTransformerUnit extends TransformerUnit {
 		   transformationResult.getCorelatedProcessInstances().add(parentProcessId);
 		   ReferenceProcessInstance referenceProcessInstance = ExecutionPathHelper.createReferenceProcessInstance(nodeInstance);
 		   referenceProcessInstance.setName(parentProcessName);
-		   normalTransition.setTo(referenceProcessInstance);
+		   eventTransition.setTo(referenceProcessInstance);
 		}
 		
 		
