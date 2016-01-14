@@ -8,7 +8,6 @@ import java.util.List;
 import org.bpim.model.data.v1.DataPoolElement;
 import org.bpim.model.data.v1.DataSnapshotElement;
 import org.bpim.model.data.v1.DataSnapshotPool;
-import org.bpim.model.v1.CompositeProcessInstance;
 import org.bpim.model.v1.ProcessInstance;
 import org.bpim.transformer.base.BPIMDataObject;
 

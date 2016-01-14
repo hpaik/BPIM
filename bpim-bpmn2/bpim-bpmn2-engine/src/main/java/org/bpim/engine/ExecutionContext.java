@@ -9,30 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import org.bpim.model.base.v1.ElementBase;
 import org.bpim.model.base.v1.MetaDataBase;
 import org.bpim.model.base.v1.Server;
@@ -42,7 +18,6 @@ import org.bpim.model.data.v1.DataTransition;
 import org.bpim.model.execpath.v1.Activity;
 import org.bpim.model.execpath.v1.Start;
 import org.bpim.model.execpath.v1.TransitionBase;
-import org.bpim.model.v1.CompositeProcessInstance;
 import org.bpim.model.v1.ObjectFactory;
 import org.bpim.model.v1.ProcessInstance;
 import org.bpim.transformer.util.MetaDataHelper;
@@ -63,7 +38,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ExecutionContext {
 	private static Map<String, ProcessInstanceContext> processInstances = null;
 	
-	private static CompositeProcessInstance compositeProcessInstance;
+//	private static CompositeProcessInstance compositeProcessInstance;
 	
 	private static ObjectMapper mapper = new ObjectMapper();
 	
@@ -73,15 +48,15 @@ public class ExecutionContext {
 		}
 	}
 	
-	public CompositeProcessInstance startCompositeProcessInstance(String name){
-		org.bpim.model.v1.ObjectFactory objectFatory = new ObjectFactory();
-		compositeProcessInstance = objectFatory.createCompositeProcessInstance();
-		compositeProcessInstance.setName(name);
-		compositeProcessInstance.setId(UniqueIdGenerator.nextId());
-		org.bpim.model.data.v1.ObjectFactory dataObjectFatory = new org.bpim.model.data.v1.ObjectFactory();
-		compositeProcessInstance.setDataSnapshotPool(dataObjectFatory.createDataSnapshotPool());
-		return compositeProcessInstance;
-	}
+//	public CompositeProcessInstance startCompositeProcessInstance(String name){
+//		org.bpim.model.v1.ObjectFactory objectFatory = new ObjectFactory();
+//		compositeProcessInstance = objectFatory.createCompositeProcessInstance();
+//		compositeProcessInstance.setName(name);
+//		compositeProcessInstance.setId(UniqueIdGenerator.nextId());
+//		org.bpim.model.data.v1.ObjectFactory dataObjectFatory = new org.bpim.model.data.v1.ObjectFactory();
+//		compositeProcessInstance.setDataSnapshotPool(dataObjectFatory.createDataSnapshotPool());
+//		return compositeProcessInstance;
+//	}
 	
 	public ProcessInstanceContext getProcessInstanceContext(String bpmnInstanceId, String bpmnInstanceName){
 		ProcessInstanceContext processInstanceContext = null;
@@ -99,10 +74,10 @@ public class ExecutionContext {
 			processInstance.setCreationDateTime((new Date()).toString());
 			processInstance.setState("STARTED");
 			processInstanceContext.setProcessInstance(processInstance);
-			if (compositeProcessInstance != null){
-				compositeProcessInstance.getProcessInstance().add(processInstance);
-				processInstanceContext.setCompositeProcessInstance(compositeProcessInstance);
-			}
+//			if (compositeProcessInstance != null){
+//				compositeProcessInstance.getProcessInstance().add(processInstance);
+//				processInstanceContext.setCompositeProcessInstance(compositeProcessInstance);
+//			}
 			processInstances.put(bpmnInstanceId, processInstanceContext);			
 		}
 		return processInstanceContext;

@@ -8,9 +8,13 @@
 		<xs:import namespace="http://www.bpim.org/model/base/v1" schemaLocation="../bpim/BaseElements.xsd" />		
 		
 		<xs:complexType name="DataSnapshotGraphs">
-			<xs:sequence>
-				<xs:element name="dataSnapshotElement"  type="tns:DataSnapshotElement" minOccurs="1" maxOccurs="unbounded" />
-			</xs:sequence>
+			<xs:complexContent>
+				<xs:extension base="bpimbase:ElementBase">
+					<xs:sequence>
+						<xs:element name="dataSnapshotElement"  type="tns:DataSnapshotElement" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
 		</xs:complexType>
 		
 		<xs:complexType name="DataSnapshotElement" >
@@ -37,9 +41,13 @@
 		</xs:complexType>		
 		
 		<xs:complexType name="DataSnapshotPool">
-			<xs:sequence>
-				<xs:element name="dataElement"  type="tns:DataPoolElement" minOccurs="1" maxOccurs="unbounded" />
-			</xs:sequence>
+			<xs:complexContent>
+				<xs:extension base="bpimbase:ElementBase">
+					<xs:sequence>
+						<xs:element name="dataElement"  type="tns:DataPoolElement" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+				</xs:extension>			
+			</xs:complexContent>
 		</xs:complexType>								
 		
 		<xs:element name="DataItem" type="tns:DataItem" />

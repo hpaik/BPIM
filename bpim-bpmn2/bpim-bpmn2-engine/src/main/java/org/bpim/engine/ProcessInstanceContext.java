@@ -12,7 +12,6 @@ import org.bpim.model.execpath.v1.Activity;
 import org.bpim.model.execpath.v1.End;
 import org.bpim.model.execpath.v1.Start;
 import org.bpim.model.execpath.v1.TransitionBase;
-import org.bpim.model.v1.CompositeProcessInstance;
 import org.bpim.model.v1.ProcessInstance;
 import org.bpim.transformer.base.TransformationResult;
 import org.bpim.transformer.util.DataPoolElementHelper;
@@ -21,7 +20,7 @@ import org.bpim.transformer.util.DataSnapshotElementHelper;
 public class ProcessInstanceContext {
 	
 	private ProcessInstance processInstance = null;
-	private CompositeProcessInstance compositeProcessInstance = null;
+//	private CompositeProcessInstance compositeProcessInstance = null;
 	private org.bpim.model.v1.ObjectFactory objectFatory = null;
 	private org.bpim.model.data.v1.ObjectFactory dataObjectFatory = null;
 	private Activity currentExecPathActivity = null;
@@ -249,37 +248,49 @@ public class ProcessInstanceContext {
 		return dataSnapshotElement;
 	}
 
-	public CompositeProcessInstance getCompositeProcessInstance() {
-		return compositeProcessInstance;
-	}
-
-	public void setCompositeProcessInstance(CompositeProcessInstance compositeProcessInstance) {
-		this.compositeProcessInstance = compositeProcessInstance;		
-		
-	}
+//	public CompositeProcessInstance getCompositeProcessInstance() {
+//		return compositeProcessInstance;
+//	}
+//
+//	public void setCompositeProcessInstance(CompositeProcessInstance compositeProcessInstance) {
+//		this.compositeProcessInstance = compositeProcessInstance;		
+//		
+//	}
 	
 	public DataSnapshotPool getReadOnlyDataSnapshotPool(){
-		if (compositeProcessInstance != null){
-			return compositeProcessInstance.getDataSnapshotPool();
-		}else{
-			org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
-			DataSnapshotPool result = objectFactory.createDataSnapshotPool();
-			result.getDataElement().addAll(this.getProcessInstance().getData().getDataSnapshotPool().getDataElement());
-			for (Long processId : getCorelatedProcessInstances()){
-				result.getDataElement().addAll(
-						executionContext.getProcessInstanceContext(
-								processId.toString()).getReadOnlyDataSnapshotPool().getDataElement());
-			}
-			return result;
+//		if (compositeProcessInstance != null){
+//			return compositeProcessInstance.getDataSnapshotPool();
+//		}else{
+//			org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
+//			DataSnapshotPool result = objectFactory.createDataSnapshotPool();
+//			result.getDataElement().addAll(this.getProcessInstance().getData().getDataSnapshotPool().getDataElement());
+//			for (Long processId : getCorelatedProcessInstances()){
+//				result.getDataElement().addAll(
+//						executionContext.getProcessInstanceContext(
+//								processId.toString()).getReadOnlyDataSnapshotPool().getDataElement());
+//			}
+//			return result;
+//		}
+		
+		org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
+		DataSnapshotPool result = objectFactory.createDataSnapshotPool();
+		result.getDataElement().addAll(this.getProcessInstance().getData().getDataSnapshotPool().getDataElement());
+		for (Long processId : getCorelatedProcessInstances()){
+			result.getDataElement().addAll(
+					executionContext.getProcessInstanceContext(
+							processId.toString()).getReadOnlyDataSnapshotPool().getDataElement());
 		}
+		return result;
 	}
 	
 	private DataSnapshotPool getEditableDataSnapshotPool(){
-		if (compositeProcessInstance != null){
-			return compositeProcessInstance.getDataSnapshotPool();
-		}else{
-			return this.getProcessInstance().getData().getDataSnapshotPool();
-		}
+//		if (compositeProcessInstance != null){
+//			return compositeProcessInstance.getDataSnapshotPool();
+//		}else{
+//			return this.getProcessInstance().getData().getDataSnapshotPool();
+//		}
+		
+		return this.getProcessInstance().getData().getDataSnapshotPool();
 	}
 	
 	private List<Long> getCorelatedProcessInstances() {

@@ -11,7 +11,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
-import org.bpim.model.v1.CompositeProcessInstance;
 import org.bpim.model.v1.ProcessInstance;
 import org.bpim.transformer.base.TransformationResult;
 import org.bpim.transformer.base.Transformer;
