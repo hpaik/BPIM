@@ -51,7 +51,8 @@ public class ProcessInstanceContext {
 	
 	public DataPoolElement getDataPoolElementByType(String objectType){
 		DataPoolElement dataPoolElement = null;
-		for (DataPoolElement tmpDataPoolElement : getReadOnlyDataSnapshotPool().getDataElement()){			
+//		for (DataPoolElement tmpDataPoolElement : getReadOnlyDataSnapshotPool().getDataElement()){			
+		for (DataPoolElement tmpDataPoolElement : getDataSnapshotPool().getDataElement()){
 			if (objectType.equals(tmpDataPoolElement.getDataObjectType())){
 				if (dataPoolElement != null && dataPoolElement.getVersion() >= tmpDataPoolElement.getVersion()){
 					continue;
@@ -122,14 +123,14 @@ public class ProcessInstanceContext {
 		}
 		DataPoolElement dataPoolElement = null;
 		DataSnapshotElement transDataSnapshotElement = null;
-		if(!transformationResult.isAddToPool()){
-			for (DataPoolElement transResultDataPoolElement: transformationResult.getDataPoolElements()){
-				dataPoolElement = getDataPoolElement(transResultDataPoolElement.getMappingCorrelationId());
-				transDataSnapshotElement = getDataSnapshotElementFromTransformationResult(transformationResult, transResultDataPoolElement.getId());
-				transDataSnapshotElement.setDataPoolElementId(dataPoolElement.getId());
-			}
-			transformationResult.getDataPoolElements().clear();
-		}
+//		if(!transformationResult.isAddToPool()){
+//			for (DataPoolElement transResultDataPoolElement: transformationResult.getDataPoolElements()){
+//				dataPoolElement = getDataPoolElement(transResultDataPoolElement.getMappingCorrelationId());
+//				transDataSnapshotElement = getDataSnapshotElementFromTransformationResult(transformationResult, transResultDataPoolElement.getId());
+//				transDataSnapshotElement.setDataPoolElementId(dataPoolElement.getId());
+//			}
+//			transformationResult.getDataPoolElements().clear();
+//		}
 		
 		DataSnapshotElement sourceDataSnapshotElement = null;		
 		DataSnapshotElement targetDataSnapshotElement = null;
@@ -154,7 +155,8 @@ public class ProcessInstanceContext {
 		}		
 		
 		for (DataPoolElement tmpDataPoolElement: transformationResult.getDataPoolElements()){
-			DataPoolElementHelper.addToPool(tmpDataPoolElement, getEditableDataSnapshotPool());
+//			DataPoolElementHelper.addToPool(tmpDataPoolElement, getEditableDataSnapshotPool());
+			DataPoolElementHelper.addToPool(tmpDataPoolElement, getDataSnapshotPool());
 		}
 		
 		for (DataSnapshotElement tmpDataSnapshotElement: transformationResult.getSourceDataSnapshotElement()){
@@ -193,7 +195,8 @@ public class ProcessInstanceContext {
  	
 	private DataPoolElement getDataPoolElement(String objectId){
 		DataPoolElement dataPoolElement = null;
-		for (DataPoolElement tmpDataPoolElement : getReadOnlyDataSnapshotPool().getDataElement()){
+//		for (DataPoolElement tmpDataPoolElement : getReadOnlyDataSnapshotPool().getDataElement()){
+		for (DataPoolElement tmpDataPoolElement : getDataSnapshotPool().getDataElement()){
 			if (tmpDataPoolElement.getMappingCorrelationId() != null && tmpDataPoolElement.getMappingCorrelationId().equals(objectId)){
 				if (dataPoolElement !=  null 
 						&& dataPoolElement.getDataObjectType().equals(tmpDataPoolElement.getDataObjectType())
@@ -257,7 +260,7 @@ public class ProcessInstanceContext {
 //		
 //	}
 	
-	public DataSnapshotPool getReadOnlyDataSnapshotPool(){
+//	public DataSnapshotPool getReadOnlyDataSnapshotPool(){
 //		if (compositeProcessInstance != null){
 //			return compositeProcessInstance.getDataSnapshotPool();
 //		}else{
@@ -271,19 +274,19 @@ public class ProcessInstanceContext {
 //			}
 //			return result;
 //		}
-		
-		org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
-		DataSnapshotPool result = objectFactory.createDataSnapshotPool();
-		result.getDataElement().addAll(this.getProcessInstance().getData().getDataSnapshotPool().getDataElement());
-		for (Long processId : getCorelatedProcessInstances()){
-			result.getDataElement().addAll(
-					executionContext.getProcessInstanceContext(
-							processId.toString()).getReadOnlyDataSnapshotPool().getDataElement());
-		}
-		return result;
-	}
+//		
+//		org.bpim.model.data.v1.ObjectFactory objectFactory = new org.bpim.model.data.v1.ObjectFactory();
+//		DataSnapshotPool result = objectFactory.createDataSnapshotPool();
+//		result.getDataElement().addAll(this.getProcessInstance().getData().getDataSnapshotPool().getDataElement());
+//		for (Long processId : getCorelatedProcessInstances()){
+//			result.getDataElement().addAll(
+//					executionContext.getProcessInstanceContext(
+//							processId.toString()).getReadOnlyDataSnapshotPool().getDataElement());
+//		}
+//		return result;
+//	}
 	
-	private DataSnapshotPool getEditableDataSnapshotPool(){
+	private DataSnapshotPool getDataSnapshotPool(){
 //		if (compositeProcessInstance != null){
 //			return compositeProcessInstance.getDataSnapshotPool();
 //		}else{

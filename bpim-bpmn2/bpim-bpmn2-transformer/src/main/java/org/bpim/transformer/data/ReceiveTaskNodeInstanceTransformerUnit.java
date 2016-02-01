@@ -33,7 +33,7 @@ public class ReceiveTaskNodeInstanceTransformerUnit extends TransformerUnit {
 			DataSnapshotGraphHelper.createDataSnapshotWithMultiParamsandResults(null, results, transformationResult);
 			transformationResult.setFlowNode(tmpFlowNode);
 			transformationResult.getDataPoolElements();
-			transformationResult.setAddToPool(false);
+//			transformationResult.setAddToPool(false);
 		}
 	}
 

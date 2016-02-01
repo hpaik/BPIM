@@ -14,7 +14,7 @@ public class TransformationResult {
 	private List<DataPoolElement> dataPoolElements = null;
 	private List<DataSnapshotElement> sourceDataSnapshotElement = null;
 	private List<Long> corelatedProcessInstances = null;
-	private boolean addToPool = true;
+//	private boolean addToPool = true;
 	
 	public TransformationResult(){		
 		dataPoolElements = new ArrayList<DataPoolElement>();
@@ -53,12 +53,12 @@ public class TransformationResult {
 		this.corelatedProcessInstances = corelatedProcessInstances;
 	}
 
-	public boolean isAddToPool() {
-		return addToPool;
-	}
-
-	public void setAddToPool(boolean addToPool) {
-		this.addToPool = addToPool;
-	}	
+//	public boolean isAddToPool() {
+//		return addToPool;
+//	}
+//
+//	public void setAddToPool(boolean addToPool) {
+//		this.addToPool = addToPool;
+//	}	
 
 }
