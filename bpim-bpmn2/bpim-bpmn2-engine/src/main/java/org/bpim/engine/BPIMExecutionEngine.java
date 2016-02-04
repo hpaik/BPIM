@@ -60,9 +60,7 @@ public class BPIMExecutionEngine {
 		
 		processInstanceContext.addTransformationResult(transformationResult);
 		
-		//ProcessInstance processInstance = processInstanceContext.getProcessInstance();
-//		CompositeProcessInstance compositeProcessInstance = processInstanceContext.getCompositeProcessInstance();
-//		
+//		ProcessInstance processInstance = processInstanceContext.getProcessInstance();		
 //		 try {
 //
 //				JAXBContext jaxbContext = JAXBContext.newInstance(ProcessInstance.class);
@@ -71,8 +69,8 @@ public class BPIMExecutionEngine {
 //				// output pretty printed
 //				jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 //				
-////				jaxbMarshaller.marshal(new JAXBElement<CompositeProcessInstance>(new QName("uri","CompositeProcessInstance")
-////					, CompositeProcessInstance.class, compositeProcessInstance), System.out);								
+//				jaxbMarshaller.marshal(new JAXBElement<ProcessInstance>(new QName("uri","ProcessInstance")
+//					, ProcessInstance.class, processInstance), System.out);								
 //
 //
 //			} catch (JAXBException e) {

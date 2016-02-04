@@ -42,6 +42,7 @@ import org.h2.tools.Server;
 import org.jbpm.bpmn2.handler.ReceiveTaskHandler;
 import org.bpim.process.handler.ExtendedReceiveTaskHandler;
 import org.bpim.process.handler.ExtendedServiceTaskHandler;
+import org.bpim.reository.RepositoryManager;
 import org.bpim.transformer.util.DataPoolElementHelper;
 import org.jbpm.bpim.objects.TestWorkItemHandler;
 import org.jbpm.bpmn2.xml.BPMNDISemanticModule;
@@ -87,6 +88,7 @@ import org.kie.internal.persistence.jpa.JPAKnowledgeService;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.kie.internal.runtime.conf.ForceEagerActivationOption;
 import org.xml.sax.SAXException;
+
 
 
 
@@ -174,7 +176,12 @@ public class StandaloneBPMNProcessTest {
         // now signal process instance
         ksession.signalEvent("MyMessage", "SomeValue", processInstance.getId());
         //assertProcessInstanceCompleted(processInstance.getId(), ksession);
-        executionContext.storeProcessInstance();
+        storeBPIMProcessInstance(processInstance, executionContext);
+    }
+    
+    private void storeBPIMProcessInstance(org.kie.api.runtime.process.ProcessInstance processInstance, ExecutionContext executionContext){
+    	RepositoryManager.getInstance().storeProcessInstance(
+        		executionContext.getProcessInstanceContext(String.valueOf(processInstance.getId())).getProcessInstance());
     }
     
     @Test
@@ -183,7 +190,7 @@ public class StandaloneBPMNProcessTest {
         KieBase kbase = createKnowledgeBase("BPMN2-SubProcess.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
         ProcessInstance processInstance = ksession.startProcess("SubProcess");
-        executionContext.storeProcessInstance();
+        storeBPIMProcessInstance(processInstance, executionContext);
         //assertTrue(processInstance.getState() == ProcessInstance.STATE_COMPLETED);
     }
     
@@ -214,7 +221,7 @@ public class StandaloneBPMNProcessTest {
 		ksession.getWorkItemManager().completeWorkItem(workItem.getId(), null);
 
 //		assertProcessInstanceFinished(processInstance, ksession);
-		executionContext.storeProcessInstance();
+		storeBPIMProcessInstance(processInstance, executionContext);
 	}
     
     
@@ -253,7 +260,9 @@ public class StandaloneBPMNProcessTest {
         JourneyDetails journeyDetails = DataPoolElementHelper.deserialize(journeyDetailsElement);         		               
         
         DataPoolElement customerAccountElement = processInstanceContext.getDataPoolElementByType(CustomerAccount.class.getName());
-        CustomerAccount customerAccount = DataPoolElementHelper.deserialize(customerAccountElement);                 
+        CustomerAccount customerAccount = DataPoolElementHelper.deserialize(customerAccountElement);
+        
+        storeBPIMProcessInstance(getCustomerAccountProcessInstance, executionContext);
         
         
         WorkflowProcessInstance customerPaymentProcessInstance = (WorkflowProcessInstance) ksession.startProcess("CustomerPaymentProcess");
@@ -265,7 +274,7 @@ public class StandaloneBPMNProcessTest {
         
         receiveTaskHandler.messageReceived("CustomerJourneyDetails", message);
         
-        executionContext.storeProcessInstance();
+        storeBPIMProcessInstance(customerPaymentProcessInstance, executionContext);
        
     }
     

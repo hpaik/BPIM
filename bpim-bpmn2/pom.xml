@@ -12,14 +12,20 @@
   <name>bpim-bpmn2</name>
   <description>Parent project for BPIM</description>
   <modules>
+    <module>bpim-model</module>
+  	<module>bpim-repository</module>
   	<module>bpim-bpmn2-engine</module>
   	<module>bpim-bpmn2-transformer</module>
-  	<module>bpim-bpmn2-test</module>
-  	<module>bpim-model</module>
+  	<module>bpim-bpmn2-test</module>  	
   </modules>
  
   <dependencyManagement>
   	<dependencies>
+  		<dependency>
+	    	<groupId>org.bpim</groupId>
+	    	<artifactId>bpim-repository</artifactId>
+	    	<version>${project.version}</version>    	
+	    </dependency>
   		<dependency>
   			<groupId>org.bpim</groupId>
   			<artifactId>bpim-model</artifactId>
