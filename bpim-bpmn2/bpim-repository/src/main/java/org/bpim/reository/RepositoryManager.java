@@ -7,9 +7,12 @@ public class RepositoryManager {
 	
 	private static RepositoryManager repositoryManager = null;
 	
+	private org.bpim.reository.file.xml.PersistentHandlerImpl xmlPersistentHandler;
+	private org.bpim.reository.neo4j.PersistentHandlerImpl ne4jxmlPersistentHandler; 
 	
 	private RepositoryManager(){
-		
+		xmlPersistentHandler = new org.bpim.reository.file.xml.PersistentHandlerImpl();
+		ne4jxmlPersistentHandler = new org.bpim.reository.neo4j.PersistentHandlerImpl();
 	}
 	
 	public static RepositoryManager getInstance(){
@@ -21,12 +24,14 @@ public class RepositoryManager {
 	
 	
 	public synchronized void storeProcessInstance(ProcessInstance processInstance){
-			
-		org.bpim.reository.file.xml.PersistentHandlerImpl xmlPersistentHandler = new org.bpim.reository.file.xml.PersistentHandlerImpl();
-		xmlPersistentHandler.storeProcessInstance(processInstance);
-		
-		org.bpim.reository.neo4j.PersistentHandlerImpl ne4jxmlPersistentHandler = new org.bpim.reository.neo4j.PersistentHandlerImpl();
+					
+		xmlPersistentHandler.storeProcessInstance(processInstance);				
 		ne4jxmlPersistentHandler.storeProcessInstance(processInstance);
+	}
+	
+	public synchronized void cleanRepository(){
+		xmlPersistentHandler.cleanRepository();
+		ne4jxmlPersistentHandler.cleanRepository();
 	}
 	
 

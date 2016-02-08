@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:ProcessInstance xmlns="http://www.bpim.org/model/execpath/v1" xmlns:ns2="http://www.bpim.org/model/v1" xmlns:ns3="http://www.bpim.org/model/data/v1" xmlns:ns4="uri" endDateTime="Mon Feb 08 13:50:36 AEDT 2016" state="FINISHED" id="3b87616e-cd26-4f03-a83d-a58576909bbe" name="Get Customer Account Process" mappingCorrelationId="1" creationDateTime="Mon Feb 08 13:50:35 AEDT 2016">
+    <ns2:executionPath>
+        <ns2:start id="1be8d3f1-6753-48f8-b116-0dba424df9bc" name="StartProcess">
+            <outputTransition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="EventTransition" id="c3504d59-1582-46b4-9a1b-3dcbda3e3e74">
+                <to xsi:type="AutomatedTask" executionDateTime="Mon Feb 08 13:50:36 AEDT 2016" id="023df971-e437-4d91-955f-140fdcfc7dc7" name="Get Journey Details">
+                    <outputTransition xsi:type="NormalTransition" id="dff4b69a-abaf-435b-8eaa-e406e240dafa">
+                        <to xsi:type="AutomatedTask" executionDateTime="Mon Feb 08 13:50:36 AEDT 2016" id="9038e55b-df42-4c60-b4ed-35305c101799" name="Process Image">
+                            <outputTransition xsi:type="NormalTransition" id="5796d99b-e7a2-4d11-89df-4c485fcc8c68">
+<to xsi:type="ManualTask" userId="1025" userName="Dave Smith" role="Admin" comments="Review was successfull" executionDateTime="Mon Feb 08 13:50:36 AEDT 2016" id="97505b10-547f-4040-a9fe-8c49e35eddb0" name="Review Image">
+    <outputTransition xsi:type="NormalTransition" id="5575292a-01c7-44b5-864e-743611a44796">
+        <to xsi:type="AutomatedTask" executionDateTime="Mon Feb 08 13:50:36 AEDT 2016" id="0f07f550-8d06-48e1-bc65-a8b67f6718e8" name="Get Customer by Plate Number">
+            <outputTransition xsi:type="MessageTransition" id="9c1ad5c0-eacd-499e-b1a3-43222e4fd6f2">
+                <to xsi:type="CallProcessInstance" executionDateTime="Mon Feb 08 13:50:36 AEDT 2016" id="a88c73f4-3d3e-4ec7-9cc6-74034487055a" name="Customer Payment">
+                    <outputTransition xsi:type="NormalTransition" id="4074a24d-8565-4f95-95cf-1e4ecc32e89c">
+                        <to xsi:type="End" id="4ac62f82-4f9f-4aa6-b85d-0ed85fec5623" name="End"/>
+                    </outputTransition>
+                </to>
+            </outputTransition>
+        </to>
+    </outputTransition>
+</to>
+                            </outputTransition>
+                        </to>
+                    </outputTransition>
+                </to>
+            </outputTransition>
+        </ns2:start>
+    </ns2:executionPath>
+    <ns2:data>
+        <ns2:dataSnapshotGraphs>
+            <ns3:dataSnapshotElement empty="true" id="2a32b816-0aea-4f70-86af-32c4ad2a8449" name="Empty">
+                <ns3:dataTransition id="3f58c55f-71d6-4ebc-baa6-7ca148b9023b" name="StartProcess">
+                    <ns3:dataSnapshotElement dataPoolElementId="9f8134b3-775d-451c-8014-5b0edd292021" empty="false" id="c3fd23d0-63ad-4c52-a21d-7099ad5ec609" name="journeyMessage 1" mappingCorrelationId="5000">
+                        <ns3:dataTransition id="b88ed4b4-da00-43e7-92bd-0096cad6852b" name="Get Journey Details">
+                            <ns3:dataSnapshotElement dataPoolElementId="1d2b911c-68f8-45d0-80aa-45a11f40e113" empty="false" id="f5d243a0-0af8-47a2-80e3-818dc475878e" name="JourneyDetails 1" mappingCorrelationId="5002"/>
+                        </ns3:dataTransition>
+                        <ns3:dataTransition id="6924c02e-e2d0-4def-aeec-2ac89b04307c" name="Process Image">
+                            <ns3:dataSnapshotElement dataPoolElementId="a5cd6c44-23f4-4ec4-a3e8-ee31c8d077ec" empty="false" id="59322d1a-30b2-4fe4-a747-8a88549946d6" name="ImageProcessingResult 1" mappingCorrelationId="5004">
+<ns3:dataTransition id="ed8e7490-a48d-4e81-a527-38e541a44142" name="Review Image">
+    <ns3:dataSnapshotElement dataPoolElementId="e11231f5-e17b-4b37-969c-29887f4ec859" empty="false" id="eb00c89b-3184-422c-9251-d0a52900a51f" name="ImageProcessingResult 2" mappingCorrelationId="5004">
+        <ns3:dataTransition id="db5bce67-4c6a-48bb-992a-a3659d130017" name="Get Customer by Plate Number">
+            <ns3:dataSnapshotElement dataPoolElementId="b9efa21a-4520-4e92-8ffa-e86e5304eca7" empty="false" id="2064356e-a2a8-434f-a96d-91ebe09ff46d" name="CustomerAccount 1" mappingCorrelationId="5006"/>
+        </ns3:dataTransition>
+    </ns3:dataSnapshotElement>
+</ns3:dataTransition>
+                            </ns3:dataSnapshotElement>
+                        </ns3:dataTransition>
+                    </ns3:dataSnapshotElement>
+                </ns3:dataTransition>
+            </ns3:dataSnapshotElement>
+        </ns2:dataSnapshotGraphs>
+        <ns2:dataSnapshotPool>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="1" dataObjectType="org.bpim.example.customerjourney.model.JourneyMessage" id="9f8134b3-775d-451c-8014-5b0edd292021" name="journeyMessage 1" mappingCorrelationId="5000" creationDateTime="Mon Feb 08 13:50:35 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5000","gateId":"10045","creationDTM":1454899835813,"messageType":"IMAGE"}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="1" dataObjectType="org.bpim.example.customerjourney.model.JourneyDetails" id="1d2b911c-68f8-45d0-80aa-45a11f40e113" name="JourneyDetails 1" mappingCorrelationId="5002" creationDateTime="Mon Feb 08 13:50:36 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5002","gateId":"10045","creationDTM":1454899835813}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="1" dataObjectType="org.bpim.example.customerjourney.model.ImageProcessingResult" id="a5cd6c44-23f4-4ec4-a3e8-ee31c8d077ec" name="ImageProcessingResult 1" mappingCorrelationId="5004" creationDateTime="Mon Feb 08 13:50:36 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5004","confidenceRate":4,"plateNumber":"pki*******","reviewedByHuman":false,"successful":false}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="2" dataObjectType="org.bpim.example.customerjourney.model.ImageProcessingResult" id="e11231f5-e17b-4b37-969c-29887f4ec859" name="ImageProcessingResult 2" mappingCorrelationId="5004" creationDateTime="Mon Feb 08 13:50:36 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5004","confidenceRate":10,"plateNumber":"PlateNumber","reviewedByHuman":true,"successful":true}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="1" dataObjectType="org.bpim.example.customerjourney.model.CustomerAccount" id="b9efa21a-4520-4e92-8ffa-e86e5304eca7" name="CustomerAccount 1" mappingCorrelationId="5006" creationDateTime="Mon Feb 08 13:50:36 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5006","accountId":"7050","customerId":"111111","plateNum":"PlateNumber"}</ns3:dataObject>
+            </ns3:dataElement>
+        </ns2:dataSnapshotPool>
+    </ns2:data>
+    <ns2:server address="192.168.56.1" name="SYDLT5CG4520KVJ"/>
+</ns4:ProcessInstance>

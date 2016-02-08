@@ -166,6 +166,7 @@ public class StandaloneBPMNProcessTest {
     
     @Test
     public void testIntermediateCatchEventSignal() throws Exception {
+    	RepositoryManager.getInstance().cleanRepository();
     	ExecutionContext executionContext = new ExecutionContext();
     	KieBase kbase = createKnowledgeBase("BPMN2-IntermediateCatchEventSignal.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
@@ -186,6 +187,7 @@ public class StandaloneBPMNProcessTest {
     
     @Test
     public void testSubProcess() throws Exception {
+    	RepositoryManager.getInstance().cleanRepository();
     	ExecutionContext executionContext = new ExecutionContext();
         KieBase kbase = createKnowledgeBase("BPMN2-SubProcess.bpmn2");
         KieSession ksession = createKnowledgeSession(kbase);
@@ -227,6 +229,7 @@ public class StandaloneBPMNProcessTest {
     
     @Test
     public void testCustomerJourney() throws Exception {
+    	RepositoryManager.getInstance().cleanRepository();
     	ExecutionContext executionContext = new ExecutionContext();
     	//executionContext.startCompositeProcessInstance("Customer Journey Process");    	    	
     	
@@ -274,7 +277,7 @@ public class StandaloneBPMNProcessTest {
         
         receiveTaskHandler.messageReceived("CustomerJourneyDetails", message);
         
-        storeBPIMProcessInstance(customerPaymentProcessInstance, executionContext);
+       // storeBPIMProcessInstance(customerPaymentProcessInstance, executionContext);
        
     }
     

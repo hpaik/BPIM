@@ -3,14 +3,15 @@ node {
   color: #A5ABB6;
   border-color: #9AA1AC;
   border-width: 2px;
-  text-color-internal:  #604A0E;;
-  font-size: 10px;
+  text-color-internal: #604A0E;
+  font-weight: 900;
+  font-size: 14px;  
 }
 
 relationship {
   color: #A5ABB6;
   shaft-width: 1px;
-  font-size: 8px;
+  font-size: 12px;
   padding: 3px;
   text-color-external: #000000;
   text-color-internal:  #604A0E;;
@@ -64,6 +65,7 @@ node.Wait {
   text-color-internal: #604A0E;
   caption: '{Name}';
   diameter: 80px;
+  font-weight: 900;
 }
 
 node.AutomatedTask {

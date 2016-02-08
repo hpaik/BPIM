@@ -32,20 +32,15 @@ public class PersistentHandlerImpl implements PersistentHandler{
 	
 	protected static final Logger logger = LoggerFactory.getLogger(PersistentHandlerImpl.class);
 	private ObjectMapper mapper = new ObjectMapper();
+	private final String neo4jDbPath = "C:\\work\\TPNeo4jDB";
 	
-	public void storeProcessInstance(ProcessInstance processInstance){
-		File dbFile = new File("C:\\work\\TPNeo4jDB");
+	
+	
+	public synchronized void storeProcessInstance(ProcessInstance processInstance){
 		
-		 GraphDatabaseFactory dbFactory = new GraphDatabaseFactory();
-		 GraphDatabaseService db= dbFactory.newEmbeddedDatabase(dbFile);
+		 GraphDatabaseService db= getGraphDatabaseService();
 		 		 
-		 try (Transaction tx = db.beginTx()) {
-			 for (Relationship relationship: GlobalGraphOperations.at(db).getAllRelationships()){
-				 relationship.delete();
-			 }
-			 for(Node node: GlobalGraphOperations.at(db).getAllNodes()){
-				node.delete();
-			 }
+		 try (Transaction tx = db.beginTx()) {			
 			 
 			 final String rootNodeType = "RootNode";
 			 Node piNode = null;
@@ -54,11 +49,7 @@ public class PersistentHandlerImpl implements PersistentHandler{
 			 Node startNode = null;
 			 Node dataSnapshotNode = null;
 			 Node dataPoolNode = null;
-			// ProcessInstance pi = null;
-				
-			//pi = pic.getProcessInstance();
-			piNode = createNode(db, processInstance, "ProcessInstance", "");
-			//createRelationship(compositPINode, piNode, "Contains");				
+			 piNode = createNode(db, processInstance, "ProcessInstance", "");
 			 dataPoolNode = createNode(db, "Data Pool", "DataPoolRoot", "", rootNodeType);
 			 createRelationship(piNode, dataPoolNode, "Data");
 			 Node dataPoolElementNode = null;
@@ -89,6 +80,30 @@ public class PersistentHandlerImpl implements PersistentHandler{
 		} 
 		
 		db.shutdown();
+	}
+	
+	@Override
+	public void cleanRepository() {
+		GraphDatabaseService db= getGraphDatabaseService();
+		 try (Transaction tx = db.beginTx()) {
+			 for (Relationship relationship: GlobalGraphOperations.at(db).getAllRelationships()){
+				 relationship.delete();
+			 }
+			 for(Node node: GlobalGraphOperations.at(db).getAllNodes()){
+				node.delete();
+			 }
+			 tx.success();
+			 
+		 }catch (Exception e) {			
+			e.printStackTrace();
+		 } 
+		db.shutdown();
+	}
+	
+	private GraphDatabaseService getGraphDatabaseService(){
+		 File dbFile = new File(neo4jDbPath);			
+		 GraphDatabaseFactory dbFactory = new GraphDatabaseFactory();
+		 return dbFactory.newEmbeddedDatabase(dbFile);
 	}
 	
 
@@ -232,5 +247,8 @@ public class PersistentHandlerImpl implements PersistentHandler{
 		};
 		return node.getRelationships(type, Direction.OUTGOING);
 	}
+
+
+	
 
 }
