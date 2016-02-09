@@ -7,13 +7,14 @@ import org.bpim.transformer.base.BPIMDataObject;
 public class DiscountEntitlementList<T> extends ArrayList<T> implements BPIMDataObject{
 
 	private static final long serialVersionUID = 1L;
-	//public static int id = 50000;
 	
 	protected String objectId;
+	protected String label;
 	
 	public DiscountEntitlementList(){
 		objectId = String.valueOf(ETollDataObject.id);
 		ETollDataObject.id ++;
+		label = "Discount Entitlement List";
 	}
 	
 	
@@ -25,6 +26,13 @@ public class DiscountEntitlementList<T> extends ArrayList<T> implements BPIMData
 	public void setObjectId(String objectId) {
 		
 		this.objectId = objectId;
+	}
+
+
+	@Override
+	public String getLabel() {
+	
+		return label;
 	}
 	
 	

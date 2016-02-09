@@ -177,21 +177,27 @@ public class PersistentHandlerImpl implements PersistentHandler{
 			}
 		});
 		if(caption != null){
-			String normalizedName = caption;
-			int lenghtLimit = 15;
-			if (normalizedName.length() > lenghtLimit){
-				lenghtLimit--;
-				if (!normalizedName.substring(0, lenghtLimit).contains(" "))
-					normalizedName = normalizedName.substring(0, lenghtLimit) + " " + caption.substring(lenghtLimit);
-			}
-			node.setProperty("Caption", normalizedName);
-			node.setProperty("Name", normalizedName);
+//			String normalizedName = caption;
+//			int lenghtLimit = 15;
+//			if (normalizedName.length() > lenghtLimit){
+//				lenghtLimit--;
+//				if (!normalizedName.substring(0, lenghtLimit).contains(" "))
+//					normalizedName = normalizedName.substring(0, lenghtLimit) + " " + caption.substring(lenghtLimit);
+//			}
+			node.setProperty("Caption", caption);
+			node.setProperty("Name", caption);
 			node.setProperty("Type", type);
 		}
 		return node;
 	}
 		
 	private Node createNode(GraphDatabaseService db, final ElementBase bpimElement, final String labelName, String postfix) throws Exception{
+		
+//		if (bpimElement instanceof DataPoolElement){
+//			DataPoolElement dataPoolElement = (DataPoolElement) bpimElement;
+//			BPIMDataObject BPIMDataObject = (BPIMDataObject) dataPoolElement.getDataObject()
+//		}
+//		((BPIMDataObject)((DataPoolElement)bpimElement).getDataObject()). 
 		
 		Node node = createNode(db, bpimElement.getName(), labelName, postfix, bpimElement.getClass().getSimpleName());
 		Object value = null;

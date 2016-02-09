@@ -8,6 +8,10 @@ public class JourneyMessage extends ETollDataObject{
 	private String messageType;
 	private Object data;
 	
+	public JourneyMessage(){
+		label = "Journey Message";
+	}
+	
 	public String getGateId() {
 		return gateId;
 	}

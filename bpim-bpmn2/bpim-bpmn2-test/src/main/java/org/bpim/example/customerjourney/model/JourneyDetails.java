@@ -6,6 +6,10 @@ public class JourneyDetails extends ETollDataObject{
 	private String gateId;
 	private Date creationDTM;
 	
+	public JourneyDetails(){
+		label = "Journey Details";
+	}
+	
 	public String getGateId() {
 		return gateId;
 	}

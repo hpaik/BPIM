@@ -8,6 +8,10 @@ public class ImageProcessingResult extends ETollDataObject{
 	private boolean reviewedByHuman;
 	private boolean successful;
 	
+	public ImageProcessingResult(){
+		label = "Image Processing Result";
+	}
+	
 	
 	public int getConfidenceRate() {
 		return confidenceRate;

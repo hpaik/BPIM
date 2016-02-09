@@ -78,7 +78,7 @@
     <property id="customerAccount" itemSubjectRef="null"/>
 
     <!-- nodes -->
-    <startEvent id="_1" name="StartProcess"  isInterrupting="true"/>
+    <startEvent id="_1" name="Start Process"  isInterrupting="true"/>
     <serviceTask id="_jbpm-unique-7" name="Get Journey Details" operationRef="_jbpm-unique-7_ServiceOperation" implementation="Other" >
       <ioSpecification>
         <dataInput id="_jbpm-unique-7_param" name="Parameter" />

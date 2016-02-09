@@ -4,6 +4,10 @@ public class DiscountEntitlement extends ETollDataObject{
 	private long amount;
 	private String type;
 	
+	public DiscountEntitlement(){
+		label = "Discount Entitlement";
+	}
+	
 	public String getType() {
 		return type;
 	}

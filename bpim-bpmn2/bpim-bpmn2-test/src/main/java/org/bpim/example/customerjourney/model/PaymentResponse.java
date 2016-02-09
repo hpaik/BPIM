@@ -6,6 +6,10 @@ public class PaymentResponse extends ETollDataObject{
 	private String paymentReciept;
 	private String message;
 	
+	public PaymentResponse(){
+		label = "Payment Response";
+	}
+	
 	public String getMessage() {
 		return message;
 	}

@@ -6,6 +6,10 @@ public class CustomerAccount extends ETollDataObject{
 	private String customerId = null;
 	private String plateNum = null;
 	
+	public CustomerAccount(){
+		label = "Customer Account";
+	}
+	
 	public String getAccountId() {
 		return accountId;
 	}
