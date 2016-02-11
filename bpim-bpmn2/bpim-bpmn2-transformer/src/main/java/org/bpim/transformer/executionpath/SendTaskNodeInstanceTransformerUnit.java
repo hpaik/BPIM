@@ -12,7 +12,8 @@ public class SendTaskNodeInstanceTransformerUnit   extends TransformerUnit {
 	@Override
 	public void transform(NodeInstance nodeInstance,
 			TransformationResult transformationResult) {
-		MessageTransition messageTransition = ExecutionPathHelper.createMessageTransition();		
+		MessageTransition messageTransition = ExecutionPathHelper.createMessageTransition();
+		messageTransition.setName(nodeInstance.getNodeName());
 		CallProcessInstance callProcessInstance = ExecutionPathHelper.createCallProcessInstance(nodeInstance);
 		messageTransition.setTo(callProcessInstance);
 		transformationResult.setFlowNode(messageTransition);

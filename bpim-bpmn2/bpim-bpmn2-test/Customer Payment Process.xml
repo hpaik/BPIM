@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:ProcessInstance xmlns="http://www.bpim.org/model/execpath/v1" xmlns:ns2="http://www.bpim.org/model/v1" xmlns:ns3="http://www.bpim.org/model/data/v1" xmlns:ns4="uri" state="STARTED" id="3ed4b7d8-974f-49c6-a66a-a647834f4267" name="Customer Payment Process" mappingCorrelationId="2" creationDateTime="Thu Feb 11 13:58:44 AEDT 2016">
+    <ns2:executionPath>
+        <ns2:start id="4b61bcbd-d27f-4cc6-9132-739a1503731c" name="Start Process">
+            <outputTransition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="EventTransition" id="39523f6b-f3d0-430c-86fa-da73fc91becf">
+                <to xsi:type="Wait" executionDateTime="Thu Feb 11 13:58:44 AEDT 2016" id="128675a5-3b7f-4b2c-9af2-aed0d0fcc097" name="Wait">
+                    <outputTransition xsi:type="MessageTransition" id="00edbd9d-09e6-492f-acee-3fa20c7ea42e">
+                        <to xsi:type="ReferenceProcessInstance" executionDateTime="Thu Feb 11 13:58:44 AEDT 2016" id="3b8396a6-607f-4ff3-b3d1-a662ab3cca84" name="Get Customer Account">
+                            <outputTransition xsi:type="NormalTransition" id="1b606bf5-6991-4626-bfd4-45fb92a7de38">
+<to xsi:type="AutomatedTask" executionDateTime="Thu Feb 11 13:58:44 AEDT 2016" id="3619efdd-d7ba-4686-ad6c-b8545efaba66" name="Calculate Fare Amount">
+    <outputTransition xsi:type="NormalTransition" id="8ade74ac-e529-4390-8f21-698f66201677">
+        <to xsi:type="AutomatedTask" executionDateTime="Thu Feb 11 13:58:44 AEDT 2016" id="3320a4d2-cd9a-4a87-bc5f-80fbc9d167df" name="Get Discount Entitlements">
+            <outputTransition xsi:type="NormalTransition" id="5fc66947-4b6e-461d-87ce-8319283d8e81">
+                <to xsi:type="AutomatedTask" executionDateTime="Thu Feb 11 13:58:44 AEDT 2016" id="133554ac-234a-405d-a754-360492dd58e8" name="Apply Discount">
+                    <outputTransition xsi:type="NormalTransition" id="9c746ed0-6546-4549-8a15-65f834b42e44">
+                        <to xsi:type="AutomatedTask" executionDateTime="Thu Feb 11 13:58:44 AEDT 2016" id="5dca94e5-c973-4e0e-92eb-1c5e66d3c6e5" name="Apply Discount">
+                            <outputTransition xsi:type="NormalTransition" id="ee05f7b4-cfc1-4f17-bf4e-4bc682107ca2">
+<to xsi:type="AutomatedTask" executionDateTime="Thu Feb 11 13:58:44 AEDT 2016" id="5371795c-2da6-43c3-add3-26223d70e3e3" name="Apply Discount">
+    <outputTransition xsi:type="NormalTransition" id="be1e26a7-59f8-4225-b8bb-0020b6f5c1ce">
+        <to xsi:type="AutomatedTask" executionDateTime="Thu Feb 11 13:58:44 AEDT 2016" id="99a2708f-1eab-4632-a649-29f84d89f357" name="Customer Payment">
+            <outputTransition xsi:type="NormalTransition" id="f3581706-cca0-441f-bfa6-566ef1466fe6"/>
+        </to>
+    </outputTransition>
+</to>
+                            </outputTransition>
+                        </to>
+                    </outputTransition>
+                </to>
+            </outputTransition>
+        </to>
+    </outputTransition>
+</to>
+                            </outputTransition>
+                        </to>
+                    </outputTransition>
+                </to>
+            </outputTransition>
+        </ns2:start>
+    </ns2:executionPath>
+    <ns2:data>
+        <ns2:dataSnapshotGraphs>
+            <ns3:dataSnapshotElement empty="true" id="d50ba3f1-9458-416b-b9e2-2f30d657f16a" name="Empty">
+                <ns3:dataTransition id="4fe2a368-0446-4cb0-a6bb-a42981acf699" name="Get Customer Account">
+                    <ns3:dataSnapshotElement dataPoolElementId="f06975c5-8ff2-4165-90b0-9692c3e8de81" empty="false" id="65ff2249-bf80-411b-9b43-60ef20b5305b" name="Customer Account 1" mappingCorrelationId="5006">
+                        <ns3:dataTransition id="40604768-5563-4d1c-94f1-05ea4722bf8d" name="Calculate Fare Amount">
+                            <ns3:dataSnapshotElement dataPoolElementId="6b4a9d4a-28b3-4fa7-87c1-0ca388dee7d3" empty="false" id="b9ec6c6a-824d-47cc-af54-1acf3b6ece14" name="Fair Amount 1" mappingCorrelationId="5013">
+<ns3:dataTransition id="4185bace-d938-41db-9f71-7cfe29c6dc17" name="Apply Discount">
+    <ns3:dataSnapshotElement dataPoolElementId="bb6748a1-85b9-4336-ab08-af50bccf4dcb" empty="false" id="dcf33143-57b9-4fa5-9da9-6c1ba2680966" name="Fair Amount 2" mappingCorrelationId="5013">
+        <ns3:dataTransition id="7db71e4a-b8d6-434a-80b6-6f78842abe12" name="Apply Discount">
+            <ns3:dataSnapshotElement dataPoolElementId="876a759a-bf82-4261-9f6e-37d679867f32" empty="false" id="c9f1351d-8db2-4fd6-892d-6add1685dd85" name="Fair Amount 3" mappingCorrelationId="5013">
+                <ns3:dataTransition id="bb883960-7c78-44b1-85a1-f0f0c19cf334" name="Apply Discount">
+                    <ns3:dataSnapshotElement dataPoolElementId="5e43ea21-10ac-4665-8281-2f50457168d6" empty="false" id="1301d379-746d-4b57-9c2d-05c88ad9bf52" name="Fair Amount 4" mappingCorrelationId="5013">
+                        <ns3:dataTransition id="de7db04b-b173-42cc-be09-444feaa793cc" name="Customer Payment">
+                            <ns3:dataSnapshotElement dataPoolElementId="63ab97d5-1900-4269-9fda-056fa1f48ce6" empty="false" id="9d291f86-f511-4e72-ac7f-494f77c56977" name="Payment Response 1" mappingCorrelationId="4443"/>
+                        </ns3:dataTransition>
+                    </ns3:dataSnapshotElement>
+                </ns3:dataTransition>
+            </ns3:dataSnapshotElement>
+        </ns3:dataTransition>
+    </ns3:dataSnapshotElement>
+</ns3:dataTransition>
+                            </ns3:dataSnapshotElement>
+                        </ns3:dataTransition>
+                        <ns3:dataTransition id="16b146c5-6128-4e0d-b4d5-1959b613a0fb" name="Get Discount Entitlements">
+                            <ns3:dataSnapshotElement dataPoolElementId="5a8e61b2-3db8-471f-ad33-0dbb4b6ab427" empty="false" id="31f1cb5a-96dd-4438-95f2-82b568d33a2b" name="Discount Entitlement List 1" mappingCorrelationId="5015">
+<ns3:dataTransition id="b7d8d408-4bb7-4428-9cd7-5e61fdee60a5" name="Apply Discount">
+    <ns3:dataSnapshotElement dataPoolElementId="bb6748a1-85b9-4336-ab08-af50bccf4dcb" empty="false" id="dcf33143-57b9-4fa5-9da9-6c1ba2680966" name="Fair Amount 2" mappingCorrelationId="5013">
+        <ns3:dataTransition id="7db71e4a-b8d6-434a-80b6-6f78842abe12" name="Apply Discount">
+            <ns3:dataSnapshotElement dataPoolElementId="876a759a-bf82-4261-9f6e-37d679867f32" empty="false" id="c9f1351d-8db2-4fd6-892d-6add1685dd85" name="Fair Amount 3" mappingCorrelationId="5013">
+                <ns3:dataTransition id="bb883960-7c78-44b1-85a1-f0f0c19cf334" name="Apply Discount">
+                    <ns3:dataSnapshotElement dataPoolElementId="5e43ea21-10ac-4665-8281-2f50457168d6" empty="false" id="1301d379-746d-4b57-9c2d-05c88ad9bf52" name="Fair Amount 4" mappingCorrelationId="5013">
+                        <ns3:dataTransition id="de7db04b-b173-42cc-be09-444feaa793cc" name="Customer Payment">
+                            <ns3:dataSnapshotElement dataPoolElementId="63ab97d5-1900-4269-9fda-056fa1f48ce6" empty="false" id="9d291f86-f511-4e72-ac7f-494f77c56977" name="Payment Response 1" mappingCorrelationId="4443"/>
+                        </ns3:dataTransition>
+                    </ns3:dataSnapshotElement>
+                </ns3:dataTransition>
+            </ns3:dataSnapshotElement>
+        </ns3:dataTransition>
+    </ns3:dataSnapshotElement>
+</ns3:dataTransition>
+<ns3:dataTransition id="a0040eb0-7154-49f7-a1c1-62b97c7d9eb2" name="Apply Discount">
+    <ns3:dataSnapshotElement dataPoolElementId="876a759a-bf82-4261-9f6e-37d679867f32" empty="false" id="c9f1351d-8db2-4fd6-892d-6add1685dd85" name="Fair Amount 3" mappingCorrelationId="5013">
+        <ns3:dataTransition id="bb883960-7c78-44b1-85a1-f0f0c19cf334" name="Apply Discount">
+            <ns3:dataSnapshotElement dataPoolElementId="5e43ea21-10ac-4665-8281-2f50457168d6" empty="false" id="1301d379-746d-4b57-9c2d-05c88ad9bf52" name="Fair Amount 4" mappingCorrelationId="5013">
+                <ns3:dataTransition id="de7db04b-b173-42cc-be09-444feaa793cc" name="Customer Payment">
+                    <ns3:dataSnapshotElement dataPoolElementId="63ab97d5-1900-4269-9fda-056fa1f48ce6" empty="false" id="9d291f86-f511-4e72-ac7f-494f77c56977" name="Payment Response 1" mappingCorrelationId="4443"/>
+                </ns3:dataTransition>
+            </ns3:dataSnapshotElement>
+        </ns3:dataTransition>
+    </ns3:dataSnapshotElement>
+</ns3:dataTransition>
+<ns3:dataTransition id="bc29400a-b48a-4a7a-acde-add6dbbbc13c" name="Apply Discount">
+    <ns3:dataSnapshotElement dataPoolElementId="5e43ea21-10ac-4665-8281-2f50457168d6" empty="false" id="1301d379-746d-4b57-9c2d-05c88ad9bf52" name="Fair Amount 4" mappingCorrelationId="5013">
+        <ns3:dataTransition id="de7db04b-b173-42cc-be09-444feaa793cc" name="Customer Payment">
+            <ns3:dataSnapshotElement dataPoolElementId="63ab97d5-1900-4269-9fda-056fa1f48ce6" empty="false" id="9d291f86-f511-4e72-ac7f-494f77c56977" name="Payment Response 1" mappingCorrelationId="4443"/>
+        </ns3:dataTransition>
+    </ns3:dataSnapshotElement>
+</ns3:dataTransition>
+                            </ns3:dataSnapshotElement>
+                        </ns3:dataTransition>
+                        <ns3:dataTransition id="a9f5e76d-f420-49f6-982a-82eba3b1fd19" name="Customer Payment">
+                            <ns3:dataSnapshotElement dataPoolElementId="63ab97d5-1900-4269-9fda-056fa1f48ce6" empty="false" id="9d291f86-f511-4e72-ac7f-494f77c56977" name="Payment Response 1" mappingCorrelationId="4443"/>
+                        </ns3:dataTransition>
+                    </ns3:dataSnapshotElement>
+                </ns3:dataTransition>
+                <ns3:dataTransition id="c3cfb04d-8aec-4afd-9e8d-bf3d8d42a11f" name="Get Customer Account">
+                    <ns3:dataSnapshotElement dataPoolElementId="43306c6e-9d84-43f1-8535-1df792b631a7" empty="false" id="a78fef6d-d62b-43fc-8033-3fcbd0b3794d" name="Journey Details 1" mappingCorrelationId="5002">
+                        <ns3:dataTransition id="cb3d69fd-3982-49a6-9cee-103c4ac99823" name="Calculate Fare Amount">
+                            <ns3:dataSnapshotElement dataPoolElementId="6b4a9d4a-28b3-4fa7-87c1-0ca388dee7d3" empty="false" id="b9ec6c6a-824d-47cc-af54-1acf3b6ece14" name="Fair Amount 1" mappingCorrelationId="5013">
+<ns3:dataTransition id="4185bace-d938-41db-9f71-7cfe29c6dc17" name="Apply Discount">
+    <ns3:dataSnapshotElement dataPoolElementId="bb6748a1-85b9-4336-ab08-af50bccf4dcb" empty="false" id="dcf33143-57b9-4fa5-9da9-6c1ba2680966" name="Fair Amount 2" mappingCorrelationId="5013">
+        <ns3:dataTransition id="7db71e4a-b8d6-434a-80b6-6f78842abe12" name="Apply Discount">
+            <ns3:dataSnapshotElement dataPoolElementId="876a759a-bf82-4261-9f6e-37d679867f32" empty="false" id="c9f1351d-8db2-4fd6-892d-6add1685dd85" name="Fair Amount 3" mappingCorrelationId="5013">
+                <ns3:dataTransition id="bb883960-7c78-44b1-85a1-f0f0c19cf334" name="Apply Discount">
+                    <ns3:dataSnapshotElement dataPoolElementId="5e43ea21-10ac-4665-8281-2f50457168d6" empty="false" id="1301d379-746d-4b57-9c2d-05c88ad9bf52" name="Fair Amount 4" mappingCorrelationId="5013">
+                        <ns3:dataTransition id="de7db04b-b173-42cc-be09-444feaa793cc" name="Customer Payment">
+                            <ns3:dataSnapshotElement dataPoolElementId="63ab97d5-1900-4269-9fda-056fa1f48ce6" empty="false" id="9d291f86-f511-4e72-ac7f-494f77c56977" name="Payment Response 1" mappingCorrelationId="4443"/>
+                        </ns3:dataTransition>
+                    </ns3:dataSnapshotElement>
+                </ns3:dataTransition>
+            </ns3:dataSnapshotElement>
+        </ns3:dataTransition>
+    </ns3:dataSnapshotElement>
+</ns3:dataTransition>
+                            </ns3:dataSnapshotElement>
+                        </ns3:dataTransition>
+                    </ns3:dataSnapshotElement>
+                </ns3:dataTransition>
+            </ns3:dataSnapshotElement>
+        </ns2:dataSnapshotGraphs>
+        <ns2:dataSnapshotPool>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="1" dataObjectType="org.bpim.example.customerjourney.model.CustomerAccount" id="f06975c5-8ff2-4165-90b0-9692c3e8de81" name="Customer Account 1" mappingCorrelationId="5006" creationDateTime="Thu Feb 11 13:58:44 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5006","label":"Customer Account","accountId":"7050","customerId":"111111","plateNum":"PlateNumber"}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="1" dataObjectType="org.bpim.example.customerjourney.model.JourneyDetails" id="43306c6e-9d84-43f1-8535-1df792b631a7" name="Journey Details 1" mappingCorrelationId="5002" creationDateTime="Thu Feb 11 13:58:44 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5002","label":"Journey Details","gateId":"10045","creationDTM":1455159481954}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="1" dataObjectType="org.bpim.example.customerjourney.model.FairAmount" id="6b4a9d4a-28b3-4fa7-87c1-0ca388dee7d3" name="Fair Amount 1" mappingCorrelationId="5013" creationDateTime="Thu Feb 11 13:58:44 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5013","label":"Fair Amount","price":150,"discounted":false}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItemArray" version="1" dataObjectType="org.bpim.example.customerjourney.model.DiscountEntitlementList" id="5a8e61b2-3db8-471f-ad33-0dbb4b6ab427" name="Discount Entitlement List 1" mappingCorrelationId="5015" creationDateTime="Thu Feb 11 13:58:44 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">[{"objectId":"5016","label":"Discount Entitlement","amount":10,"type":"Gold Customer"},{"objectId":"5017","label":"Discount Entitlement","amount":12,"type":"Off-Peak"},{"objectId":"5018","label":"Discount Entitlement","amount":8,"type":"Journey Award"}]</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="2" dataObjectType="org.bpim.example.customerjourney.model.FairAmount" id="bb6748a1-85b9-4336-ab08-af50bccf4dcb" name="Fair Amount 2" mappingCorrelationId="5013" creationDateTime="Thu Feb 11 13:58:44 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5013","label":"Fair Amount","price":140,"discounted":true}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="3" dataObjectType="org.bpim.example.customerjourney.model.FairAmount" id="876a759a-bf82-4261-9f6e-37d679867f32" name="Fair Amount 3" mappingCorrelationId="5013" creationDateTime="Thu Feb 11 13:58:44 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5013","label":"Fair Amount","price":128,"discounted":true}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="4" dataObjectType="org.bpim.example.customerjourney.model.FairAmount" id="5e43ea21-10ac-4665-8281-2f50457168d6" name="Fair Amount 4" mappingCorrelationId="5013" creationDateTime="Thu Feb 11 13:58:44 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"5013","label":"Fair Amount","price":120,"discounted":true}</ns3:dataObject>
+            </ns3:dataElement>
+            <ns3:dataElement xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns3:DataItem" version="1" dataObjectType="org.bpim.example.customerjourney.model.PaymentResponse" id="63ab97d5-1900-4269-9fda-056fa1f48ce6" name="Payment Response 1" mappingCorrelationId="4443" creationDateTime="Thu Feb 11 13:58:44 AEDT 2016">
+                <ns3:dataObject xmlns:xs="http://www.w3.org/2001/XMLSchema" xsi:type="xs:string">{"objectId":"4443","label":"Payment Response","responseCode":"41","message":"Can not connect to the payment gateway"}</ns3:dataObject>
+            </ns3:dataElement>
+        </ns2:dataSnapshotPool>
+    </ns2:data>
+    <ns2:server address="192.168.56.1" name="SYDLT5CG4520KVJ"/>
+</ns4:ProcessInstance>

@@ -265,7 +265,7 @@ public class StandaloneBPMNProcessTest {
         DataPoolElement customerAccountElement = processInstanceContext.getDataPoolElementByType(CustomerAccount.class.getName());
         CustomerAccount customerAccount = DataPoolElementHelper.deserialize(customerAccountElement);
         
-        storeBPIMProcessInstance(getCustomerAccountProcessInstance, executionContext);
+      storeBPIMProcessInstance(getCustomerAccountProcessInstance, executionContext);
         
         
         WorkflowProcessInstance customerPaymentProcessInstance = (WorkflowProcessInstance) ksession.startProcess("CustomerPaymentProcess");
@@ -277,7 +277,7 @@ public class StandaloneBPMNProcessTest {
         
         receiveTaskHandler.messageReceived("CustomerJourneyDetails", message);
         
-       // storeBPIMProcessInstance(customerPaymentProcessInstance, executionContext);
+//        storeBPIMProcessInstance(customerPaymentProcessInstance, executionContext);
        
     }
     
