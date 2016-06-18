@@ -16,6 +16,14 @@
 	   <artifactId>neo4j</artifactId>	   
 	</dependency>
 	<dependency>
+  	 	<groupId>org.neo4j</groupId>
+  	 	<artifactId>neo4j-graphdb-api</artifactId>
+  	 </dependency>
+  	  <dependency>
+	  	 	<groupId>org.neo4j</groupId>
+	  	 	<artifactId>neo4j-resource</artifactId>
+	  	 </dependency>
+	<dependency>
   	 	<groupId>org.bpim</groupId>
   	 	<artifactId>bpim-model</artifactId>  	 	
   	 </dependency>
@@ -35,5 +43,6 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
+  	 
   </dependencies>
 </project>

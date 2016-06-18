@@ -7,6 +7,23 @@
   </parent>
   <artifactId>bpim-bpmn2-test</artifactId>
   <dependencies>
+  <dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-core</artifactId>
+    
+</dependency>
+<!--  -->
+<dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-codecs</artifactId>
+   
+</dependency>
+<dependency>
+    <groupId>org.apache.lucene</groupId>
+    <artifactId>lucene-analyzers-common</artifactId>
+    
+</dependency>
+
     <!-- -->
     <dependency>
   		<groupId>org.bpim</groupId>
@@ -24,18 +41,19 @@
   	 	<groupId>org.bpim</groupId>
   	 	<artifactId>bpim-model</artifactId>  	 	
   	 </dependency>
-  	<dependency>
-		<groupId>org.apache.lucene</groupId>
-		<artifactId>lucene-core</artifactId>		
-	</dependency>
+  	
     <dependency>
 		<groupId>com.fasterxml.jackson.core</groupId>
 		<artifactId>jackson-databind</artifactId>		
 	</dependency>
-  	<dependency>
+  	 <dependency>
+	   <groupId>org.neo4j</groupId>
+	   <artifactId>neo4j-kernel</artifactId>	 
+	</dependency>
+	<dependency>
 	   <groupId>org.neo4j</groupId>
 	   <artifactId>neo4j</artifactId>	   
-	</dependency>	  
+	</dependency>  
   	
   	<dependency>
       <groupId>org.jbpm</groupId>

@@ -21,7 +21,6 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.tooling.GlobalGraphOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,12 +83,13 @@ public class PersistentHandlerImpl implements PersistentHandler{
 	
 	@Override
 	public void cleanRepository() {
-		GraphDatabaseService db= getGraphDatabaseService();
+	GraphDatabaseService db= getGraphDatabaseService();
+	
 		 try (Transaction tx = db.beginTx()) {
-			 for (Relationship relationship: GlobalGraphOperations.at(db).getAllRelationships()){
+			 for (Relationship relationship: db.getAllRelationships()){
 				 relationship.delete();
 			 }
-			 for(Node node: GlobalGraphOperations.at(db).getAllNodes()){
+			 for(Node node: db.getAllNodes()){
 				node.delete();
 			 }
 			 tx.success();
@@ -98,6 +98,9 @@ public class PersistentHandlerImpl implements PersistentHandler{
 			e.printStackTrace();
 		 } 
 		db.shutdown();
+		
+		
+	
 	}
 	
 	private GraphDatabaseService getGraphDatabaseService(){

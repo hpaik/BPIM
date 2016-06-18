@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns4:ProcessInstance xmlns="http://www.bpim.org/model/execpath/v1" xmlns:ns2="http://www.bpim.org/model/v1" xmlns:ns3="http://www.bpim.org/model/data/v1" xmlns:ns4="uri" endDateTime="Thu May 12 16:21:31 AEST 2016" state="FINISHED" id="4f1b72c1-6424-43d1-8dd6-553b7c6b6ddc" name="IntermediateCatchEvent Process" mappingCorrelationId="1" creationDateTime="Thu May 12 16:21:31 AEST 2016">
+    <ns2:executionPath>
+        <ns2:start id="70cd2b96-7855-4092-8c2b-99c17cc7d8e5" name="StartProcess">
+            <outputTransition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="EventTransition" id="fee1fd21-4d16-438d-9d6a-2165b05bb7c1">
+                <to xsi:type="ManualTask" executionDateTime="Thu May 12 16:21:31 AEST 2016" id="360bbbd8-f157-4ca2-8f44-9863721516a2" name="UserTask">
+                    <outputTransition xsi:type="NormalTransition" id="67c8e886-31aa-4c28-a7bd-4182f03f5041">
+                        <to xsi:type="Wait" executionDateTime="Thu May 12 16:21:31 AEST 2016" id="bf2075c1-64ff-4f79-8dfd-94adc123e0e6" name="Wait">
+                            <outputTransition xsi:type="EventTransition" id="df7caf85-d63d-4186-8cec-97ba5c4add97">
+<to xsi:type="AutomatedTask" executionDateTime="Thu May 12 16:21:31 AEST 2016" id="6650790a-1182-431c-9887-8262de40b2ce" name="Event">
+    <outputTransition xsi:type="NormalTransition" id="3241520b-8067-4e05-894c-a6120b4a8353">
+        <to xsi:type="End" id="43342e3e-e3f9-45ea-af35-587b9ca0fa13" name="EndProcess"/>
+    </outputTransition>
+</to>
+                            </outputTransition>
+                        </to>
+                    </outputTransition>
+                </to>
+            </outputTransition>
+        </ns2:start>
+    </ns2:executionPath>
+    <ns2:data>
+        <ns2:dataSnapshotGraphs/>
+        <ns2:dataSnapshotPool/>
+    </ns2:data>
+    <ns2:server address="192.168.1.5" name="nima-PC"/>
+</ns4:ProcessInstance>
