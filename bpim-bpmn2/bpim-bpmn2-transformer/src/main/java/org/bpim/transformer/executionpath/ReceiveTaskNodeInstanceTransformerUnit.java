@@ -23,7 +23,7 @@ public class ReceiveTaskNodeInstanceTransformerUnit extends TransformerUnit {
 			//Creates a Reference Process Instance element
 			referenceProcessInstance = ExecutionPathHelper.createReferenceProcessInstance(nodeInstance);			
 		}
-		//Checks if Receive Task is part of execution flow (i.e., Execution engine has reached this node and waiting for a message)
+		//Checks if Receive Task is part of the main execution flow (i.e., Execution engine has reached this node and waiting for a message)
 		if (!workItemNodeInstance.getNode().getIncomingConnections().isEmpty()){
 			// Creates a Wait element with Message Transition
 			Wait wait = ExecutionPathHelper.createWaitWithMessageTransition(nodeInstance);

@@ -30,5 +30,4 @@ public class ReceiveTaskNodeInstanceTransformerUnit extends TransformerUnit {
 			transformationResult.setFlowNode(tmpFlowNode);
 		}
 	}
-
 }
