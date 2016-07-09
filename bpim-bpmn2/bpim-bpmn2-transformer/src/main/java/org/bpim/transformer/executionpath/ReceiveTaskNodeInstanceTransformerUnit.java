@@ -41,9 +41,7 @@ public class ReceiveTaskNodeInstanceTransformerUnit extends TransformerUnit {
 				messageTransition.setTo(referenceProcessInstance);
 			}
 			transformationResult.setFlowNode(messageTransition);
-		}
-		
-		
+		}		
 	}
 
 }
